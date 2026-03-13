@@ -10,6 +10,7 @@ interface SidebarProps {
 }
 
 const navItems: { id: Tab; label: string; icon: React.ElementType }[] = [
+  { id: "dashboard", label: "Dashboard", icon: BarChart3 },
   { id: "laudos", label: "Laudos", icon: FileText },
   { id: "historico", label: "Histórico", icon: Clock },
   { id: "mascaras", label: "Máscaras", icon: LayoutTemplate },

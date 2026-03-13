@@ -51,6 +51,16 @@ export default function AppDashboard() {
         </div>
 
         <main className="flex-1 px-4 sm:px-6 lg:px-10 py-5 lg:py-6 max-w-3xl mx-auto w-full pb-20 lg:pb-6">
+          {activeTab === "dashboard" && (
+            <div className="space-y-5 animate-fade-in">
+              <div className="space-y-0.5">
+                <h1 className="text-lg font-semibold text-foreground tracking-tight">Dashboard</h1>
+                <p className="text-[13px] text-muted-foreground">Visão geral da sua atividade</p>
+              </div>
+              <DashboardView />
+            </div>
+          )}
+
           {activeTab === "laudos" && (
             <div className="space-y-5 animate-fade-in">
               <div className="space-y-0.5">
@@ -65,8 +75,6 @@ export default function AppDashboard() {
               </div>
 
               <PlanBar used={7} total={15} plan="free" />
-
-              <DashboardView />
 
               {!reportGenerated && (
                 <ExamTabs selected={selectedExam} onSelect={setSelectedExam} />

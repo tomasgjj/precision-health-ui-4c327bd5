@@ -1,7 +1,7 @@
-import { FileText, Clock, LayoutTemplate, Settings } from "lucide-react";
+import { FileText, Clock, LayoutTemplate, Settings, BarChart3 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-type Tab = "laudos" | "historico" | "mascaras" | "config";
+type Tab = "dashboard" | "laudos" | "historico" | "mascaras" | "config";
 
 interface MobileHeaderProps {
   activeTab: Tab;
@@ -9,6 +9,7 @@ interface MobileHeaderProps {
 }
 
 const navItems: { id: Tab; icon: React.ElementType; label: string }[] = [
+  { id: "dashboard", icon: BarChart3, label: "Dashboard" },
   { id: "laudos", icon: FileText, label: "Laudos" },
   { id: "historico", icon: Clock, label: "Histórico" },
   { id: "mascaras", icon: LayoutTemplate, label: "Máscaras" },

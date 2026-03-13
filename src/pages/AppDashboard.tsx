@@ -41,6 +41,7 @@ export default function AppDashboard() {
             <span>LaudoVoz</span>
             <span className="text-muted-foreground/40">/</span>
             <span className="text-foreground font-medium">
+              {activeTab === "dashboard" && "Dashboard"}
               {activeTab === "laudos" && (reportGenerated ? "Laudo Gerado" : "Novo Laudo")}
               {activeTab === "historico" && "Histórico"}
               {activeTab === "mascaras" && "Máscaras"}

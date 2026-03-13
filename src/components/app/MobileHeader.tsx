@@ -1,7 +1,7 @@
-import { FileText, LayoutTemplate, Settings, MessageSquare } from "lucide-react";
+import { FileText, Clock, LayoutTemplate, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-type Tab = "laudos" | "mascaras" | "config" | "feedback";
+type Tab = "laudos" | "historico" | "mascaras" | "config";
 
 interface MobileHeaderProps {
   activeTab: Tab;
@@ -10,9 +10,9 @@ interface MobileHeaderProps {
 
 const navItems: { id: Tab; icon: React.ElementType; label: string }[] = [
   { id: "laudos", icon: FileText, label: "Laudos" },
+  { id: "historico", icon: Clock, label: "Histórico" },
   { id: "mascaras", icon: LayoutTemplate, label: "Máscaras" },
   { id: "config", icon: Settings, label: "Config" },
-  { id: "feedback", icon: MessageSquare, label: "Feedback" },
 ];
 
 export default function MobileHeader({ activeTab, onTabChange }: MobileHeaderProps) {
@@ -39,7 +39,7 @@ export default function MobileHeader({ activeTab, onTabChange }: MobileHeaderPro
       {/* Bottom tab bar */}
       <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 flex items-center justify-around h-14 bg-background border-t border-border pb-safe">
         {navItems.map((item) => {
-          const active = item.id === "laudos" && activeTab === item.id;
+          const active = activeTab === item.id;
           return (
             <button
               key={item.id}

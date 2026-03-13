@@ -1,8 +1,8 @@
-import { FileText, LayoutTemplate, Settings, MessageSquare, LogOut, Search, Moon, Sun, Sparkles } from "lucide-react";
+import { FileText, Clock, LayoutTemplate, Settings, LogOut, Search, Moon, Sun, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTheme, type AppTheme } from "@/hooks/use-theme";
 
-type Tab = "laudos" | "mascaras" | "config" | "feedback";
+type Tab = "laudos" | "historico" | "mascaras" | "config";
 
 interface SidebarProps {
   activeTab: Tab;
@@ -11,9 +11,9 @@ interface SidebarProps {
 
 const navItems: { id: Tab; label: string; icon: React.ElementType }[] = [
   { id: "laudos", label: "Laudos", icon: FileText },
+  { id: "historico", label: "Histórico", icon: Clock },
   { id: "mascaras", label: "Máscaras", icon: LayoutTemplate },
   { id: "config", label: "Configurações", icon: Settings },
-  { id: "feedback", label: "Feedback", icon: MessageSquare },
 ];
 
 const themes: { id: AppTheme; label: string; icon: React.ElementType }[] = [
@@ -56,7 +56,7 @@ export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
       <nav className="flex-1 flex flex-col gap-px px-3 pt-2">
         <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-[0.1em] px-2.5 mb-1">Menu</p>
         {navItems.map((item) => {
-          const active = activeTab === item.id && item.id === "laudos";
+          const active = activeTab === item.id;
           return (
             <button
               key={item.id}

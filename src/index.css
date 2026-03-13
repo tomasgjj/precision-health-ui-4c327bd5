@@ -5,7 +5,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&display=swap');
 
 @layer base {
-  :root {
+  :root,
+  [data-theme="dark"] {
     --color-brand: 217 91% 60%;
     --color-brand-light: 213 94% 68%;
     --color-accent: 258 80% 62%;
@@ -68,6 +69,126 @@
     --bg-input-glass: 0 0% 4% / 0.8;
     --border-subtle: 0 0% 12% / 0.4;
     --border-active: 217 91% 60% / 0.4;
+  }
+
+  [data-theme="ocean"] {
+    --color-brand: 210 100% 56%;
+    --color-brand-light: 205 100% 65%;
+    --color-accent: 190 80% 50%;
+    --color-accent-light: 185 75% 58%;
+    --color-blue: 210 100% 56%;
+    --color-green: 160 70% 50%;
+    --color-purple: 230 70% 60%;
+
+    --background: 215 35% 5%;
+    --foreground: 210 20% 92%;
+
+    --card: 215 30% 8%;
+    --card-foreground: 210 20% 92%;
+
+    --popover: 215 30% 8%;
+    --popover-foreground: 210 20% 92%;
+
+    --primary: 210 100% 56%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 215 25% 12%;
+    --secondary-foreground: 210 15% 58%;
+
+    --muted: 215 25% 10%;
+    --muted-foreground: 210 15% 40%;
+
+    --accent: 190 80% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 62% 55%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 215 20% 14%;
+    --input: 215 25% 10%;
+    --ring: 210 100% 56%;
+
+    --sidebar-background: 215 35% 4%;
+    --sidebar-foreground: 210 15% 40%;
+    --sidebar-primary: 210 100% 56%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 215 25% 12%;
+    --sidebar-accent-foreground: 210 15% 58%;
+    --sidebar-border: 215 20% 12%;
+    --sidebar-ring: 210 100% 56%;
+
+    --success: 160 55% 42%;
+    --success-foreground: 0 0% 100%;
+    --info: 200 60% 50%;
+    --info-foreground: 0 0% 100%;
+    --warning: 38 90% 55%;
+    --warning-foreground: 0 0% 0%;
+
+    --bg-glass: 215 30% 10% / 0.5;
+    --bg-glass-hover: 215 25% 13% / 0.6;
+    --bg-input-glass: 215 35% 6% / 0.8;
+    --border-subtle: 215 20% 16% / 0.4;
+    --border-active: 210 100% 56% / 0.4;
+  }
+
+  [data-theme="light"] {
+    --color-brand: 217 91% 50%;
+    --color-brand-light: 213 94% 58%;
+    --color-accent: 258 65% 55%;
+    --color-accent-light: 255 60% 62%;
+    --color-blue: 217 91% 50%;
+    --color-green: 142 60% 42%;
+    --color-purple: 258 65% 55%;
+
+    --background: 0 0% 98%;
+    --foreground: 0 0% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
+
+    --primary: 217 91% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 0 0% 94%;
+    --secondary-foreground: 0 0% 40%;
+
+    --muted: 0 0% 95%;
+    --muted-foreground: 0 0% 45%;
+
+    --accent: 258 65% 55%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 88%;
+    --input: 0 0% 94%;
+    --ring: 217 91% 50%;
+
+    --sidebar-background: 0 0% 97%;
+    --sidebar-foreground: 0 0% 45%;
+    --sidebar-primary: 217 91% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 94%;
+    --sidebar-accent-foreground: 0 0% 40%;
+    --sidebar-border: 0 0% 90%;
+    --sidebar-ring: 217 91% 50%;
+
+    --success: 142 50% 40%;
+    --success-foreground: 0 0% 100%;
+    --info: 200 60% 45%;
+    --info-foreground: 0 0% 100%;
+    --warning: 38 90% 50%;
+    --warning-foreground: 0 0% 0%;
+
+    --bg-glass: 0 0% 100% / 0.7;
+    --bg-glass-hover: 0 0% 96% / 0.8;
+    --bg-input-glass: 0 0% 98% / 0.9;
+    --border-subtle: 0 0% 85% / 0.5;
+    --border-active: 217 91% 50% / 0.4;
   }
 
   * {

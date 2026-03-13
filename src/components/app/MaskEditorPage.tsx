@@ -42,8 +42,29 @@ export default function MaskEditorPage() {
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
   const [expandedFinding, setExpandedFinding] = useState<string | null>(null);
   const [showImport, setShowImport] = useState(false);
+  const [favorites, setFavorites] = useState<Set<string>>(new Set(["USG Abdome"]));
 
-  const exam = exams[activeExam];
+  const toggleFavorite = (name: string) => {
+    setFavorites(prev => {
+      const next = new Set(prev);
+      if (next.has(name)) {
+        next.delete(name);
+        toast.success("Removido dos favoritos");
+      } else {
+        next.add(name);
+        toast.success("Adicionado aos favoritos!");
+      }
+      return next;
+    });
+  };
+
+  const sortedExams = [...exams].sort((a, b) => {
+    const aFav = favorites.has(a.name) ? 0 : 1;
+    const bFav = favorites.has(b.name) ? 0 : 1;
+    return aFav - bFav;
+  });
+
+  const exam = sortedExams[activeExam];
   const sections = exam?.sections || [];
   const findings = exam?.findings || [];
 

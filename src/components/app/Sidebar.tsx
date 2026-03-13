@@ -1,8 +1,8 @@
-import { FileText, Clock, LayoutTemplate, Settings, LogOut, Search, Moon, Sun, Sparkles } from "lucide-react";
+import { FileText, Clock, LayoutTemplate, Settings, LogOut, Search, Moon, Sun, Sparkles, BarChart3 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTheme, type AppTheme } from "@/hooks/use-theme";
 
-type Tab = "laudos" | "historico" | "mascaras" | "config";
+type Tab = "dashboard" | "laudos" | "historico" | "mascaras" | "config";
 
 interface SidebarProps {
   activeTab: Tab;
@@ -10,6 +10,7 @@ interface SidebarProps {
 }
 
 const navItems: { id: Tab; label: string; icon: React.ElementType }[] = [
+  { id: "dashboard", label: "Dashboard", icon: BarChart3 },
   { id: "laudos", label: "Laudos", icon: FileText },
   { id: "historico", label: "Histórico", icon: Clock },
   { id: "mascaras", label: "Máscaras", icon: LayoutTemplate },

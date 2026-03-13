@@ -1,8 +1,8 @@
-import { FileText, Clock, LayoutTemplate, Settings, LogOut, Search, Moon, Sun, Sparkles } from "lucide-react";
+import { FileText, Clock, LayoutTemplate, Settings, LogOut, Search, Moon, Sun, Sparkles, BarChart3 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTheme, type AppTheme } from "@/hooks/use-theme";
 
-type Tab = "laudos" | "historico" | "mascaras" | "config";
+type Tab = "dashboard" | "laudos" | "historico" | "mascaras" | "config";
 
 interface SidebarProps {
   activeTab: Tab;

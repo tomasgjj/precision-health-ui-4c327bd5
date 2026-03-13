@@ -150,6 +150,11 @@ export default function ReportView({ transcription, onNewReport }: ReportViewPro
     setEditSec(null);
   };
 
+  const handlePrint = () => {
+    playTap();
+    window.print();
+  };
+
   const actionButtons = (
     <>
       <motion.button onClick={handleSave} disabled={saving} whileTap={{ scale: 0.97 }} transition={spring} className="flex items-center justify-center gap-2 flex-1 py-2.5 rounded-lg text-[13px] font-semibold bg-primary text-primary-foreground border-none cursor-pointer disabled:opacity-60 hover:bg-primary/90 transition-colors">
@@ -160,6 +165,9 @@ export default function ReportView({ transcription, onNewReport }: ReportViewPro
       </motion.button>
       <motion.button disabled={pdfing} onClick={handlePdf} whileTap={{ scale: 0.95 }} transition={spring} className="flex items-center justify-center gap-2 flex-1 py-2.5 rounded-lg text-[13px] font-medium bg-transparent border border-border text-muted-foreground cursor-pointer disabled:opacity-60 hover:text-foreground hover:bg-secondary/50 transition-colors">
         {pdfing ? <><Loader2 size={15} className="animate-spin" /> Gerando...</> : <><FileDown size={15} /> PDF</>}
+      </motion.button>
+      <motion.button onClick={handlePrint} whileTap={{ scale: 0.95 }} transition={spring} className="flex items-center justify-center gap-2 flex-1 py-2.5 rounded-lg text-[13px] font-medium bg-transparent border border-border text-muted-foreground cursor-pointer hover:text-foreground hover:bg-secondary/50 transition-colors">
+        <Printer size={15} /> Imprimir
       </motion.button>
     </>
   );

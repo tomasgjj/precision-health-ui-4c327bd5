@@ -97,18 +97,30 @@ export default function MaskEditorPage() {
 
       {/* Exam tabs */}
       <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none pb-1">
-        {exams.map((e, idx) => (
+        {sortedExams.map((e, idx) => (
           <button
             key={e.name}
             onClick={() => setActiveExam(idx)}
             className={cn(
-              "px-3 py-2 rounded-xl text-xs font-medium whitespace-nowrap transition-all duration-200 border",
+              "group relative px-3 py-2 rounded-xl text-xs font-medium whitespace-nowrap transition-all duration-200 border flex items-center gap-1.5",
               idx === activeExam
                 ? "bg-primary/10 border-primary/30 text-foreground"
                 : "border-border/50 text-muted-foreground hover:text-foreground hover:bg-secondary/40"
             )}
           >
+            {favorites.has(e.name) && (
+              <Star size={10} className="text-primary fill-primary" />
+            )}
             {e.name}
+            <button
+              onClick={(ev) => { ev.stopPropagation(); toggleFavorite(e.name); }}
+              className={cn(
+                "ml-0.5 transition-opacity",
+                favorites.has(e.name) ? "opacity-100" : "opacity-0 group-hover:opacity-60"
+              )}
+            >
+              <Star size={11} className={favorites.has(e.name) ? "text-primary fill-primary" : "text-muted-foreground"} />
+            </button>
           </button>
         ))}
         <button className="px-3 py-2 rounded-xl text-xs font-medium whitespace-nowrap border border-dashed border-border/60 text-muted-foreground hover:text-foreground hover:border-border transition-colors">

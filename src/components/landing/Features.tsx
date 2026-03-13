@@ -1,36 +1,38 @@
 import { Mic, FileEdit, PenTool, Cloud, Smartphone, FileText } from "lucide-react";
 
 const features = [
-  { icon: Mic, title: "Ditado por voz", desc: "Grave os achados em português natural. Transcrição precisa de termos radiológicos." },
-  { icon: FileEdit, title: "Templates customizáveis", desc: "Edite textos padrão, adicione achados personalizados e crie novos tipos de exame." },
-  { icon: PenTool, title: "Edição completa", desc: "Cada seção do laudo é editável. Você mantém o controle total." },
-  { icon: Cloud, title: "Histórico na nuvem", desc: "Laudos salvos com segurança. Acesse de qualquer dispositivo." },
-  { icon: Smartphone, title: "Mobile e desktop", desc: "Interface responsiva otimizada para toque. Use no celular ou computador." },
-  { icon: FileText, title: "Exportação em PDF", desc: "PDFs profissionais com cabeçalho personalizado e assinatura digital." },
+  { icon: Mic, title: "Ditado por voz inteligente", desc: "Reconhecimento preciso de termos radiológicos em português. Fale naturalmente, o sistema entende." },
+  { icon: FileEdit, title: "Templates customizáveis", desc: "Crie e edite modelos para qualquer tipo de exame. Seus templates, suas regras." },
+  { icon: PenTool, title: "Edição total do laudo", desc: "Cada seção é editável. Altere, reordene ou adicione achados com controle completo." },
+  { icon: Cloud, title: "Sync na nuvem", desc: "Todos os laudos salvos com segurança. Acesse seu histórico de qualquer lugar." },
+  { icon: Smartphone, title: "Mobile-first", desc: "Interface otimizada para toque. Laude direto do celular durante o exame." },
+  { icon: FileText, title: "Export PDF profissional", desc: "PDFs com cabeçalho personalizado, formatação médica e pronto para assinatura." },
 ];
 
 const Features = () => (
-  <section id="recursos" className="py-24 md:py-32 border-t border-border">
+  <section id="recursos" className="relative py-28 md:py-36 border-t border-border/50">
     <div className="container max-w-[960px] mx-auto px-6">
-      <div className="max-w-[520px] mb-14">
-        <p className="text-xs font-medium text-muted-foreground mb-4 tracking-widest uppercase">Recursos</p>
-        <h2 className="text-2xl md:text-[2rem] font-semibold tracking-[-0.02em] text-foreground">
-          Feito para o dia a dia do radiologista
+      <div className="text-center max-w-[560px] mx-auto mb-16">
+        <p className="text-[12px] font-medium text-primary mb-3 tracking-widest uppercase">Recursos</p>
+        <h2 className="text-section text-foreground">
+          Tudo que o radiologista precisa
         </h2>
-        <p className="text-muted-foreground mt-3 text-sm leading-relaxed">
-          Menos digitação, mais produtividade. Sem perder o controle.
+        <p className="text-muted-foreground mt-4 text-[15px] leading-relaxed">
+          Menos digitação, mais precisão. Ferramentas pensadas para o fluxo real de trabalho.
         </p>
       </div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-border rounded-xl overflow-hidden">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {features.map((f, i) => (
           <div
             key={i}
-            className="bg-background p-7 hover:bg-accent/50 transition-colors duration-150"
+            className="group surface-card-hover rounded-xl p-6"
           >
-            <f.icon className="w-5 h-5 text-muted-foreground mb-4" />
-            <h3 className="font-medium text-sm text-foreground mb-1.5">{f.title}</h3>
-            <p className="text-xs text-muted-foreground leading-relaxed">{f.desc}</p>
+            <div className="w-9 h-9 rounded-lg bg-accent/80 border border-border/50 flex items-center justify-center mb-5 group-hover:border-primary/20 transition-colors">
+              <f.icon className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+            </div>
+            <h3 className="text-[14px] font-semibold text-foreground mb-1.5">{f.title}</h3>
+            <p className="text-[13px] text-muted-foreground leading-relaxed">{f.desc}</p>
           </div>
         ))}
       </div>

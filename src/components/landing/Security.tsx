@@ -1,27 +1,33 @@
 import { Lock, Shield, Timer, User } from "lucide-react";
 
 const items = [
-  { icon: Lock, label: "Criptografia HTTPS" },
-  { icon: Shield, label: "LGPD Compliant" },
-  { icon: Timer, label: "Auto-logout 30min" },
-  { icon: User, label: "Dados isolados por usuário" },
+  { icon: Lock, title: "Criptografia HTTPS", desc: "Todas as conexões protegidas com TLS/SSL de ponta a ponta." },
+  { icon: Shield, title: "LGPD Compliant", desc: "Em conformidade total com a Lei Geral de Proteção de Dados." },
+  { icon: Timer, title: "Auto-logout", desc: "Sessões expiram automaticamente após 30 min de inatividade." },
+  { icon: User, title: "Isolamento de dados", desc: "Dados de cada usuário completamente isolados e protegidos." },
 ];
 
 const Security = () => (
-  <section className="py-24 md:py-32 border-t border-border">
-    <div className="container max-w-[720px] mx-auto px-6">
-      <p className="text-xs font-medium text-muted-foreground mb-4 tracking-widest uppercase">Segurança</p>
-      <h2 className="text-2xl md:text-[2rem] font-semibold tracking-[-0.02em] text-foreground mb-3">
-        Segurança e conformidade
-      </h2>
-      <p className="text-sm text-muted-foreground mb-12 max-w-[400px]">
-        Seus dados e os dos seus pacientes, protegidos.
-      </p>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+  <section id="seguranca" className="relative py-28 md:py-36 border-t border-border/50">
+    <div className="container max-w-[960px] mx-auto px-6">
+      <div className="text-center max-w-[560px] mx-auto mb-16">
+        <p className="text-[12px] font-medium text-primary mb-3 tracking-widest uppercase">Segurança</p>
+        <h2 className="text-section text-foreground">
+          Proteção em cada camada
+        </h2>
+        <p className="text-muted-foreground mt-4 text-[15px]">
+          Seus dados e os dos seus pacientes, sempre protegidos.
+        </p>
+      </div>
+
+      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {items.map((item, i) => (
-          <div key={i} className="flex flex-col gap-3">
-            <item.icon className="w-5 h-5 text-muted-foreground" />
-            <span className="text-xs font-medium text-foreground">{item.label}</span>
+          <div key={i} className="surface-card-hover rounded-xl p-6 text-center">
+            <div className="w-10 h-10 rounded-lg bg-accent/80 border border-border/50 flex items-center justify-center mx-auto mb-4">
+              <item.icon className="w-4.5 h-4.5 text-muted-foreground" />
+            </div>
+            <h3 className="text-[13px] font-semibold text-foreground mb-1.5">{item.title}</h3>
+            <p className="text-[12px] text-muted-foreground leading-relaxed">{item.desc}</p>
           </div>
         ))}
       </div>

@@ -1,78 +1,92 @@
-import { Check } from "lucide-react";
+import { Check, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const plans = [
   {
     name: "Gratuito",
     price: "R$0",
-    subtitle: "Para experimentar",
+    period: "",
+    subtitle: "Para experimentar o produto",
     features: ["10 laudos por mês", "1 tipo de exame", "Ditado por voz + IA", "Histórico na nuvem"],
     cta: "Começar grátis",
-    popular: false,
+    highlighted: false,
   },
   {
-    name: "Pro — Mensal",
+    name: "Pro Mensal",
     price: "R$1",
-    subtitle: "primeiro mês · depois R$120/mês",
+    period: "primeiro mês",
+    subtitle: "depois R$120/mês",
     features: ["Laudos ilimitados", "Todos os tipos de exame", "Máscaras personalizadas", "Exportação em PDF", "Suporte prioritário"],
     cta: "Começar por R$1",
-    popular: true,
+    highlighted: true,
   },
   {
-    name: "Pro — Anual",
+    name: "Pro Anual",
     price: "R$80",
-    subtitle: "/mês · R$960/ano — economize 33%",
+    period: "/mês",
+    subtitle: "R$960/ano — economize 33%",
     features: ["Tudo do plano mensal", "Laudos ilimitados", "Máscaras personalizadas", "Exportação em PDF", "Suporte prioritário"],
     cta: "Assinar anual",
-    popular: false,
+    highlighted: false,
   },
 ];
 
 const Pricing = () => (
-  <section id="precos" className="py-24 md:py-32 border-t border-border">
-    <div className="container max-w-[960px] mx-auto px-6">
-      <div className="max-w-[520px] mb-14">
-        <p className="text-xs font-medium text-muted-foreground mb-4 tracking-widest uppercase">Preços</p>
-        <h2 className="text-2xl md:text-[2rem] font-semibold tracking-[-0.02em] text-foreground">
+  <section id="precos" className="relative py-28 md:py-36 border-t border-border/50">
+    <div className="absolute inset-0 section-glow pointer-events-none" />
+    <div className="container relative z-10 max-w-[1020px] mx-auto px-6">
+      <div className="text-center max-w-[560px] mx-auto mb-16">
+        <p className="text-[12px] font-medium text-primary mb-3 tracking-widest uppercase">Preços</p>
+        <h2 className="text-section text-foreground">
           Planos simples e transparentes
         </h2>
-        <p className="text-muted-foreground mt-3 text-sm">Comece grátis. Upgrade quando precisar.</p>
+        <p className="text-muted-foreground mt-4 text-[15px]">
+          Comece grátis. Faça upgrade quando precisar.
+        </p>
       </div>
 
-      <div className="grid md:grid-cols-3 gap-px bg-border rounded-xl overflow-hidden">
+      <div className="grid md:grid-cols-3 gap-4">
         {plans.map((plan, i) => (
           <div
             key={i}
-            className={`bg-background p-7 flex flex-col ${plan.popular ? "bg-accent/30" : ""}`}
+            className={`relative rounded-xl p-7 flex flex-col ${
+              plan.highlighted
+                ? "surface-card border-primary/20 bg-primary/[0.03]"
+                : "surface-card"
+            }`}
           >
-            <div className="mb-6">
-              <div className="flex items-center gap-2 mb-3">
-                <h3 className="font-medium text-sm text-foreground">{plan.name}</h3>
-                {plan.popular && (
-                  <span className="text-[10px] font-medium text-primary bg-primary/10 px-2 py-0.5 rounded-full">
-                    Popular
-                  </span>
-                )}
+            {plan.highlighted && (
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                <span className="text-[11px] font-medium text-primary-foreground bg-primary px-3 py-1 rounded-full">
+                  Mais popular
+                </span>
               </div>
-              <div className="flex items-baseline gap-0.5">
-                <span className="text-3xl font-semibold tracking-tight text-foreground">{plan.price}</span>
+            )}
+
+            <div className="mb-7">
+              <h3 className="text-[14px] font-semibold text-foreground mb-4">{plan.name}</h3>
+              <div className="flex items-baseline gap-1">
+                <span className="text-4xl font-semibold tracking-tight text-foreground">{plan.price}</span>
+                {plan.period && <span className="text-[13px] text-muted-foreground">{plan.period}</span>}
               </div>
-              <p className="text-xs text-muted-foreground mt-1">{plan.subtitle}</p>
+              <p className="text-[12px] text-muted-foreground mt-1.5">{plan.subtitle}</p>
             </div>
-            <ul className="space-y-2.5 mb-8 flex-1">
+
+            <ul className="space-y-3 mb-8 flex-1">
               {plan.features.map((f, j) => (
-                <li key={j} className="flex items-start gap-2.5 text-xs text-secondary-foreground">
-                  <Check className="w-3.5 h-3.5 text-success mt-0.5 flex-shrink-0" />
+                <li key={j} className="flex items-start gap-2.5 text-[13px] text-secondary-foreground">
+                  <Check className="w-4 h-4 text-success mt-0.5 flex-shrink-0" />
                   {f}
                 </li>
               ))}
             </ul>
+
             <Button
-              variant={plan.popular ? "hero" : "outline"}
-              size="default"
+              variant={plan.highlighted ? "hero" : "outline"}
               className="w-full"
             >
               {plan.cta}
+              {plan.highlighted && <ArrowRight className="w-3.5 h-3.5" />}
             </Button>
           </div>
         ))}

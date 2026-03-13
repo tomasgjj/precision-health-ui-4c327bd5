@@ -18,6 +18,7 @@ const audioCtx = () => {
 };
 
 function playTone(freq: number, duration: number, type: OscillatorType = "sine", volume = 0.12) {
+  if (!isSoundEnabled()) return;
   try {
     const ctx = audioCtx();
     const osc = ctx.createOscillator();

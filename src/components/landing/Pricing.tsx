@@ -68,7 +68,7 @@ const Pricing = () => {
       <div className="container relative z-10 max-w-[1100px] mx-auto px-6">
         {/* Header */}
         <div className="text-center max-w-[560px] mx-auto mb-6">
-          <h2 className="text-section text-foreground">Pricing</h2>
+          <h2 className="text-section text-foreground">Preços</h2>
           <p className="text-muted-foreground mt-3 text-[15px]">
             Comece grátis. Faça upgrade quando precisar.
           </p>

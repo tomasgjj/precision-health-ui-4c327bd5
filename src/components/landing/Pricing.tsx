@@ -32,7 +32,7 @@ const plans = [
     yearlyPrice: "R$150",
     period: "/mês",
     features: ["Tudo do plano Pro", "Múltiplos usuários", "Painel administrativo", "Suporte dedicado", "API de integração", "Setup personalizado"],
-    cta: "Começar com Clínica",
+    cta: "Começar com Max",
     highlighted: false,
   },
 ];

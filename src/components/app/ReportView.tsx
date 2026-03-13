@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Copy, FileDown, Save, Plus, Check, Mic, Loader2, PenLine, Sparkles } from "lucide-react";
+import { Copy, FileDown, Save, Plus, Check, Mic, Loader2, PenLine, Sparkles, Printer } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";

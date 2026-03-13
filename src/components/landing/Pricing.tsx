@@ -7,7 +7,7 @@ const plans = [
     name: "Basic",
     description: "Para começar a usar",
     monthlyPrice: "R$50",
-    yearlyPrice: "R$30",
+    yearlyPrice: "R$50",
     period: "/mês",
     dot: "hsl(var(--muted-foreground))",
     features: [

@@ -26,13 +26,13 @@ const plans = [
     highlighted: true,
   },
   {
-    name: "Clínica",
-    description: "Para clínicas e equipes",
+    name: "Max",
+    description: "Para equipes e clínicas",
     monthlyPrice: "R$200",
     yearlyPrice: "R$150",
     period: "/mês",
     features: ["Tudo do plano Pro", "Múltiplos usuários", "Painel administrativo", "Suporte dedicado", "API de integração", "Setup personalizado"],
-    cta: "Começar com Clínica",
+    cta: "Começar com Max",
     highlighted: false,
   },
 ];

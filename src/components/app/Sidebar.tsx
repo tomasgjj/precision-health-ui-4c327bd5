@@ -84,26 +84,6 @@ export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
         })}
       </nav>
 
-      {/* Theme switcher */}
-      <div className="px-3 py-2.5 border-t border-border">
-        <div className="flex items-center gap-px p-0.5 rounded-lg bg-secondary/50 border border-border">
-          {themes.map((t) => (
-            <button
-              key={t.id}
-              onClick={() => setTheme(t.id)}
-              className={cn(
-                "flex-1 flex items-center justify-center py-1.5 rounded-md text-[11px] font-medium transition-colors duration-150",
-                theme === t.id
-                  ? "bg-card text-foreground"
-                  : "text-muted-foreground hover:text-foreground"
-              )}
-              title={t.label}
-            >
-              <t.icon className="w-3.5 h-3.5" />
-            </button>
-          ))}
-        </div>
-      </div>
 
       {/* User */}
       <div className="px-3 py-2.5 border-t border-border">

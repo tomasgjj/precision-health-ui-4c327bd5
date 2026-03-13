@@ -1,7 +1,7 @@
 import { useState } from "react";
 import {
   Plus, Save, RefreshCw, Camera, Trash2, ChevronRight, ChevronDown,
-  FileText, Search, Smartphone, Loader2, Microscope, Upload, ClipboardPaste, X, LayoutTemplate,
+  FileText, Search, Smartphone, Loader2, Microscope, Upload, ClipboardPaste, X, LayoutTemplate, Star,
 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
@@ -42,8 +42,29 @@ export default function MaskEditorPage() {
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
   const [expandedFinding, setExpandedFinding] = useState<string | null>(null);
   const [showImport, setShowImport] = useState(false);
+  const [favorites, setFavorites] = useState<Set<string>>(new Set(["USG Abdome"]));
 
-  const exam = exams[activeExam];
+  const toggleFavorite = (name: string) => {
+    setFavorites(prev => {
+      const next = new Set(prev);
+      if (next.has(name)) {
+        next.delete(name);
+        toast.success("Removido dos favoritos");
+      } else {
+        next.add(name);
+        toast.success("Adicionado aos favoritos!");
+      }
+      return next;
+    });
+  };
+
+  const sortedExams = [...exams].sort((a, b) => {
+    const aFav = favorites.has(a.name) ? 0 : 1;
+    const bFav = favorites.has(b.name) ? 0 : 1;
+    return aFav - bFav;
+  });
+
+  const exam = sortedExams[activeExam];
   const sections = exam?.sections || [];
   const findings = exam?.findings || [];
 
@@ -76,18 +97,30 @@ export default function MaskEditorPage() {
 
       {/* Exam tabs */}
       <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none pb-1">
-        {exams.map((e, idx) => (
+        {sortedExams.map((e, idx) => (
           <button
             key={e.name}
             onClick={() => setActiveExam(idx)}
             className={cn(
-              "px-3 py-2 rounded-xl text-xs font-medium whitespace-nowrap transition-all duration-200 border",
+              "group relative px-3 py-2 rounded-xl text-xs font-medium whitespace-nowrap transition-all duration-200 border flex items-center gap-1.5",
               idx === activeExam
                 ? "bg-primary/10 border-primary/30 text-foreground"
                 : "border-border/50 text-muted-foreground hover:text-foreground hover:bg-secondary/40"
             )}
           >
+            {favorites.has(e.name) && (
+              <Star size={10} className="text-primary fill-primary" />
+            )}
             {e.name}
+            <button
+              onClick={(ev) => { ev.stopPropagation(); toggleFavorite(e.name); }}
+              className={cn(
+                "ml-0.5 transition-opacity",
+                favorites.has(e.name) ? "opacity-100" : "opacity-0 group-hover:opacity-60"
+              )}
+            >
+              <Star size={11} className={favorites.has(e.name) ? "text-primary fill-primary" : "text-muted-foreground"} />
+            </button>
           </button>
         ))}
         <button className="px-3 py-2 rounded-xl text-xs font-medium whitespace-nowrap border border-dashed border-border/60 text-muted-foreground hover:text-foreground hover:border-border transition-colors">

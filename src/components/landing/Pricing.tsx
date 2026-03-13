@@ -26,8 +26,8 @@ const plans = [
     highlighted: true,
   },
   {
-    name: "Clínica",
-    description: "Para clínicas e equipes",
+    name: "Max",
+    description: "Para equipes e clínicas",
     monthlyPrice: "R$200",
     yearlyPrice: "R$150",
     period: "/mês",

@@ -7,22 +7,21 @@ import Security from "@/components/landing/Security";
 import FAQ from "@/components/landing/FAQ";
 import CTA from "@/components/landing/CTA";
 import Footer from "@/components/landing/Footer";
-import { useEffect, useRef } from "react";
-import { useTheme, AppTheme } from "@/hooks/use-theme";
+import { useEffect } from "react";
 
 const Index = () => {
-  const { theme, setTheme } = useTheme();
-  const prevTheme = useRef<AppTheme>(theme);
-
   useEffect(() => {
-    prevTheme.current = theme;
-    if (theme !== "midnight") {
-      setTheme("midnight");
-    }
+    const root = document.documentElement;
+    const prevClasses = [...root.classList];
+
+    root.classList.remove("theme-light");
+    root.classList.add("theme-midnight");
+
     return () => {
-      if (prevTheme.current !== "midnight") {
-        setTheme(prevTheme.current);
-      }
+      root.classList.remove("theme-midnight");
+      prevClasses.forEach((c) => {
+        if (c.startsWith("theme-")) root.classList.add(c);
+      });
     };
   }, []);
   return (

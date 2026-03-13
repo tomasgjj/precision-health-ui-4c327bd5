@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronRight } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 const faqs = [
   { q: "Preciso instalar algo?", a: "Não. O LaudoVoz funciona diretamente no navegador, sem precisar instalar nenhum aplicativo." },
@@ -14,29 +14,35 @@ const FAQ = () => {
   const [open, setOpen] = useState<number | null>(null);
 
   return (
-    <section className="py-24 md:py-32 border-t border-border">
-      <div className="container max-w-[720px] mx-auto px-6">
-        <p className="text-xs font-medium text-muted-foreground mb-4 tracking-widest uppercase">FAQ</p>
-        <h2 className="text-2xl md:text-[2rem] font-semibold tracking-[-0.02em] text-foreground mb-12">
-          Perguntas frequentes
-        </h2>
+    <section className="py-28 md:py-36 relative">
+      <div className="container max-w-3xl mx-auto px-6">
+        <div className="text-center mb-16">
+          <p className="text-sm font-semibold text-primary mb-3 tracking-wide uppercase">FAQ</p>
+          <h2 className="font-bold text-3xl md:text-5xl tracking-[-0.02em]">
+            Perguntas frequentes
+          </h2>
+          <p className="text-muted-foreground mt-4 text-lg">Tire suas dúvidas sobre o LaudoVoz.</p>
+        </div>
 
-        <div className="divide-y divide-border">
+        <div className="space-y-3">
           {faqs.map((faq, i) => (
-            <div key={i}>
+            <div
+              key={i}
+              className="glass-card rounded-xl overflow-hidden transition-all duration-200"
+            >
               <button
                 onClick={() => setOpen(open === i ? null : i)}
-                className="w-full flex items-center justify-between py-4 text-left group"
+                className="w-full flex items-center justify-between p-5 text-left"
               >
-                <span className="text-sm font-medium text-foreground group-hover:text-foreground/80 transition-colors">{faq.q}</span>
-                <ChevronRight
+                <span className="font-medium text-foreground">{faq.q}</span>
+                <ChevronDown
                   className={`w-4 h-4 text-muted-foreground transition-transform duration-200 flex-shrink-0 ml-4 ${
-                    open === i ? "rotate-90" : ""
+                    open === i ? "rotate-180" : ""
                   }`}
                 />
               </button>
               {open === i && (
-                <div className="pb-4 text-sm text-muted-foreground leading-relaxed animate-fade-in">
+                <div className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed animate-fade-in">
                   {faq.a}
                 </div>
               )}

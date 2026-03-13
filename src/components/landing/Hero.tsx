@@ -35,7 +35,7 @@ const Hero = () => (
       </div>
     </div>
 
-    {/* Product preview — Linear-style app mockup */}
+    {/* Product video */}
     <div className="container relative z-10 pb-0">
       <div className="animate-fade-up opacity-0 [animation-delay:450ms] max-w-[900px] mx-auto">
         <div className="surface-card rounded-xl overflow-hidden mask-fade-b">
@@ -46,63 +46,19 @@ const Hero = () => (
               <div className="w-2.5 h-2.5 rounded-full bg-muted-foreground/20" />
               <div className="w-2.5 h-2.5 rounded-full bg-muted-foreground/20" />
             </div>
-            <span className="text-[11px] text-muted-foreground ml-2">LaudoVoz — Novo laudo</span>
+            <span className="text-[11px] text-muted-foreground ml-2">LaudoVoz — Demonstração</span>
           </div>
-
-          {/* Mock content */}
-          <div className="grid md:grid-cols-[240px_1fr] min-h-[340px]">
-            {/* Sidebar */}
-            <div className="hidden md:block border-r border-border/50 p-4 space-y-1">
-              <div className="flex items-center gap-2 px-2.5 py-2 rounded-md bg-accent/60 text-foreground">
-                <FileText className="w-3.5 h-3.5" />
-                <span className="text-[12px] font-medium">Abdome Total</span>
-              </div>
-              {["Tireoide", "Mamas", "Vias Urinárias", "Obstétrico"].map((item) => (
-                <div key={item} className="flex items-center gap-2 px-2.5 py-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent/30 transition-colors cursor-default">
-                  <FileText className="w-3.5 h-3.5" />
-                  <span className="text-[12px]">{item}</span>
-                </div>
-              ))}
-            </div>
-
-            {/* Main content */}
-            <div className="p-6 space-y-5">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <Mic className="w-4 h-4 text-primary" />
-                </div>
-                <div>
-                  <div className="text-[13px] font-medium text-foreground">Gravando achados…</div>
-                  <div className="text-[11px] text-muted-foreground">Ultrassonografia de Abdome Total</div>
-                </div>
-                <div className="ml-auto flex items-center gap-1.5">
-                  <div className="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
-                  <span className="text-[11px] text-success">Ao vivo</span>
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <div className="space-y-1.5">
-                  <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Fígado</div>
-                  <div className="text-[13px] text-secondary-foreground leading-relaxed">
-                    Fígado de dimensões normais, contornos regulares, ecotextura homogênea, sem lesões focais.
-                  </div>
-                </div>
-                <div className="space-y-1.5">
-                  <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Vesícula Biliar</div>
-                  <div className="text-[13px] text-secondary-foreground leading-relaxed">
-                    Vesícula biliar normodistendida, paredes finas, sem cálculos ou pólipos.
-                  </div>
-                </div>
-                <div className="space-y-1.5">
-                  <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Pâncreas</div>
-                  <div className="h-3 w-48 bg-accent/60 rounded animate-pulse" />
-                </div>
-              </div>
-            </div>
-          </div>
+          <video
+            src={heroVideo}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-auto"
+          />
         </div>
       </div>
+    </div>
     </div>
   </section>
 );

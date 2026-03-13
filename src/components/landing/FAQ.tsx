@@ -15,16 +15,22 @@ const FAQ = () => {
   const [open, setOpen] = useState<number | null>(null);
 
   return (
-    <section className="relative py-28 md:py-36 border-t border-border/50">
-      <div className="container max-w-[680px] mx-auto px-6">
+    <section className="relative py-24 md:py-32">
+      <div className="container max-w-[640px] mx-auto px-6">
+        {/* Section header */}
+        <div className="flex items-center gap-3 mb-12">
+          <div className="h-px flex-1 bg-border/50" />
+          <span className="text-[11px] font-medium text-muted-foreground tracking-widest uppercase">FAQ</span>
+          <div className="h-px flex-1 bg-border/50" />
+        </div>
+
         <div className="text-center mb-14">
-          <p className="text-[12px] font-medium text-primary mb-3 tracking-widest uppercase">FAQ</p>
           <h2 className="text-section text-foreground">
             Perguntas frequentes
           </h2>
         </div>
 
-        <div className="space-y-0 border-t border-border/50">
+        <div className="border-t border-border/50">
           {faqs.map((faq, i) => (
             <div key={i} className="border-b border-border/50">
               <button
@@ -34,7 +40,7 @@ const FAQ = () => {
                 <span className="text-[14px] font-medium text-foreground pr-4">{faq.q}</span>
                 <ChevronRight
                   className={cn(
-                    "w-4 h-4 text-muted-foreground/50 transition-transform duration-200 flex-shrink-0",
+                    "w-4 h-4 text-muted-foreground/40 transition-transform duration-200 flex-shrink-0",
                     open === i && "rotate-90"
                   )}
                 />

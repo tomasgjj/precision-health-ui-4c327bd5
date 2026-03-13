@@ -29,51 +29,48 @@ const plans = [
 ];
 
 const Pricing = () => (
-  <section id="precos" className="py-28 md:py-36 relative">
-    <div className="absolute inset-0 glow-top opacity-30" />
-    <div className="container relative max-w-5xl mx-auto px-6">
-      <div className="text-center mb-16">
-        <p className="text-sm font-semibold text-primary mb-3 tracking-wide uppercase">Preços</p>
-        <h2 className="font-bold text-3xl md:text-5xl tracking-[-0.02em] mb-4">
+  <section id="precos" className="py-24 md:py-32 border-t border-border">
+    <div className="container max-w-[960px] mx-auto px-6">
+      <div className="max-w-[520px] mb-14">
+        <p className="text-xs font-medium text-muted-foreground mb-4 tracking-widest uppercase">Preços</p>
+        <h2 className="text-2xl md:text-[2rem] font-semibold tracking-[-0.02em] text-foreground">
           Planos simples e transparentes
         </h2>
-        <p className="text-muted-foreground text-lg">Comece grátis. Upgrade quando precisar.</p>
+        <p className="text-muted-foreground mt-3 text-sm">Comece grátis. Upgrade quando precisar.</p>
       </div>
 
-      <div className="grid md:grid-cols-3 gap-5">
+      <div className="grid md:grid-cols-3 gap-px bg-border rounded-xl overflow-hidden">
         {plans.map((plan, i) => (
           <div
             key={i}
-            className={`relative rounded-2xl p-8 flex flex-col transition-all duration-300 ${
-              plan.popular
-                ? "glass-card border-2 !border-primary/40 shadow-xl shadow-primary/5"
-                : "glass-card-hover"
-            }`}
+            className={`bg-background p-7 flex flex-col ${plan.popular ? "bg-accent/30" : ""}`}
           >
-            {plan.popular && (
-              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full btn-gradient text-xs font-semibold text-primary-foreground shadow-lg">
-                Mais popular
-              </div>
-            )}
             <div className="mb-6">
-              <h3 className="font-semibold text-lg text-foreground mb-3">{plan.name}</h3>
-              <div className="flex items-baseline gap-1">
-                <span className="font-extrabold text-4xl text-foreground tracking-tight">{plan.price}</span>
+              <div className="flex items-center gap-2 mb-3">
+                <h3 className="font-medium text-sm text-foreground">{plan.name}</h3>
+                {plan.popular && (
+                  <span className="text-[10px] font-medium text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+                    Popular
+                  </span>
+                )}
               </div>
-              <p className="text-sm text-muted-foreground mt-1.5">{plan.subtitle}</p>
+              <div className="flex items-baseline gap-0.5">
+                <span className="text-3xl font-semibold tracking-tight text-foreground">{plan.price}</span>
+              </div>
+              <p className="text-xs text-muted-foreground mt-1">{plan.subtitle}</p>
             </div>
-            <ul className="space-y-3 mb-8 flex-1">
+            <ul className="space-y-2.5 mb-8 flex-1">
               {plan.features.map((f, j) => (
-                <li key={j} className="flex items-center gap-3 text-sm text-secondary-foreground">
-                  <Check className="w-4 h-4 text-success flex-shrink-0" />
+                <li key={j} className="flex items-start gap-2.5 text-xs text-secondary-foreground">
+                  <Check className="w-3.5 h-3.5 text-success mt-0.5 flex-shrink-0" />
                   {f}
                 </li>
               ))}
             </ul>
             <Button
               variant={plan.popular ? "hero" : "outline"}
+              size="default"
               className="w-full"
-              size="lg"
             >
               {plan.cta}
             </Button>

@@ -1,13 +1,14 @@
 import { useState, useEffect, useRef } from "react";
-import { Mic, Square, Loader2, Sparkles, Keyboard, Send } from "lucide-react";
+import { Mic, Square, Loader2, Sparkles, Keyboard, Send, Trash2, Pause, Play } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 interface RecorderProps {
   onGenerate: (text: string) => void;
 }
 
-type RecordState = "idle" | "recording" | "transcribing";
+type RecordState = "idle" | "recording" | "paused" | "transcribing";
 
 export default function Recorder({ onGenerate }: RecorderProps) {
   const [state, setState] = useState<RecordState>("idle");
@@ -37,6 +38,7 @@ export default function Recorder({ onGenerate }: RecorderProps) {
       setSeconds(0);
       setTranscription("");
     } else if (state === "recording") {
+      // Click on the stop icon inside the mic button stops recording
       setState("transcribing");
       setTimeout(() => {
         setTranscription(
@@ -47,6 +49,29 @@ export default function Recorder({ onGenerate }: RecorderProps) {
     }
   };
 
+  const handleDiscard = () => {
+    setState("idle");
+    setSeconds(0);
+    setTranscription("");
+    toast("Gravação descartada");
+  };
+
+  const handlePauseResume = () => {
+    if (state === "recording") setState("paused");
+    else if (state === "paused") setState("recording");
+  };
+
+  const handleSend = () => {
+    setState("transcribing");
+    setTimeout(() => {
+      setTranscription(
+        "Fígado de dimensões normais, contornos regulares, ecotextura homogênea. Vesícula biliar normodistendida, paredes finas, sem cálculos. Vias biliares de calibre normal. Pâncreas de dimensões e ecotextura normais. Baço homogêneo, de dimensões normais. Rins tópicos, de dimensões e contornos preservados, sem sinais de dilatação pielocalicinal ou litíase."
+      );
+      setState("idle");
+    }, 2000);
+  };
+
+  const isRecordingOrPaused = state === "recording" || state === "paused";
   const canGenerate = transcription.trim().length > 0;
 
   return (
@@ -81,10 +106,9 @@ export default function Recorder({ onGenerate }: RecorderProps) {
 
       {/* Voice mode */}
       {mode === "voice" && (
-        <div className="flex flex-col items-center gap-6 py-8">
-          {/* Mic button with rings */}
+        <div className="flex flex-col items-center gap-5 py-6">
+          {/* Mic / Stop button */}
           <div className="relative">
-            {/* Outer glow ring */}
             {state === "recording" && (
               <>
                 <div className="absolute inset-0 -m-6 rounded-3xl bg-destructive/5 animate-ping" style={{ animationDuration: '2s' }} />
@@ -100,34 +124,64 @@ export default function Recorder({ onGenerate }: RecorderProps) {
               className={cn(
                 "relative w-20 h-20 rounded-2xl flex items-center justify-center transition-all duration-300",
                 state === "idle" &&
-                  "bg-secondary/80 border border-border text-foreground hover:bg-secondary hover:border-primary/30 hover:glow-primary-sm hover:scale-105 active:scale-95",
-                state === "recording" &&
-                  "bg-destructive/10 border-2 border-destructive text-destructive glow-recording",
+                  "bg-secondary/80 border border-border text-foreground hover:bg-secondary hover:border-primary/30 hover:scale-105 active:scale-95",
+                isRecordingOrPaused &&
+                  "bg-secondary/80 border-2 border-destructive/50 text-foreground",
                 state === "transcribing" &&
                   "bg-secondary/80 border border-border text-muted-foreground cursor-wait"
               )}
-              disabled={state === "transcribing"}
+              disabled={state === "transcribing" || isRecordingOrPaused}
             >
               {state === "idle" && <Mic className="w-7 h-7" />}
-              {state === "recording" && <Square className="w-5 h-5 fill-current" />}
+              {isRecordingOrPaused && <Square className="w-6 h-6 fill-current text-muted-foreground" />}
               {state === "transcribing" && <Loader2 className="w-6 h-6 animate-spin" />}
             </button>
           </div>
 
-          {/* Status */}
-          <div className="text-center space-y-1.5">
-            {state === "recording" && (
-              <div className="flex items-center gap-2.5 justify-center">
-                <div className="w-2 h-2 rounded-full bg-destructive animate-pulse" />
-                <span className="text-lg font-mono font-bold text-foreground tabular-nums">{formatTime(seconds)}</span>
-              </div>
-            )}
+          {/* Timer */}
+          {isRecordingOrPaused && (
+            <div className="text-xl font-bold text-destructive tabular-nums font-mono">
+              {formatTime(seconds)}
+            </div>
+          )}
+
+          {/* Recording controls: Trash | Pause/Resume | Enviar */}
+          {isRecordingOrPaused && (
+            <div className="flex items-center gap-3 animate-fade-in">
+              {/* Trash */}
+              <button
+                onClick={handleDiscard}
+                className="w-14 h-14 rounded-xl bg-secondary/80 border border-border/50 flex items-center justify-center text-muted-foreground hover:text-destructive hover:border-destructive/30 transition-all duration-200 active:scale-95"
+              >
+                <Trash2 className="w-5 h-5" />
+              </button>
+
+              {/* Pause / Resume */}
+              <button
+                onClick={handlePauseResume}
+                className="w-14 h-14 rounded-xl bg-secondary/80 border border-border/50 flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-border transition-all duration-200 active:scale-95"
+              >
+                {state === "paused" ? <Play className="w-5 h-5" /> : <Pause className="w-5 h-5" />}
+              </button>
+
+              {/* Enviar */}
+              <button
+                onClick={handleSend}
+                className="h-14 px-6 rounded-xl gradient-cyan flex items-center justify-center gap-2 text-primary-foreground font-semibold text-sm hover:shadow-lg hover:-translate-y-px transition-all duration-200 active:scale-95 glow-primary-sm"
+              >
+                <Send className="w-4 h-4" />
+                Enviar
+              </button>
+            </div>
+          )}
+
+          {/* Status text */}
+          {!isRecordingOrPaused && (
             <p className="text-[12px] text-muted-foreground">
               {state === "idle" && "Toque para iniciar a gravação"}
-              {state === "recording" && "Gravando — toque para parar"}
               {state === "transcribing" && "Processando transcrição..."}
             </p>
-          </div>
+          )}
 
           {/* Waveform bars */}
           {state === "recording" && (
@@ -158,15 +212,13 @@ export default function Recorder({ onGenerate }: RecorderProps) {
           </label>
         </div>
 
-        <div className="relative">
-          <Textarea
-            value={transcription}
-            onChange={(e) => setTranscription(e.target.value)}
-            placeholder={mode === "text" ? "Digite ou cole a descrição do exame aqui..." : "A transcrição aparecerá aqui após a gravação..."}
-            className="min-h-[140px] bg-background/50 border-border/50 text-foreground text-[13px] leading-relaxed placeholder:text-muted-foreground/40 resize-none focus:bg-background/80 focus:border-primary/30 focus:shadow-[0_0_0_3px_hsl(var(--primary)/0.06)] transition-all duration-200 rounded-xl"
-            rows={6}
-          />
-        </div>
+        <Textarea
+          value={transcription}
+          onChange={(e) => setTranscription(e.target.value)}
+          placeholder={mode === "text" ? "Digite ou cole a descrição do exame aqui..." : "A transcrição aparecerá aqui após a gravação..."}
+          className="min-h-[140px] bg-background/50 border-border/50 text-foreground text-[13px] leading-relaxed placeholder:text-muted-foreground/40 resize-none focus:bg-background/80 focus:border-primary/30 focus:shadow-[0_0_0_3px_hsl(var(--primary)/0.06)] transition-all duration-200 rounded-xl"
+          rows={6}
+        />
 
         {/* Generate button */}
         <button

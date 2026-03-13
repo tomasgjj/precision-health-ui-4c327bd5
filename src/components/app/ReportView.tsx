@@ -4,7 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { playSuccess, playCopy, playGenerate, playTap, playDiscard } from "@/lib/sounds";
+import { playSuccess, playCopy, playTap } from "@/lib/sounds";
 
 interface ReportViewProps {
   transcription: string;
@@ -25,7 +25,7 @@ const mockReport = {
   impressao: "Exame ultrassonográfico do abdome total dentro dos limites da normalidade.",
 };
 
-const btnSpring = { type: "spring" as const, stiffness: 400, damping: 17 };
+const spring = { type: "spring" as const, stiffness: 500, damping: 25 };
 
 export default function ReportView({ transcription, onNewReport }: ReportViewProps) {
   const [patient, setPatient] = useState("");
@@ -68,8 +68,8 @@ export default function ReportView({ transcription, onNewReport }: ReportViewPro
   return (
     <div className="animate-fade-in space-y-4">
       {/* Patient */}
-      <div className="surface-glass rounded-xl p-3.5">
-        <label className="text-[11px] text-muted-foreground uppercase tracking-[0.12em] font-semibold mb-2 block">
+      <div className="rounded-lg bg-card border border-border p-3">
+        <label className="text-[11px] text-muted-foreground font-medium mb-1.5 block">
           Paciente (opcional)
         </label>
         <input
@@ -83,73 +83,71 @@ export default function ReportView({ transcription, onNewReport }: ReportViewPro
       </div>
 
       {/* Report body */}
-      <div className="rounded-2xl overflow-hidden border border-border/50 bg-card/50 backdrop-blur-sm">
-        <div className="px-4 py-3 bg-primary/[0.06] border-b border-border/50 flex items-center gap-2.5">
-          <div className="w-6 h-6 rounded-lg bg-primary/15 flex items-center justify-center">
-            <Sparkles className="w-3.5 h-3.5 text-primary" />
-          </div>
-          <span className="text-sm font-bold text-primary">{mockReport.exam}</span>
-          <span className="ml-auto text-[10px] text-muted-foreground font-medium">Agora</span>
+      <div className="rounded-lg overflow-hidden border border-border bg-card">
+        {/* Exam header */}
+        <div className="px-4 py-2.5 border-b border-border flex items-center gap-2">
+          <Sparkles className="w-3.5 h-3.5 text-primary" />
+          <span className="text-[13px] font-semibold text-foreground">{mockReport.exam}</span>
+          <span className="ml-auto text-[10px] text-muted-foreground">Agora</span>
         </div>
 
-        {Object.entries(sections).map(([key, sec], idx) => (
+        {/* Sections */}
+        {Object.entries(sections).map(([key, sec]) => (
           <div
             key={key}
-            className={cn(
-              "px-4 py-3 border-b border-border/30 text-sm leading-relaxed flex justify-between items-start group transition-colors hover:bg-secondary/20",
-              idx % 2 === 0 && "bg-card/30"
-            )}
+            className="px-4 py-2.5 border-b border-border text-sm leading-relaxed flex justify-between items-start group hover:bg-secondary/30 transition-colors"
           >
             {editSec === key ? (
               <div className="flex-1">
                 <Textarea
                   defaultValue={sec.text}
-                  rows={4}
-                  className="text-sm bg-background/50 border-border/50 rounded-xl focus:border-primary/30 focus:shadow-[0_0_0_3px_hsl(var(--primary)/0.06)]"
+                  rows={3}
+                  className="text-[13px] bg-background border-border rounded-lg focus:border-primary/30"
                   onBlur={(e) => handleSectionEdit(key, e.target.value)}
                   autoFocus
                 />
               </div>
             ) : (
               <>
-                <div className="flex-1 whitespace-pre-wrap text-secondary-foreground">
-                  <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-[0.15em] block mb-1">
+                <div className="flex-1">
+                  <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-[0.1em] block mb-0.5">
                     {sec.label}
                   </span>
-                  <span className="text-[13px]">{sec.text}</span>
+                  <span className="text-[13px] text-secondary-foreground">{sec.text}</span>
                 </div>
                 <button
                   onClick={() => setEditSec(key)}
-                  className="bg-transparent border-none cursor-pointer text-muted-foreground/40 p-1 ml-2 shrink-0 hover:text-primary transition-colors opacity-0 group-hover:opacity-100"
+                  className="bg-transparent border-none cursor-pointer text-muted-foreground/30 p-1 ml-2 shrink-0 hover:text-primary transition-colors opacity-0 group-hover:opacity-100"
                 >
-                  <PenLine size={13} />
+                  <PenLine size={12} />
                 </button>
               </>
             )}
           </div>
         ))}
 
-        <div className="px-4 py-3 bg-accent/[0.03]">
-          <div className="text-[10px] text-accent font-bold mb-1.5 uppercase tracking-[0.15em] flex items-center gap-1.5">
-            <div className="w-1.5 h-1.5 rounded-full bg-accent" />
+        {/* Impressão */}
+        <div className="px-4 py-2.5">
+          <div className="text-[10px] text-primary font-medium mb-1 uppercase tracking-[0.1em] flex items-center gap-1.5">
+            <div className="w-1 h-1 rounded-full bg-primary" />
             Impressão
           </div>
           {editImp ? (
             <Textarea
               defaultValue={impressao}
-              rows={4}
-              className="text-sm bg-background/50 border-border/50 rounded-xl"
+              rows={3}
+              className="text-[13px] bg-background border-border rounded-lg"
               onBlur={(e) => { setImpressao(e.target.value); setEditImp(false); }}
               autoFocus
             />
           ) : (
             <div className="flex justify-between items-start group">
-              <div className="text-[13px] whitespace-pre-wrap text-secondary-foreground flex-1">{impressao}</div>
+              <div className="text-[13px] text-secondary-foreground flex-1">{impressao}</div>
               <button
                 onClick={() => setEditImp(true)}
-                className="bg-transparent border-none cursor-pointer text-muted-foreground/40 p-1 ml-2 shrink-0 hover:text-primary transition-colors opacity-0 group-hover:opacity-100"
+                className="bg-transparent border-none cursor-pointer text-muted-foreground/30 p-1 ml-2 shrink-0 hover:text-primary transition-colors opacity-0 group-hover:opacity-100"
               >
-                <PenLine size={13} />
+                <PenLine size={12} />
               </button>
             </div>
           )}
@@ -161,31 +159,31 @@ export default function ReportView({ transcription, onNewReport }: ReportViewPro
         <motion.button
           onClick={handleSave}
           disabled={saving}
-          whileHover={{ scale: 1.03, y: -2 }}
-          whileTap={{ scale: 0.95 }}
-          transition={btnSpring}
-          className="flex items-center justify-center gap-2 flex-1 py-3 rounded-xl text-sm font-bold gradient-brand text-primary-foreground border-none cursor-pointer disabled:opacity-60 glow-primary-sm"
+          whileHover={{ scale: 1.01, y: -1 }}
+          whileTap={{ scale: 0.97 }}
+          transition={spring}
+          className="flex items-center justify-center gap-2 flex-1 py-2.5 rounded-lg text-[13px] font-semibold bg-primary text-primary-foreground border-none cursor-pointer disabled:opacity-60 hover:bg-primary/90 transition-colors"
         >
-          {saving ? <><Loader2 size={16} className="animate-spin" /> Salvando...</> : <><Save size={16} /> Salvar e Copiar</>}
+          {saving ? <><Loader2 size={15} className="animate-spin" /> Salvando...</> : <><Save size={15} /> Salvar e Copiar</>}
         </motion.button>
         <motion.button
           onClick={handleCopy}
-          whileHover={{ scale: 1.05, y: -2 }}
-          whileTap={{ scale: 0.93 }}
-          transition={btnSpring}
-          className="flex items-center justify-center gap-2 flex-1 py-3 rounded-xl text-sm font-semibold bg-transparent border border-border/50 text-muted-foreground cursor-pointer hover:text-foreground hover:border-border"
+          whileHover={{ scale: 1.03, y: -1 }}
+          whileTap={{ scale: 0.95 }}
+          transition={spring}
+          className="flex items-center justify-center gap-2 flex-1 py-2.5 rounded-lg text-[13px] font-medium bg-transparent border border-border text-muted-foreground cursor-pointer hover:text-foreground hover:bg-secondary/50 transition-colors"
         >
-          {copied ? <><Check size={16} className="text-success" /> Copiado</> : <><Copy size={16} /> Copiar</>}
+          {copied ? <><Check size={15} className="text-success" /> Copiado</> : <><Copy size={15} /> Copiar</>}
         </motion.button>
         <motion.button
           disabled={pdfing}
           onClick={() => { playTap(); setPdfing(true); setTimeout(() => { setPdfing(false); toast.info("PDF em breve!"); }, 1000); }}
-          whileHover={{ scale: 1.05, y: -2 }}
-          whileTap={{ scale: 0.93 }}
-          transition={btnSpring}
-          className="flex items-center justify-center gap-2 flex-1 py-3 rounded-xl text-sm font-semibold bg-transparent border border-border/50 text-muted-foreground cursor-pointer disabled:opacity-60 hover:text-foreground hover:border-border"
+          whileHover={{ scale: 1.03, y: -1 }}
+          whileTap={{ scale: 0.95 }}
+          transition={spring}
+          className="flex items-center justify-center gap-2 flex-1 py-2.5 rounded-lg text-[13px] font-medium bg-transparent border border-border text-muted-foreground cursor-pointer disabled:opacity-60 hover:text-foreground hover:bg-secondary/50 transition-colors"
         >
-          {pdfing ? <><Loader2 size={16} className="animate-spin" /> Gerando...</> : <><FileDown size={16} /> PDF</>}
+          {pdfing ? <><Loader2 size={15} className="animate-spin" /> Gerando...</> : <><FileDown size={15} /> PDF</>}
         </motion.button>
       </div>
 
@@ -193,21 +191,21 @@ export default function ReportView({ transcription, onNewReport }: ReportViewPro
       <div className="flex gap-2">
         <motion.button
           onClick={() => { playTap(); setShowCorrection(!showCorrection); }}
-          whileHover={{ scale: 1.03, y: -2 }}
-          whileTap={{ scale: 0.95 }}
-          transition={btnSpring}
-          className="flex items-center justify-center gap-2 flex-1 py-3 rounded-xl text-sm font-bold gradient-green text-primary-foreground border-none cursor-pointer"
+          whileHover={{ scale: 1.02, y: -1 }}
+          whileTap={{ scale: 0.97 }}
+          transition={spring}
+          className="flex items-center justify-center gap-2 flex-1 py-2.5 rounded-lg text-[13px] font-semibold bg-success/10 text-success border border-success/20 cursor-pointer hover:bg-success/15 transition-colors"
         >
-          <Mic size={16} /> Corrigir por Voz
+          <Mic size={15} /> Corrigir por Voz
         </motion.button>
         <motion.button
           onClick={() => { playTap(); onNewReport(); }}
-          whileHover={{ scale: 1.05, y: -2 }}
-          whileTap={{ scale: 0.93 }}
-          transition={btnSpring}
-          className="flex items-center justify-center gap-2 flex-1 py-3 rounded-xl text-sm font-semibold bg-transparent border border-dashed border-border/50 text-muted-foreground cursor-pointer hover:text-foreground hover:border-primary/30"
+          whileHover={{ scale: 1.03, y: -1 }}
+          whileTap={{ scale: 0.95 }}
+          transition={spring}
+          className="flex items-center justify-center gap-2 flex-1 py-2.5 rounded-lg text-[13px] font-medium bg-transparent border border-dashed border-border text-muted-foreground cursor-pointer hover:text-foreground hover:border-primary/30 transition-colors"
         >
-          <Plus size={16} /> Novo Laudo
+          <Plus size={15} /> Novo Laudo
         </motion.button>
       </div>
 
@@ -238,56 +236,50 @@ function CorrectionPanel({ onClose }: { onClose: () => void }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 12, scale: 0.97 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, y: 8, scale: 0.97 }}
-      transition={btnSpring}
-      className="bg-success/[0.04] border border-success/20 rounded-xl p-4"
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={spring}
+      className="bg-card border border-success/20 rounded-lg p-3.5"
     >
-      <div className="flex justify-between items-center mb-3">
-        <div className="text-sm font-bold text-success flex items-center gap-2">
-          <Mic size={15} />
+      <div className="flex justify-between items-center mb-2.5">
+        <div className="text-[13px] font-semibold text-success flex items-center gap-2">
+          <Mic size={14} />
           Correção por Voz
         </div>
         <button
           onClick={onClose}
-          className="px-2 py-1 rounded-lg text-xs border border-border/50 bg-transparent text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
+          className="px-2 py-1 rounded text-[11px] border border-border bg-transparent text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
         >
           ✕
         </button>
       </div>
-      <div className="flex gap-2 mb-3">
-        <motion.button
+      <div className="flex gap-2 mb-2.5">
+        <button
           onClick={() => { playTap(); setRecording(!recording); }}
-          whileTap={{ scale: 0.95 }}
-          transition={btnSpring}
           className={cn(
-            "flex-1 py-2.5 rounded-xl text-sm font-semibold border-none cursor-pointer transition-colors duration-200",
+            "flex-1 py-2 rounded-lg text-[13px] font-medium border cursor-pointer transition-colors",
             recording
-              ? "bg-destructive/10 text-destructive border border-destructive/20"
-              : "bg-success/10 text-success border border-success/20"
+              ? "bg-destructive/10 text-destructive border-destructive/20"
+              : "bg-success/10 text-success border-success/20"
           )}
         >
           {recording ? "⏹ Parar" : "🎙️ Gravar correção"}
-        </motion.button>
+        </button>
       </div>
       <Textarea
         value={textInput}
         onChange={(e) => setTextInput(e.target.value)}
         rows={2}
         placeholder="Ou digite a correção..."
-        className="text-sm bg-background/50 border-border/50 mb-2 rounded-xl"
+        className="text-[13px] bg-background border-border mb-2 rounded-lg"
       />
-      <motion.button
+      <button
         onClick={handleApply}
         disabled={!textInput.trim() || processing}
-        whileHover={textInput.trim() ? { scale: 1.02 } : {}}
-        whileTap={textInput.trim() ? { scale: 0.96 } : {}}
-        transition={btnSpring}
-        className="w-full py-2.5 rounded-xl text-sm font-bold gradient-green text-primary-foreground border-none cursor-pointer disabled:opacity-50"
+        className="w-full py-2 rounded-lg text-[13px] font-semibold bg-success text-success-foreground border-none cursor-pointer disabled:opacity-50 hover:bg-success/90 transition-colors"
       >
-        {processing ? "⏳ Aplicando..." : "✓ Aplicar Correção"}
-      </motion.button>
+        {processing ? "Aplicando..." : "Aplicar Correção"}
+      </button>
     </motion.div>
   );
 }
@@ -300,37 +292,37 @@ function RatingPanel() {
 
   const handleRate = (type: string) => {
     playSuccess();
-    toast.success(type === "good" ? "Obrigado pelo feedback! 🙏" : "Feedback registrado, vamos melhorar!");
+    toast.success(type === "good" ? "Obrigado pelo feedback!" : "Feedback registrado, vamos melhorar!");
     setRated(true);
   };
 
   return (
-    <div className="surface-glass rounded-xl p-4 text-center animate-fade-in">
-      <div className="text-sm font-semibold text-foreground mb-1">Como ficou o laudo?</div>
+    <div className="rounded-lg bg-card border border-border p-3.5 text-center animate-fade-in">
+      <div className="text-[13px] font-medium text-foreground mb-0.5">Como ficou o laudo?</div>
       <p className="text-[11px] text-muted-foreground mb-3">Seu feedback nos ajuda a melhorar</p>
       <Textarea
         value={comment}
         onChange={(e) => setComment(e.target.value)}
         placeholder="Comentário (opcional)"
         rows={2}
-        className="text-sm bg-background/50 border-border/50 mb-3 rounded-xl"
+        className="text-[13px] bg-background border-border mb-2.5 rounded-lg"
       />
       <div className="flex gap-2 justify-center">
         <motion.button
           onClick={() => handleRate("good")}
-          whileHover={{ scale: 1.06, y: -2 }}
-          whileTap={{ scale: 0.92 }}
-          transition={btnSpring}
-          className="flex items-center gap-1.5 px-6 py-2.5 rounded-xl bg-success/10 border border-success/25 text-success text-sm font-semibold cursor-pointer"
+          whileHover={{ scale: 1.04 }}
+          whileTap={{ scale: 0.95 }}
+          transition={spring}
+          className="flex items-center gap-1.5 px-5 py-2 rounded-lg bg-success/10 border border-success/20 text-success text-[13px] font-medium cursor-pointer hover:bg-success/15 transition-colors"
         >
           👍 Bom
         </motion.button>
         <motion.button
           onClick={() => handleRate("bad")}
-          whileHover={{ scale: 1.06, y: -2 }}
-          whileTap={{ scale: 0.92 }}
-          transition={btnSpring}
-          className="flex items-center gap-1.5 px-6 py-2.5 rounded-xl bg-destructive/10 border border-destructive/25 text-destructive text-sm font-semibold cursor-pointer"
+          whileHover={{ scale: 1.04 }}
+          whileTap={{ scale: 0.95 }}
+          transition={spring}
+          className="flex items-center gap-1.5 px-5 py-2 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-[13px] font-medium cursor-pointer hover:bg-destructive/15 transition-colors"
         >
           👎 Melhorar
         </motion.button>

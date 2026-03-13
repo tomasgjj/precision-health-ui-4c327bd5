@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Mic, Square, Check, Copy, FileDown } from "lucide-react";
 
-type Phase = "idle" | "recording" | "masks" | "processing" | "result";
+type Phase = "idle" | "recording" | "processing" | "result";
 
 const DICTATION_TEXT =
   "Fígado de dimensões ligeiramente aumentadas, bordas rombas, ecotextura sólida com aumento difuso da ecogenicidade e atenuação posterior. Vesícula biliar normodistendida, paredes finas, sem cálculos.";
@@ -14,13 +14,6 @@ const LAUDO_SECTIONS = [
   { label: "Impressão", text: "— Aumento da ecogenicidade hepática, compatível com esteatose grau II.\n— Demais estruturas sem alterações significativas.", isImpression: true },
 ];
 
-const MASK_OPTIONS = [
-  { label: "US Abdome Total", match: true },
-  { label: "US Tireoide", match: false },
-  { label: "US Mamas", match: false },
-  { label: "US Vias Urinárias", match: false },
-];
-
 const PROCESS_STEPS = [
   "Transcrição do áudio",
   "Identificação dos achados",
@@ -28,7 +21,6 @@ const PROCESS_STEPS = [
 ];
 
 const RECORDING_DURATION = 4000;
-const MASKS_DURATION = 2500;
 const PROCESSING_DURATION = 2500;
 const RESULT_DISPLAY = 4000;
 
@@ -39,12 +31,6 @@ export default function HeroDemo() {
   const [processStep, setProcessStep] = useState(0);
   const [processProgress, setProcessProgress] = useState(0);
   const [visibleSections, setVisibleSections] = useState(0);
-  const [maskHighlight, setMaskHighlight] = useState(-1);
-  const phaseRef = useRef<Phase>("idle");
-
-  useEffect(() => {
-    phaseRef.current = phase;
-  }, [phase]);
 
   const startDemo = useCallback(() => {
     setTypedChars(0);
@@ -59,6 +45,7 @@ export default function HeroDemo() {
     if (phase === "idle") startDemo();
   };
 
+  // Recording phase
   useEffect(() => {
     if (phase !== "recording") return;
     const charsPerTick = Math.ceil(DICTATION_TEXT.length / (RECORDING_DURATION / 40));
@@ -66,20 +53,11 @@ export default function HeroDemo() {
       setTypedChars((c) => Math.min(c + charsPerTick, DICTATION_TEXT.length));
     }, 40);
     const timerId = setInterval(() => setTimer((t) => t + 1), 1000);
-    const nextPhase = setTimeout(() => setPhase("masks"), RECORDING_DURATION);
+    const nextPhase = setTimeout(() => setPhase("processing"), RECORDING_DURATION);
     return () => { clearInterval(typeId); clearInterval(timerId); clearTimeout(nextPhase); };
   }, [phase]);
 
-  useEffect(() => {
-    if (phase !== "masks") return;
-    setMaskHighlight(-1);
-    const scanTimers = MASK_OPTIONS.map((_, i) =>
-      setTimeout(() => setMaskHighlight(i), 400 + i * 400)
-    );
-    const nextPhase = setTimeout(() => setPhase("processing"), MASKS_DURATION);
-    return () => { scanTimers.forEach(clearTimeout); clearTimeout(nextPhase); };
-  }, [phase]);
-
+  // Processing phase
   useEffect(() => {
     if (phase !== "processing") return;
     setProcessProgress(0);
@@ -94,6 +72,7 @@ export default function HeroDemo() {
     return () => { clearInterval(progressId); clearTimeout(s1); clearTimeout(s2); clearTimeout(s3); clearTimeout(nextPhase); };
   }, [phase]);
 
+  // Result phase
   useEffect(() => {
     if (phase !== "result") return;
     setVisibleSections(0);
@@ -176,41 +155,6 @@ export default function HeroDemo() {
                 {DICTATION_TEXT.slice(0, typedChars)}
                 <span className="inline-block w-[2px] h-[13px] bg-primary ml-0.5 animate-pulse" />
               </p>
-            </div>
-          </div>
-        )}
-
-        {/* MASKS */}
-        {phase === "masks" && (
-          <div className="flex flex-col items-center justify-center h-[280px] gap-5 animate-fade-in">
-            <div className="text-center mb-2">
-              <div className="text-[14px] font-medium text-foreground mb-1">Identificando máscara</div>
-              <div className="text-[12px] text-muted-foreground">Detectando tipo de exame</div>
-            </div>
-            <div className="space-y-1.5 w-full max-w-[260px]">
-              {MASK_OPTIONS.map((mask, i) => (
-                <div
-                  key={mask.label}
-                  className={`flex items-center gap-2.5 px-3 py-2 rounded-lg border transition-all duration-300 ${
-                    maskHighlight === i && mask.match
-                      ? "bg-primary/8 border-primary/30"
-                      : maskHighlight === i
-                      ? "border-border/50"
-                      : maskHighlight > i
-                      ? "opacity-20"
-                      : "border-border/30 opacity-50"
-                  }`}
-                >
-                  <span className={`w-3.5 h-3.5 rounded-full flex items-center justify-center ${
-                    maskHighlight === i && mask.match ? "bg-primary/20" : ""
-                  }`}>
-                    {maskHighlight === i && mask.match ? <Check className="w-2.5 h-2.5 text-primary" /> : ""}
-                  </span>
-                  <span className={`text-[13px] ${maskHighlight === i && mask.match ? "font-medium text-primary" : "text-muted-foreground"}`}>
-                    {mask.label}
-                  </span>
-                </div>
-              ))}
             </div>
           </div>
         )}

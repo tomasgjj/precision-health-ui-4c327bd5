@@ -154,6 +154,27 @@ export default function SettingsPage() {
           <span className={cn("ml-auto px-1.5 py-0.5 rounded text-[10px] font-bold uppercase", soundOn ? "bg-success/15 text-success" : "bg-muted text-muted-foreground")}>{soundOn ? "On" : "Off"}</span>
         </button>
 
+        {/* Theme selector */}
+        <div className="rounded-lg bg-card border border-border p-3 space-y-2">
+          <label className="text-[11px] text-muted-foreground font-semibold block">Tema</label>
+          <div className="grid grid-cols-3 gap-1.5">
+            {themes.map((t) => (
+              <button
+                key={t.id}
+                onClick={() => setTheme(t.id)}
+                className={cn(
+                  "flex flex-col items-center gap-1 py-2.5 px-2 rounded-lg text-xs font-medium cursor-pointer border transition-colors",
+                  theme === t.id
+                    ? "bg-primary/10 border-primary/30 text-foreground"
+                    : "bg-secondary/30 text-muted-foreground border-transparent hover:bg-secondary hover:text-foreground"
+                )}
+              >
+                <t.icon size={16} />
+                <span className="text-[11px] font-semibold">{t.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Save */}

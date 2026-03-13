@@ -1,53 +1,113 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Mic, FileText, Zap } from "lucide-react";
 
 const Hero = () => (
-  <section className="relative pt-14">
-    {/* Subtle top glow */}
-    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-primary/[0.04] rounded-full blur-[120px] pointer-events-none" />
+  <section className="relative pt-14 overflow-hidden">
+    {/* Radial glow — Linear-style */}
+    <div className="absolute inset-0 hero-glow pointer-events-none" />
+    <div className="absolute top-[20%] left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-primary/[0.03] rounded-full blur-[150px] pointer-events-none" />
 
-    <div className="container relative z-10 pt-24 pb-20 md:pt-36 md:pb-28">
-      <div className="max-w-[720px]">
-        <div className="animate-fade-up">
-          <h1 className="text-[2.75rem] md:text-[3.5rem] lg:text-[4rem] font-semibold leading-[1.08] tracking-[-0.035em] text-foreground">
-            Laudos de ultrassonografia{" "}
-            <span className="text-gradient">em segundos</span>
-          </h1>
+    <div className="container relative z-10 pt-28 pb-20 md:pt-40 md:pb-32">
+      {/* Badge */}
+      <div className="animate-fade-up opacity-0 flex justify-center mb-8">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-border/60 bg-accent/30 text-[12px] text-muted-foreground">
+          <Zap className="w-3 h-3 text-primary" />
+          <span>Tecnologia de IA para laudos médicos</span>
+          <ArrowRight className="w-3 h-3" />
+        </div>
+      </div>
 
-          <p className="mt-5 text-base md:text-lg text-muted-foreground max-w-[520px] leading-relaxed">
-            Dite os achados e o LaudoVoz estrutura o laudo completo — pronto para revisar e copiar.
-          </p>
+      {/* Headline — centered, massive, Linear-style */}
+      <div className="text-center max-w-[820px] mx-auto">
+        <h1 className="animate-fade-up opacity-0 [animation-delay:100ms] text-hero text-foreground">
+          Laudos médicos com{" "}
+          <span className="text-gradient-blue">precisão de IA</span>
+          {" "}em segundos
+        </h1>
 
-          <div className="flex items-center gap-3 mt-8">
-            <Button variant="hero" size="lg">
-              Começar grátis
-              <ArrowRight className="w-4 h-4" />
-            </Button>
-            <Button variant="hero-outline" size="lg">
-              Ver como funciona
-            </Button>
-          </div>
+        <p className="animate-fade-up opacity-0 [animation-delay:200ms] mt-6 text-base md:text-lg text-muted-foreground max-w-[540px] mx-auto leading-relaxed">
+          Dite os achados por voz. O LaudoVoz transcreve, estrutura e entrega o laudo completo — pronto para revisar e assinar.
+        </p>
+
+        <div className="animate-fade-up opacity-0 [animation-delay:300ms] flex items-center justify-center gap-3 mt-10">
+          <Button variant="hero" size="xl">
+            Começar grátis
+            <ArrowRight className="w-4 h-4" />
+          </Button>
+          <Button variant="hero-outline" size="xl">
+            Ver como funciona
+          </Button>
         </div>
       </div>
     </div>
 
-    {/* Divider */}
-    <div className="border-t border-border" />
-
-    {/* Stats strip */}
-    <div className="container py-12">
-      <div className="animate-fade-up [animation-delay:150ms] opacity-0 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-[720px]">
-        {[
-          { value: "90%", label: "Economia de tempo" },
-          { value: "30s", label: "Tempo médio por laudo" },
-          { value: "24/7", label: "Disponível sempre" },
-          { value: "LGPD", label: "Conformidade total" },
-        ].map((stat, i) => (
-          <div key={i}>
-            <div className="text-2xl font-semibold tracking-tight text-foreground">{stat.value}</div>
-            <div className="text-xs text-muted-foreground mt-1">{stat.label}</div>
+    {/* Product preview — Linear-style app mockup */}
+    <div className="container relative z-10 pb-0">
+      <div className="animate-fade-up opacity-0 [animation-delay:450ms] max-w-[900px] mx-auto">
+        <div className="surface-card rounded-xl overflow-hidden mask-fade-b">
+          {/* Title bar */}
+          <div className="flex items-center gap-2 px-5 py-3 border-b border-border/50">
+            <div className="flex gap-1.5">
+              <div className="w-2.5 h-2.5 rounded-full bg-muted-foreground/20" />
+              <div className="w-2.5 h-2.5 rounded-full bg-muted-foreground/20" />
+              <div className="w-2.5 h-2.5 rounded-full bg-muted-foreground/20" />
+            </div>
+            <span className="text-[11px] text-muted-foreground ml-2">LaudoVoz — Novo laudo</span>
           </div>
-        ))}
+
+          {/* Mock content */}
+          <div className="grid md:grid-cols-[240px_1fr] min-h-[340px]">
+            {/* Sidebar */}
+            <div className="hidden md:block border-r border-border/50 p-4 space-y-1">
+              <div className="flex items-center gap-2 px-2.5 py-2 rounded-md bg-accent/60 text-foreground">
+                <FileText className="w-3.5 h-3.5" />
+                <span className="text-[12px] font-medium">Abdome Total</span>
+              </div>
+              {["Tireoide", "Mamas", "Vias Urinárias", "Obstétrico"].map((item) => (
+                <div key={item} className="flex items-center gap-2 px-2.5 py-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent/30 transition-colors cursor-default">
+                  <FileText className="w-3.5 h-3.5" />
+                  <span className="text-[12px]">{item}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Main content */}
+            <div className="p-6 space-y-5">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                  <Mic className="w-4 h-4 text-primary" />
+                </div>
+                <div>
+                  <div className="text-[13px] font-medium text-foreground">Gravando achados…</div>
+                  <div className="text-[11px] text-muted-foreground">Ultrassonografia de Abdome Total</div>
+                </div>
+                <div className="ml-auto flex items-center gap-1.5">
+                  <div className="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
+                  <span className="text-[11px] text-success">Ao vivo</span>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <div className="space-y-1.5">
+                  <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Fígado</div>
+                  <div className="text-[13px] text-secondary-foreground leading-relaxed">
+                    Fígado de dimensões normais, contornos regulares, ecotextura homogênea, sem lesões focais.
+                  </div>
+                </div>
+                <div className="space-y-1.5">
+                  <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Vesícula Biliar</div>
+                  <div className="text-[13px] text-secondary-foreground leading-relaxed">
+                    Vesícula biliar normodistendida, paredes finas, sem cálculos ou pólipos.
+                  </div>
+                </div>
+                <div className="space-y-1.5">
+                  <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Pâncreas</div>
+                  <div className="h-3 w-48 bg-accent/60 rounded animate-pulse" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>

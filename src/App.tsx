@@ -7,6 +7,7 @@ import Index from "./pages/Index.tsx";
 import Login from "./pages/Login.tsx";
 import TwoFactor from "./pages/TwoFactor.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import AppDashboard from "./pages/AppDashboard.tsx";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +21,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/login" element={<Login />} />
           <Route path="/2fa" element={<TwoFactor />} />
+          <Route path="/app" element={<AppDashboard />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import {
   Plus, Save, RefreshCw, Camera, Trash2, ChevronRight, ChevronDown,
-  FileText, Search, Smartphone, Loader2, Microscope, Upload, ClipboardPaste, X, LayoutTemplate,
+  FileText, Search, Smartphone, Loader2, Microscope, Upload, ClipboardPaste, X, LayoutTemplate, Star,
 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";

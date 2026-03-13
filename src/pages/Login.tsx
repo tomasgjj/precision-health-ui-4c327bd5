@@ -89,10 +89,10 @@ const Login = () => {
 
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-[24px] font-semibold text-foreground tracking-tight mb-1.5">
+            <h1 className="text-[24px] font-semibold text-foreground tracking-tight mb-1.5 drop-shadow-[0_0_12px_hsl(var(--primary)/0.3)]">
               {isSignUp ? "Criar sua conta" : "Bem-vindo de volta"}
             </h1>
-            <p className="text-[14px] text-muted-foreground">
+            <p className="text-[14px] text-foreground/70">
               {isSignUp
                 ? "Comece a criar laudos em segundos."
                 : "Entre para continuar seus laudos."}

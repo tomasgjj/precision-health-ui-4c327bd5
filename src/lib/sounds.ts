@@ -1,5 +1,15 @@
 // Lightweight UI sound effects using Web Audio API — no external files needed
 
+const SOUND_KEY = "laudovoz-sounds-enabled";
+
+export function isSoundEnabled(): boolean {
+  return localStorage.getItem(SOUND_KEY) !== "false";
+}
+
+export function setSoundEnabled(enabled: boolean) {
+  localStorage.setItem(SOUND_KEY, String(enabled));
+}
+
 const audioCtx = () => {
   if (!(window as any).__audioCtx) {
     (window as any).__audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -8,6 +18,7 @@ const audioCtx = () => {
 };
 
 function playTone(freq: number, duration: number, type: OscillatorType = "sine", volume = 0.12) {
+  if (!isSoundEnabled()) return;
   try {
     const ctx = audioCtx();
     const osc = ctx.createOscillator();

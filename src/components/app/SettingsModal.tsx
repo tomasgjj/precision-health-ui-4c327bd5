@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
-import { LogOut, Sun, Moon, Shield, Trash2, Upload, Pen, AlertTriangle, X } from "lucide-react";
+import { LogOut, Sun, Moon, Shield, Trash2, Upload, Pen, AlertTriangle, X, Volume2, VolumeX } from "lucide-react";
+import { isSoundEnabled, setSoundEnabled } from "@/lib/sounds";
 import { useTheme } from "@/hooks/use-theme";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -21,6 +22,13 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
   const [mfaEnabled, setMfaEnabled] = useState(false);
   const [mfaEnrolling, setMfaEnrolling] = useState(false);
   const [mfaCode, setMfaCode] = useState("");
+  const [soundOn, setSoundOn] = useState(isSoundEnabled());
+
+  const toggleSound = () => {
+    const next = !soundOn;
+    setSoundOn(next);
+    setSoundEnabled(next);
+  };
 
   const handleSigUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -167,6 +175,21 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
             </button>
           )}
         </div>
+
+        {/* Sound toggle */}
+        <button
+          onClick={toggleSound}
+          className="flex items-center gap-2 w-full px-3 py-2.5 rounded-lg text-xs font-medium border border-border bg-secondary/30 text-muted-foreground cursor-pointer mb-2 hover:bg-secondary hover:text-foreground transition-colors duration-150"
+        >
+          {soundOn ? <Volume2 size={15} /> : <VolumeX size={15} />}
+          {soundOn ? "Sons de feedback ativados" : "Sons de feedback desativados"}
+          <span className={cn(
+            "ml-auto px-1.5 py-0.5 rounded text-[10px] font-bold uppercase",
+            soundOn ? "bg-success/15 text-success" : "bg-muted text-muted-foreground"
+          )}>
+            {soundOn ? "On" : "Off"}
+          </span>
+        </button>
 
         {/* Theme toggle */}
         <button

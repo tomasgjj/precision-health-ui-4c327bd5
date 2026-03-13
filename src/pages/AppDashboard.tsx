@@ -9,7 +9,7 @@ import SettingsModal from "@/components/app/SettingsModal";
 import HistoryModal from "@/components/app/HistoryModal";
 import FeedbackModal from "@/components/app/FeedbackModal";
 import MaskEditor from "@/components/app/MaskEditor";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, FileText } from "lucide-react";
 
 type Tab = "laudos" | "mascaras" | "config" | "feedback";
 
@@ -19,7 +19,6 @@ export default function AppDashboard() {
   const [reportGenerated, setReportGenerated] = useState(false);
   const [transcription, setTranscription] = useState("");
 
-  // Modal states
   const [showSettings, setShowSettings] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
@@ -36,45 +35,47 @@ export default function AppDashboard() {
   };
 
   const handleTabChange = (tab: Tab) => {
-    if (tab === "config") {
-      setShowSettings(true);
-    } else if (tab === "feedback") {
-      setShowFeedback(true);
-    } else if (tab === "mascaras") {
-      setShowMasks(true);
-    } else {
-      setActiveTab(tab);
-    }
+    if (tab === "config") setShowSettings(true);
+    else if (tab === "feedback") setShowFeedback(true);
+    else if (tab === "mascaras") setShowMasks(true);
+    else setActiveTab(tab);
   };
 
   return (
-    <div className="flex min-h-screen bg-background">
+    <div className="flex min-h-screen bg-background relative">
+      {/* Subtle background texture */}
+      <div className="fixed inset-0 bg-dot-grid pointer-events-none opacity-30" />
+      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-primary/[0.03] blur-[120px] rounded-full pointer-events-none" />
+
       <Sidebar activeTab={activeTab} onTabChange={handleTabChange} />
 
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 relative">
         <MobileHeader activeTab={activeTab} onTabChange={handleTabChange} />
 
-        {/* Top bar */}
-        <div className="hidden lg:flex items-center h-12 px-6 border-b border-border bg-background/80 backdrop-blur-sm">
+        {/* Desktop breadcrumb */}
+        <div className="hidden lg:flex items-center h-12 px-6 border-b border-border/50 bg-background/60 backdrop-blur-sm">
           <nav className="flex items-center gap-1.5 text-[12px] text-muted-foreground">
-            <span>LaudoVoz</span>
-            <ArrowRight className="w-3 h-3" />
-            <span className="text-foreground font-medium">
+            <div className="flex items-center gap-1.5">
+              <FileText className="w-3 h-3 text-primary" />
+              <span>LaudoVoz</span>
+            </div>
+            <ArrowRight className="w-3 h-3 opacity-40" />
+            <span className="text-foreground font-semibold">
               {reportGenerated ? "Laudo Gerado" : "Novo Laudo"}
             </span>
           </nav>
         </div>
 
-        <main className="flex-1 px-4 sm:px-6 lg:px-10 py-6 max-w-3xl mx-auto w-full pb-20 lg:pb-6">
-          <div className="space-y-5 animate-fade-in">
+        <main className="flex-1 px-4 sm:px-6 lg:px-10 py-6 lg:py-8 max-w-3xl mx-auto w-full pb-24 lg:pb-8">
+          <div className="space-y-6 animate-fade-in">
             {/* Header */}
-            <div className="space-y-0.5">
-              <h1 className="text-lg font-bold text-foreground tracking-tight">
+            <div className="space-y-1">
+              <h1 className="text-xl font-bold text-foreground tracking-tight">
                 {reportGenerated ? "Laudo Gerado" : "Novo Laudo"}
               </h1>
               <p className="text-[13px] text-muted-foreground">
                 {reportGenerated
-                  ? "Revise, edite e salve o laudo"
+                  ? "Revise, edite e salve o laudo gerado"
                   : "Selecione o exame e grave ou digite a descrição"}
               </p>
             </div>
@@ -89,10 +90,7 @@ export default function AppDashboard() {
 
             {/* Main content */}
             {reportGenerated ? (
-              <ReportView
-                transcription={transcription}
-                onNewReport={handleNewReport}
-              />
+              <ReportView transcription={transcription} onNewReport={handleNewReport} />
             ) : (
               <Recorder onGenerate={handleGenerate} />
             )}

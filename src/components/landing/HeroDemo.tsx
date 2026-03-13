@@ -192,6 +192,42 @@ export default function HeroDemo() {
           </div>
         )}
 
+        {/* MASKS */}
+        {phase === "masks" && (
+          <div className="flex flex-col items-center justify-center h-[300px] gap-5 animate-fade-in">
+            <div className="text-4xl">🔍</div>
+            <div className="text-center">
+              <div className="text-[15px] font-semibold text-foreground mb-1">Identificando máscara...</div>
+              <div className="text-[12px] text-muted-foreground">Detectando tipo de exame automaticamente</div>
+            </div>
+            <div className="space-y-2 w-full max-w-[280px]">
+              {MASK_OPTIONS.map((mask, i) => (
+                <div
+                  key={mask.label}
+                  className={`flex items-center gap-2.5 px-4 py-2.5 rounded-lg border transition-all duration-300 ${
+                    maskHighlight === i && mask.match
+                      ? "bg-primary/10 border-primary/40 scale-[1.02]"
+                      : maskHighlight === i
+                      ? "bg-muted/20 border-border/50"
+                      : maskHighlight > i
+                      ? "opacity-30"
+                      : "bg-background/30 border-border/30 opacity-60"
+                  }`}
+                >
+                  <span className={`w-4 h-4 rounded-full flex items-center justify-center text-[10px] ${
+                    maskHighlight === i && mask.match ? "bg-primary/20 text-primary" : "bg-muted/20"
+                  }`}>
+                    {maskHighlight === i && mask.match ? <Check className="w-3 h-3" /> : ""}
+                  </span>
+                  <span className={`text-[13px] ${maskHighlight === i && mask.match ? "font-semibold text-primary" : "text-foreground/70"}`}>
+                    {mask.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* PROCESSING */}
         {phase === "processing" && (
           <div className="flex flex-col items-center justify-center h-[300px] gap-5 animate-fade-in">

@@ -1,8 +1,7 @@
 import { useState, useRef } from "react";
-import { LogOut, Sun, Moon, Shield, Trash2, Upload, Pen, AlertTriangle, Volume2, VolumeX, Sparkles, MessageSquare } from "lucide-react";
+import { LogOut, Shield, Trash2, Upload, Pen, AlertTriangle, Volume2, VolumeX, MessageSquare } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { isSoundEnabled, setSoundEnabled } from "@/lib/sounds";
-import { useTheme } from "@/hooks/use-theme";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import PlanBar from "./PlanBar";
@@ -15,7 +14,6 @@ const feedbackTypes = [
 ];
 
 export default function SettingsPage() {
-  const { theme, setTheme } = useTheme();
   const [drName, setDrName] = useState("");
   const [drCrm, setDrCrm] = useState("");
   const [signature, setSignature] = useState("");

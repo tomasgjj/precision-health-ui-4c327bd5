@@ -1,7 +1,6 @@
 import { useState, useRef } from "react";
-import { LogOut, Sun, Moon, Shield, Trash2, Upload, Pen, AlertTriangle, X, Volume2, VolumeX, Sparkles } from "lucide-react";
+import { LogOut, Shield, Trash2, Upload, Pen, AlertTriangle, X, Volume2, VolumeX } from "lucide-react";
 import { isSoundEnabled, setSoundEnabled } from "@/lib/sounds";
-import { useTheme } from "@/hooks/use-theme";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import PlanBar from "./PlanBar";
@@ -11,8 +10,6 @@ interface SettingsModalProps {
 }
 
 export default function SettingsModal({ onClose }: SettingsModalProps) {
-  const { theme, setTheme } = useTheme();
-  const isDark = theme !== "light";
   const [drName, setDrName] = useState("");
   const [drCrm, setDrCrm] = useState("");
   const [signature, setSignature] = useState("");

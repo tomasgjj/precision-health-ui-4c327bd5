@@ -1,6 +1,5 @@
-import { FileText, Clock, LayoutTemplate, Settings, LogOut, Search, Moon, Sun, Sparkles, BarChart3 } from "lucide-react";
+import { FileText, Clock, LayoutTemplate, Settings, LogOut, Search, BarChart3 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useTheme, type AppTheme } from "@/hooks/use-theme";
 
 type Tab = "dashboard" | "laudos" | "historico" | "mascaras" | "config";
 
@@ -17,14 +16,7 @@ const navItems: { id: Tab; label: string; icon: React.ElementType }[] = [
   { id: "config", label: "Configurações", icon: Settings },
 ];
 
-const themes: { id: AppTheme; label: string; icon: React.ElementType }[] = [
-  { id: "midnight", label: "Dark", icon: Moon },
-  { id: "ocean", label: "Ocean", icon: Sparkles },
-  { id: "light", label: "Light", icon: Sun },
-];
-
 export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
-  const { theme, setTheme } = useTheme();
 
   return (
     <aside className="hidden lg:flex flex-col w-[220px] shrink-0 h-screen sticky top-0 bg-sidebar border-r border-border select-none">

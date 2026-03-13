@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Mic, Square, Check, Copy, FileDown } from "lucide-react";
 
-type Phase = "idle" | "recording" | "processing" | "result";
+type Phase = "idle" | "recording" | "masks" | "processing" | "result";
 
 const DICTATION_TEXT =
   "Fígado de dimensões ligeiramente aumentadas, bordas rombas, ecotextura sólida com aumento difuso da ecogenicidade e atenuação posterior. Vesícula biliar normodistendida, paredes finas, sem cálculos.";
@@ -14,6 +14,13 @@ const LAUDO_SECTIONS = [
   { label: "Impressão", text: "— Aumento da ecogenicidade hepática, compatível com esteatose grau II.\n— Demais estruturas sem alterações significativas.", isImpression: true },
 ];
 
+const MASK_OPTIONS = [
+  { label: "US Abdome Total", match: true },
+  { label: "US Tireoide", match: false },
+  { label: "US Mamas", match: false },
+  { label: "US Vias Urinárias", match: false },
+];
+
 const PROCESS_STEPS = [
   "Transcrição do áudio",
   "Identificação dos achados",
@@ -21,9 +28,10 @@ const PROCESS_STEPS = [
 ];
 
 // Phase durations
-const RECORDING_DURATION = 4000; // 4s of typing
-const PROCESSING_DURATION = 2500; // 2.5s
-const RESULT_DISPLAY = 4000; // 4s showing result before looping
+const RECORDING_DURATION = 4000;
+const MASKS_DURATION = 2500;
+const PROCESSING_DURATION = 2500;
+const RESULT_DISPLAY = 4000;
 
 export default function HeroDemo() {
   const [phase, setPhase] = useState<Phase>("idle");
@@ -32,6 +40,7 @@ export default function HeroDemo() {
   const [processStep, setProcessStep] = useState(0);
   const [processProgress, setProcessProgress] = useState(0);
   const [visibleSections, setVisibleSections] = useState(0);
+  const [maskHighlight, setMaskHighlight] = useState(-1);
   const phaseRef = useRef<Phase>("idle");
 
   // Keep ref in sync
@@ -61,8 +70,20 @@ export default function HeroDemo() {
       setTypedChars((c) => Math.min(c + charsPerTick, DICTATION_TEXT.length));
     }, 40);
     const timerId = setInterval(() => setTimer((t) => t + 1), 1000);
-    const nextPhase = setTimeout(() => setPhase("processing"), RECORDING_DURATION);
+    const nextPhase = setTimeout(() => setPhase("masks"), RECORDING_DURATION);
     return () => { clearInterval(typeId); clearInterval(timerId); clearTimeout(nextPhase); };
+  }, [phase]);
+
+  // Masks phase
+  useEffect(() => {
+    if (phase !== "masks") return;
+    setMaskHighlight(-1);
+    // Scan through masks then land on the match
+    const scanTimers = MASK_OPTIONS.map((_, i) =>
+      setTimeout(() => setMaskHighlight(i), 400 + i * 400)
+    );
+    const nextPhase = setTimeout(() => setPhase("processing"), MASKS_DURATION);
+    return () => { scanTimers.forEach(clearTimeout); clearTimeout(nextPhase); };
   }, [phase]);
 
   // Processing phase
@@ -167,6 +188,42 @@ export default function HeroDemo() {
                 {DICTATION_TEXT.slice(0, typedChars)}
                 <span className="inline-block w-[2px] h-[14px] bg-primary ml-0.5 animate-pulse" />
               </p>
+            </div>
+          </div>
+        )}
+
+        {/* MASKS */}
+        {phase === "masks" && (
+          <div className="flex flex-col items-center justify-center h-[300px] gap-5 animate-fade-in">
+            <div className="text-4xl">🔍</div>
+            <div className="text-center">
+              <div className="text-[15px] font-semibold text-foreground mb-1">Identificando máscara...</div>
+              <div className="text-[12px] text-muted-foreground">Detectando tipo de exame automaticamente</div>
+            </div>
+            <div className="space-y-2 w-full max-w-[280px]">
+              {MASK_OPTIONS.map((mask, i) => (
+                <div
+                  key={mask.label}
+                  className={`flex items-center gap-2.5 px-4 py-2.5 rounded-lg border transition-all duration-300 ${
+                    maskHighlight === i && mask.match
+                      ? "bg-primary/10 border-primary/40 scale-[1.02]"
+                      : maskHighlight === i
+                      ? "bg-muted/20 border-border/50"
+                      : maskHighlight > i
+                      ? "opacity-30"
+                      : "bg-background/30 border-border/30 opacity-60"
+                  }`}
+                >
+                  <span className={`w-4 h-4 rounded-full flex items-center justify-center text-[10px] ${
+                    maskHighlight === i && mask.match ? "bg-primary/20 text-primary" : "bg-muted/20"
+                  }`}>
+                    {maskHighlight === i && mask.match ? <Check className="w-3 h-3" /> : ""}
+                  </span>
+                  <span className={`text-[13px] ${maskHighlight === i && mask.match ? "font-semibold text-primary" : "text-foreground/70"}`}>
+                    {mask.label}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
         )}

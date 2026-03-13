@@ -28,13 +28,12 @@ const plans = [
   {
     name: "Clínica",
     description: "Para clínicas e equipes",
-    monthlyPrice: null,
-    yearlyPrice: null,
-    period: "",
+    monthlyPrice: "R$200",
+    yearlyPrice: "R$150",
+    period: "/mês",
     features: ["Tudo do plano Pro", "Múltiplos usuários", "Painel administrativo", "Suporte dedicado", "API de integração", "Setup personalizado"],
-    cta: "Fale conosco",
+    cta: "Começar com Clínica",
     highlighted: false,
-    custom: true,
   },
 ];
 
@@ -78,20 +77,11 @@ const Pricing = () => {
                   {plan.badge && <span className="text-[10px] font-semibold tracking-wider text-primary bg-primary/10 px-2 py-0.5 rounded-full">{plan.badge}</span>}
                 </div>
                 <p className="text-[12px] text-muted-foreground mb-5">{plan.description}</p>
-                {plan.custom ? (
-                  <>
-                    <span className="text-2xl font-semibold tracking-tight text-foreground mb-1">Sob consulta</span>
-                    <p className="text-[11px] text-muted-foreground mb-6">preço personalizado para sua equipe</p>
-                  </>
-                ) : (
-                  <>
-                    <div className="flex items-baseline gap-1 mb-1">
-                      <span className="text-3xl font-semibold tracking-tight text-foreground">{yearly ? plan.yearlyPrice : plan.monthlyPrice}</span>
-                      {plan.period && <span className="text-[13px] text-muted-foreground">{plan.period}</span>}
-                    </div>
-                    <p className="text-[11px] text-muted-foreground mb-6">{yearly ? "cobrado anualmente" : "cobrado mensalmente"}</p>
-                  </>
-                )}
+                <div className="flex items-baseline gap-1 mb-1">
+                  <span className="text-3xl font-semibold tracking-tight text-foreground">{yearly ? plan.yearlyPrice : plan.monthlyPrice}</span>
+                  {plan.period && <span className="text-[13px] text-muted-foreground">{plan.period}</span>}
+                </div>
+                <p className="text-[11px] text-muted-foreground mb-6">{yearly ? "cobrado anualmente" : "cobrado mensalmente"}</p>
                 <ul className="space-y-2.5 mb-8 flex-1">
                   {plan.features.map((f, j) => (
                     <li key={j} className="flex items-start gap-2 text-[13px] text-muted-foreground">

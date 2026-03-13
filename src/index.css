@@ -390,3 +390,52 @@
   50% { transform: scale(1.05); opacity: 0.8; }
   100% { transform: scale(0.95); opacity: 0.5; }
 }
+
+/* Print styles */
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 12pt;
+  }
+
+  /* Hide everything except the report */
+  aside,
+  nav,
+  header,
+  .fixed,
+  [data-print-hide] {
+    display: none !important;
+  }
+
+  /* Report card: remove dark bg, add clean print style */
+  .bg-card,
+  .bg-background,
+  .bg-secondary\/30 {
+    background: white !important;
+    border-color: #ddd !important;
+  }
+
+  .text-foreground,
+  .text-secondary-foreground {
+    color: black !important;
+  }
+
+  .text-muted-foreground {
+    color: #555 !important;
+  }
+
+  .text-primary {
+    color: #1a7a5e !important;
+  }
+
+  /* Clean borders for print */
+  .border-border {
+    border-color: #ddd !important;
+  }
+
+  /* Remove shadows and rounded corners for cleaner print */
+  * {
+    box-shadow: none !important;
+  }
+}

@@ -1,8 +1,9 @@
 import { useState, useRef } from "react";
-import { LogOut, Shield, Trash2, Upload, Pen, AlertTriangle, X, Volume2, VolumeX } from "lucide-react";
+import { LogOut, Shield, Trash2, Upload, Pen, AlertTriangle, X, Volume2, VolumeX, Moon, Sun, Waves } from "lucide-react";
 import { isSoundEnabled, setSoundEnabled } from "@/lib/sounds";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { useTheme, type Theme } from "@/hooks/use-theme";
 import PlanBar from "./PlanBar";
 
 interface SettingsModalProps {

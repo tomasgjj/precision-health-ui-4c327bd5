@@ -1,5 +1,6 @@
-import { FileText, LayoutTemplate, Settings, MessageSquare, LogOut, Search, Plus, ChevronDown } from "lucide-react";
+import { FileText, LayoutTemplate, Settings, MessageSquare, LogOut, Search, Plus, ChevronDown, Moon, Sun, Monitor } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTheme, type AppTheme } from "@/hooks/use-theme";
 
 type Tab = "laudos" | "mascaras" | "config" | "feedback";
 
@@ -15,7 +16,15 @@ const navItems: { id: Tab; label: string; icon: React.ElementType; shortcut?: st
   { id: "feedback", label: "Feedback", icon: MessageSquare },
 ];
 
+const themes: { id: AppTheme; label: string; icon: React.ElementType; color: string }[] = [
+  { id: "midnight", label: "Midnight", icon: Moon, color: "bg-blue-500" },
+  { id: "ocean", label: "Ocean", icon: Monitor, color: "bg-teal-500" },
+  { id: "light", label: "Light", icon: Sun, color: "bg-amber-400" },
+];
+
 export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
+  const { theme, setTheme } = useTheme();
+
   return (
     <aside className="hidden lg:flex flex-col w-[220px] shrink-0 h-screen sticky top-0 bg-sidebar border-r border-border select-none">
       {/* Workspace header */}
@@ -43,7 +52,6 @@ export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
         </button>
       </div>
 
-      {/* Divider */}
       <div className="px-3 py-1.5">
         <div className="h-px bg-border" />
       </div>
@@ -74,6 +82,29 @@ export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
           );
         })}
       </nav>
+
+      {/* Theme switcher */}
+      <div className="px-3 py-2 border-t border-border">
+        <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest px-2 mb-1.5">Tema</p>
+        <div className="flex items-center gap-1 p-0.5 rounded-lg bg-secondary/40">
+          {themes.map((t) => (
+            <button
+              key={t.id}
+              onClick={() => setTheme(t.id)}
+              className={cn(
+                "flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-md text-[11px] font-medium transition-all",
+                theme === t.id
+                  ? "bg-background text-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+              title={t.label}
+            >
+              <t.icon className="w-3 h-3" />
+              <span className="hidden xl:inline">{t.label}</span>
+            </button>
+          ))}
+        </div>
+      </div>
 
       {/* Footer */}
       <div className="px-3 py-3 border-t border-border space-y-1">

@@ -10,30 +10,27 @@ const features = [
 ];
 
 const Features = () => (
-  <section id="recursos" className="py-32 relative">
-    <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_40%_at_50%_50%,hsl(217_91%_60%_/_0.04),transparent)]" />
-    <div className="container relative max-w-5xl mx-auto px-6">
-      <div className="text-center mb-20">
-        <p className="text-sm font-medium text-primary mb-3 tracking-wide uppercase">Recursos</p>
-        <h2 className="font-display font-bold text-3xl md:text-5xl tracking-tight">
+  <section id="recursos" className="py-24 md:py-32 border-t border-border">
+    <div className="container max-w-[960px] mx-auto px-6">
+      <div className="max-w-[520px] mb-14">
+        <p className="text-xs font-medium text-muted-foreground mb-4 tracking-widest uppercase">Recursos</p>
+        <h2 className="text-2xl md:text-[2rem] font-semibold tracking-[-0.02em] text-foreground">
           Feito para o dia a dia do radiologista
         </h2>
-        <p className="text-muted-foreground mt-4 text-lg max-w-xl mx-auto">
+        <p className="text-muted-foreground mt-3 text-sm leading-relaxed">
           Menos digitação, mais produtividade. Sem perder o controle.
         </p>
       </div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-border rounded-xl overflow-hidden">
         {features.map((f, i) => (
           <div
             key={i}
-            className="glass rounded-2xl p-7 transition-all duration-300 hover:border-primary/20 group"
+            className="bg-background p-7 hover:bg-accent/50 transition-colors duration-150"
           >
-            <div className="w-11 h-11 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-5 group-hover:bg-primary/15 transition-colors">
-              <f.icon className="w-5 h-5" />
-            </div>
-            <h3 className="font-display font-semibold text-lg mb-2 text-foreground">{f.title}</h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">{f.desc}</p>
+            <f.icon className="w-5 h-5 text-muted-foreground mb-4" />
+            <h3 className="font-medium text-sm text-foreground mb-1.5">{f.title}</h3>
+            <p className="text-xs text-muted-foreground leading-relaxed">{f.desc}</p>
           </div>
         ))}
       </div>

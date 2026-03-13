@@ -8,26 +8,22 @@ const items = [
 ];
 
 const Security = () => (
-  <section className="py-24 relative">
-    <div className="container max-w-4xl mx-auto px-6">
-      <div className="glass rounded-3xl p-10 md:p-14 text-center">
-        <p className="text-sm font-medium text-primary mb-3 tracking-wide uppercase">Segurança</p>
-        <h2 className="font-display font-bold text-2xl md:text-4xl tracking-tight mb-4">
-          Segurança e conformidade
-        </h2>
-        <p className="text-muted-foreground mb-10 max-w-lg mx-auto">
-          Seus dados e os dos seus pacientes, protegidos.
-        </p>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {items.map((item, i) => (
-            <div key={i} className="flex flex-col items-center gap-3">
-              <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
-                <item.icon className="w-5 h-5" />
-              </div>
-              <span className="text-sm font-medium text-foreground">{item.label}</span>
-            </div>
-          ))}
-        </div>
+  <section className="py-24 md:py-32 border-t border-border">
+    <div className="container max-w-[720px] mx-auto px-6">
+      <p className="text-xs font-medium text-muted-foreground mb-4 tracking-widest uppercase">Segurança</p>
+      <h2 className="text-2xl md:text-[2rem] font-semibold tracking-[-0.02em] text-foreground mb-3">
+        Segurança e conformidade
+      </h2>
+      <p className="text-sm text-muted-foreground mb-12 max-w-[400px]">
+        Seus dados e os dos seus pacientes, protegidos.
+      </p>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        {items.map((item, i) => (
+          <div key={i} className="flex flex-col gap-3">
+            <item.icon className="w-5 h-5 text-muted-foreground" />
+            <span className="text-xs font-medium text-foreground">{item.label}</span>
+          </div>
+        ))}
       </div>
     </div>
   </section>

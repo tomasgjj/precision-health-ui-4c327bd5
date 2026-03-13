@@ -1,17 +1,18 @@
 import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 
 const CTA = () => (
-  <section className="py-32 relative">
-    <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_50%_at_50%_50%,hsl(217_91%_60%_/_0.06),transparent)]" />
-    <div className="container relative max-w-3xl mx-auto px-6 text-center">
-      <h2 className="font-display font-bold text-3xl md:text-5xl tracking-tight mb-5">
+  <section className="py-24 md:py-32 border-t border-border">
+    <div className="container max-w-[720px] mx-auto px-6">
+      <h2 className="text-2xl md:text-[2rem] font-semibold tracking-[-0.02em] text-foreground mb-3">
         Comece a laudar em segundos
       </h2>
-      <p className="text-muted-foreground text-lg mb-10 max-w-xl mx-auto">
+      <p className="text-sm text-muted-foreground mb-8 max-w-[420px]">
         Sem instalação, sem cartão de crédito. Crie sua conta e gere seu primeiro laudo agora.
       </p>
-      <Button variant="hero" size="xl">
+      <Button variant="hero" size="lg">
         Começar grátis
+        <ArrowRight className="w-4 h-4" />
       </Button>
     </div>
   </section>

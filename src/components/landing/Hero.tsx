@@ -18,11 +18,6 @@ const Hero = () => (
     <div className="container relative z-10 pt-28 pb-16 md:pt-40 md:pb-24">
       <div className="text-center max-w-[800px] mx-auto">
         {/* Pill badge */}
-        <div className="animate-fade-up opacity-0 [animation-delay:50ms] inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full surface-glass mb-8">
-          <Sparkles className="w-3 h-3 text-primary" />
-          <span className="text-[11px] font-semibold text-muted-foreground tracking-wide">Disponível agora em beta</span>
-          <ArrowRight className="w-3 h-3 text-muted-foreground/50" />
-        </div>
 
         <h1 className="animate-fade-up opacity-0 [animation-delay:100ms] text-hero text-foreground">
           Laudos médicos{" "}
@@ -44,19 +39,6 @@ const Hero = () => (
           </button>
         </div>
 
-        {/* Social proof */}
-        <div className="animate-fade-up opacity-0 [animation-delay:400ms] flex items-center justify-center gap-4 mt-10">
-          <div className="flex -space-x-2">
-            {["DR", "MA", "JP", "LS"].map((initials, i) => (
-              <div key={i} className="w-7 h-7 rounded-full bg-primary/20 border-2 border-background flex items-center justify-center">
-                <span className="text-[8px] font-bold text-primary">{initials}</span>
-              </div>
-            ))}
-          </div>
-          <span className="text-[12px] text-muted-foreground">
-            <span className="text-foreground font-semibold">200+</span> radiologistas já usam
-          </span>
-        </div>
       </div>
     </div>
 

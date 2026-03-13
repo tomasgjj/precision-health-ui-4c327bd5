@@ -12,7 +12,7 @@ const steps = [
   {
     icon: Brain,
     num: "2",
-    title: "A IA organiza o laudo",
+    title: "Nós organizamos o laudo",
     desc: "Os achados são identificados, classificados e estruturados automaticamente em formato profissional.",
     color: "accent",
   },

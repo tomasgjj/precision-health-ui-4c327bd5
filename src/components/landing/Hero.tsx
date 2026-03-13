@@ -39,19 +39,6 @@ const Hero = () => (
           </button>
         </div>
 
-        {/* Social proof */}
-        <div className="animate-fade-up opacity-0 [animation-delay:400ms] flex items-center justify-center gap-4 mt-10">
-          <div className="flex -space-x-2">
-            {["DR", "MA", "JP", "LS"].map((initials, i) => (
-              <div key={i} className="w-7 h-7 rounded-full bg-primary/20 border-2 border-background flex items-center justify-center">
-                <span className="text-[8px] font-bold text-primary">{initials}</span>
-              </div>
-            ))}
-          </div>
-          <span className="text-[12px] text-muted-foreground">
-            <span className="text-foreground font-semibold">200+</span> radiologistas já usam
-          </span>
-        </div>
       </div>
     </div>
 

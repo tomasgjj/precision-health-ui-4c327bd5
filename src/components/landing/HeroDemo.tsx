@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Mic, Square, Check, Copy, FileDown } from "lucide-react";
 
-type Phase = "idle" | "recording" | "processing" | "result";
+type Phase = "idle" | "recording" | "masks" | "processing" | "result";
 
 const DICTATION_TEXT =
   "Fígado de dimensões ligeiramente aumentadas, bordas rombas, ecotextura sólida com aumento difuso da ecogenicidade e atenuação posterior. Vesícula biliar normodistendida, paredes finas, sem cálculos.";

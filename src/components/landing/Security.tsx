@@ -2,7 +2,7 @@ import { Lock, Shield, Timer, User } from "lucide-react";
 
 const items = [
   { icon: Lock, title: "Criptografia HTTPS", desc: "Todas as conexões protegidas com TLS/SSL de ponta a ponta." },
-  { icon: Shield, title: "LGPD Compliant", desc: "Em conformidade total com a Lei Geral de Proteção de Dados." },
+  { icon: Shield, title: "Seguro", desc: "Em conformidade total com a Lei Geral de Proteção de Dados." },
   { icon: Timer, title: "Auto-logout", desc: "Sessões expiram automaticamente após 30 min de inatividade." },
   { icon: User, title: "Isolamento de dados", desc: "Dados de cada usuário completamente isolados e protegidos." },
 ];

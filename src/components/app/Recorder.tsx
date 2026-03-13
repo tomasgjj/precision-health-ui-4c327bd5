@@ -3,12 +3,16 @@ import { Mic, Square, Loader2, Sparkles, Keyboard, Send, Trash2, Pause, Play } f
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { motion, AnimatePresence } from "framer-motion";
+import { playRecordStart, playRecordStop, playGenerate, playDiscard, playTap } from "@/lib/sounds";
 
 interface RecorderProps {
   onGenerate: (text: string) => void;
 }
 
 type RecordState = "idle" | "recording" | "paused" | "transcribing";
+
+const btnSpring = { type: "spring" as const, stiffness: 400, damping: 17 };
 
 export default function Recorder({ onGenerate }: RecorderProps) {
   const [state, setState] = useState<RecordState>("idle");
@@ -34,11 +38,12 @@ export default function Recorder({ onGenerate }: RecorderProps) {
 
   const handleMicClick = () => {
     if (state === "idle") {
+      playRecordStart();
       setState("recording");
       setSeconds(0);
       setTranscription("");
     } else if (state === "recording") {
-      // Click on the stop icon inside the mic button stops recording
+      playRecordStop();
       setState("transcribing");
       setTimeout(() => {
         setTranscription(
@@ -50,6 +55,7 @@ export default function Recorder({ onGenerate }: RecorderProps) {
   };
 
   const handleDiscard = () => {
+    playDiscard();
     setState("idle");
     setSeconds(0);
     setTranscription("");
@@ -57,11 +63,13 @@ export default function Recorder({ onGenerate }: RecorderProps) {
   };
 
   const handlePauseResume = () => {
+    playTap();
     if (state === "recording") setState("paused");
     else if (state === "paused") setState("recording");
   };
 
   const handleSend = () => {
+    playTap();
     setState("transcribing");
     setTimeout(() => {
       setTranscription(
@@ -69,6 +77,12 @@ export default function Recorder({ onGenerate }: RecorderProps) {
       );
       setState("idle");
     }, 2000);
+  };
+
+  const handleGenerate = () => {
+    if (!canGenerate) return;
+    playGenerate();
+    onGenerate(transcription);
   };
 
   const isRecordingOrPaused = state === "recording" || state === "paused";
@@ -79,7 +93,7 @@ export default function Recorder({ onGenerate }: RecorderProps) {
       {/* Mode toggle */}
       <div className="flex items-center gap-0.5 p-1 rounded-xl bg-secondary/50 border border-border/50 w-fit">
         <button
-          onClick={() => setMode("voice")}
+          onClick={() => { playTap(); setMode("voice"); }}
           className={cn(
             "flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-[12px] font-semibold transition-all duration-200",
             mode === "voice"
@@ -91,7 +105,7 @@ export default function Recorder({ onGenerate }: RecorderProps) {
           Voz
         </button>
         <button
-          onClick={() => setMode("text")}
+          onClick={() => { playTap(); setMode("text"); }}
           className={cn(
             "flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-[12px] font-semibold transition-all duration-200",
             mode === "text"
@@ -119,12 +133,15 @@ export default function Recorder({ onGenerate }: RecorderProps) {
               <div className="absolute inset-0 -m-2 rounded-2xl border border-primary/10 transition-all duration-300" />
             )}
 
-            <button
+            <motion.button
               onClick={handleMicClick}
+              whileHover={state === "idle" ? { scale: 1.08 } : {}}
+              whileTap={state !== "transcribing" ? { scale: 0.92 } : {}}
+              transition={btnSpring}
               className={cn(
-                "relative w-20 h-20 rounded-2xl flex items-center justify-center transition-all duration-300",
+                "relative w-20 h-20 rounded-2xl flex items-center justify-center transition-colors duration-300",
                 state === "idle" &&
-                  "bg-secondary/80 border border-border text-foreground hover:bg-secondary hover:border-primary/30 hover:scale-105 active:scale-95",
+                  "bg-secondary/80 border border-border text-foreground hover:border-primary/30",
                 isRecordingOrPaused &&
                   "bg-secondary/80 border-2 border-destructive/50 text-foreground",
                 state === "transcribing" &&
@@ -135,45 +152,63 @@ export default function Recorder({ onGenerate }: RecorderProps) {
               {state === "idle" && <Mic className="w-7 h-7" />}
               {isRecordingOrPaused && <Square className="w-6 h-6 fill-current text-muted-foreground" />}
               {state === "transcribing" && <Loader2 className="w-6 h-6 animate-spin" />}
-            </button>
+            </motion.button>
           </div>
 
           {/* Timer */}
           {isRecordingOrPaused && (
-            <div className="text-xl font-bold text-destructive tabular-nums font-mono">
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-xl font-bold text-destructive tabular-nums font-mono"
+            >
               {formatTime(seconds)}
-            </div>
+            </motion.div>
           )}
 
-          {/* Recording controls: Trash | Pause/Resume | Enviar */}
-          {isRecordingOrPaused && (
-            <div className="flex items-center gap-3 animate-fade-in">
-              {/* Trash */}
-              <button
-                onClick={handleDiscard}
-                className="w-14 h-14 rounded-xl bg-secondary/80 border border-border/50 flex items-center justify-center text-muted-foreground hover:text-destructive hover:border-destructive/30 transition-all duration-200 active:scale-95"
+          {/* Recording controls */}
+          <AnimatePresence>
+            {isRecordingOrPaused && (
+              <motion.div
+                initial={{ opacity: 0, y: 16, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                transition={btnSpring}
+                className="flex items-center gap-3"
               >
-                <Trash2 className="w-5 h-5" />
-              </button>
+                <motion.button
+                  onClick={handleDiscard}
+                  whileHover={{ scale: 1.08 }}
+                  whileTap={{ scale: 0.9 }}
+                  transition={btnSpring}
+                  className="w-14 h-14 rounded-xl bg-secondary/80 border border-border/50 flex items-center justify-center text-muted-foreground hover:text-destructive hover:border-destructive/30 transition-colors duration-200"
+                >
+                  <Trash2 className="w-5 h-5" />
+                </motion.button>
 
-              {/* Pause / Resume */}
-              <button
-                onClick={handlePauseResume}
-                className="w-14 h-14 rounded-xl bg-secondary/80 border border-border/50 flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-border transition-all duration-200 active:scale-95"
-              >
-                {state === "paused" ? <Play className="w-5 h-5" /> : <Pause className="w-5 h-5" />}
-              </button>
+                <motion.button
+                  onClick={handlePauseResume}
+                  whileHover={{ scale: 1.08 }}
+                  whileTap={{ scale: 0.9 }}
+                  transition={btnSpring}
+                  className="w-14 h-14 rounded-xl bg-secondary/80 border border-border/50 flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-border transition-colors duration-200"
+                >
+                  {state === "paused" ? <Play className="w-5 h-5" /> : <Pause className="w-5 h-5" />}
+                </motion.button>
 
-              {/* Enviar */}
-              <button
-                onClick={handleSend}
-                className="h-14 px-6 rounded-xl gradient-cyan flex items-center justify-center gap-2 text-primary-foreground font-semibold text-sm hover:shadow-lg hover:-translate-y-px transition-all duration-200 active:scale-95 glow-primary-sm"
-              >
-                <Send className="w-4 h-4" />
-                Enviar
-              </button>
-            </div>
-          )}
+                <motion.button
+                  onClick={handleSend}
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.93 }}
+                  transition={btnSpring}
+                  className="h-14 px-6 rounded-xl gradient-cyan flex items-center justify-center gap-2 text-primary-foreground font-semibold text-sm glow-primary-sm"
+                >
+                  <Send className="w-4 h-4" />
+                  Enviar
+                </motion.button>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Status text */}
           {!isRecordingOrPaused && (
@@ -221,19 +256,27 @@ export default function Recorder({ onGenerate }: RecorderProps) {
         />
 
         {/* Generate button */}
-        <button
-          onClick={() => canGenerate && onGenerate(transcription)}
+        <motion.button
+          onClick={handleGenerate}
           disabled={!canGenerate}
+          whileHover={canGenerate ? { scale: 1.02, y: -2 } : {}}
+          whileTap={canGenerate ? { scale: 0.96 } : {}}
+          transition={btnSpring}
           className={cn(
-            "w-full flex items-center justify-center gap-2.5 py-3 rounded-xl text-[13px] font-bold transition-all duration-200",
+            "w-full flex items-center justify-center gap-2.5 py-3 rounded-xl text-[13px] font-bold transition-colors duration-200",
             canGenerate
-              ? "gradient-cyan text-primary-foreground hover:shadow-lg hover:-translate-y-px active:scale-[0.98] glow-primary-sm"
+              ? "gradient-cyan text-primary-foreground glow-primary-sm"
               : "bg-secondary/60 text-muted-foreground/50 cursor-not-allowed border border-border/30"
           )}
         >
-          <Sparkles className="w-4 h-4" />
-          Gerar Laudo
-        </button>
+          <motion.span
+            className="flex items-center gap-2.5"
+            animate={canGenerate ? { } : {}}
+          >
+            <Sparkles className="w-4 h-4" />
+            Gerar Laudo
+          </motion.span>
+        </motion.button>
       </div>
     </div>
   );

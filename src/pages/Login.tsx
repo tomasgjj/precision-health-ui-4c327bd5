@@ -43,8 +43,8 @@ const Login = () => {
                 <p className="text-[13px] font-medium text-foreground">Gravando achados...</p>
                 <p className="text-[11px] text-muted-foreground">Ultrassonografia de Abdome</p>
               </div>
-              <span className="ml-auto text-[10px] text-emerald-400 flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="ml-auto text-[10px] text-primary flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
                 Ao vivo
               </span>
             </div>

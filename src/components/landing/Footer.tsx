@@ -28,26 +28,26 @@ const footerLinks = [
 ];
 
 const Footer = () => (
-  <footer className="border-t border-border/50 pt-16 pb-8">
+  <footer className="border-t border-border/40 pt-14 pb-8">
     <div className="container max-w-[960px] mx-auto px-6">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-10 mb-16">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-10 mb-14">
         {/* Brand */}
         <div className="col-span-2 md:col-span-1">
           <a href="/" className="flex items-center gap-2 mb-4">
-            <div className="w-7 h-7 rounded-lg bg-primary/90 flex items-center justify-center">
-              <Mic className="w-3.5 h-3.5 text-primary-foreground" />
+            <div className="w-6 h-6 rounded-md bg-primary flex items-center justify-center">
+              <Mic className="w-3 h-3 text-primary-foreground" />
             </div>
-            <span className="font-semibold text-[15px] text-foreground tracking-[-0.01em]">LaudoVoz</span>
+            <span className="font-semibold text-[14px] text-foreground tracking-tight">LaudoVoz</span>
           </a>
           <p className="text-[12px] text-muted-foreground leading-relaxed max-w-[200px]">
-            Laudos médicos com precisão de IA, feitos para o radiologista moderno.
+            Laudos médicos com precisão de IA.
           </p>
         </div>
 
         {/* Link columns */}
         {footerLinks.map((col) => (
           <div key={col.title}>
-            <h4 className="text-[12px] font-semibold text-foreground mb-4 uppercase tracking-wider">{col.title}</h4>
+            <h4 className="text-[11px] font-medium text-muted-foreground mb-4 uppercase tracking-widest">{col.title}</h4>
             <ul className="space-y-2.5">
               {col.links.map((link) => (
                 <li key={link.label}>
@@ -61,12 +61,9 @@ const Footer = () => (
         ))}
       </div>
 
-      <div className="border-t border-border/50 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-        <p className="text-[12px] text-muted-foreground">
-          © {new Date().getFullYear()} LaudoVoz. Todos os direitos reservados.
-        </p>
+      <div className="border-t border-border/40 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
         <p className="text-[11px] text-muted-foreground/60">
-          Feito com precisão para a medicina.
+          © {new Date().getFullYear()} LaudoVoz. Todos os direitos reservados.
         </p>
       </div>
     </div>

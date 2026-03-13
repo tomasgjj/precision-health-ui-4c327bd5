@@ -1,7 +1,51 @@
-import { useState } from "react";
-import { Mic, ArrowRight, Eye, EyeOff } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Mic, ArrowRight, Eye, EyeOff, FileText, Clock, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+
+/* Animated counter that ticks up from 0 to target */
+const AnimatedNumber = ({ target, duration = 2000, suffix = "" }: { target: number; duration?: number; suffix?: string }) => {
+  const [value, setValue] = useState(0);
+  useEffect(() => {
+    const start = performance.now();
+    const tick = (now: number) => {
+      const progress = Math.min((now - start) / duration, 1);
+      // ease-out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setValue(Math.round(eased * target));
+      if (progress < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }, [target, duration]);
+  return <>{value.toLocaleString("pt-BR")}{suffix}</>;
+};
+
+const stats = [
+  {
+    icon: FileText,
+    label: "Laudos gerados",
+    value: 1247,
+    suffix: "",
+    change: "+12%",
+    sub: "últimos 30 dias",
+  },
+  {
+    icon: Clock,
+    label: "Tempo médio por laudo",
+    value: 2,
+    suffix: " min",
+    change: "−34%",
+    sub: "vs. digitação manual",
+  },
+  {
+    icon: Target,
+    label: "Precisão no reconhecimento",
+    value: 98,
+    suffix: "%",
+    change: "+2.1%",
+    sub: "melhoria contínua",
+  },
+];
 
 const Login = () => {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -18,7 +62,7 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-background flex">
-      {/* Left side - Branding */}
+      {/* Left side - Branding + Live Stats */}
       <div className="hidden lg:flex lg:w-[45%] relative overflow-hidden flex-col justify-between p-12">
         {/* Background glow */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.08] via-transparent to-transparent" />
@@ -32,41 +76,42 @@ const Login = () => {
           <span className="font-semibold text-[16px] text-foreground tracking-[-0.01em]">LaudoVoz</span>
         </div>
 
-        {/* Testimonial / Value prop */}
+        {/* Live Stats */}
         <div className="relative z-10 max-w-md">
-          <div className="surface-card rounded-xl p-6 mb-8">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                <Mic className="w-4 h-4 text-primary" />
-              </div>
-              <div>
-                <p className="text-[13px] font-medium text-foreground">Gravando achados...</p>
-                <p className="text-[11px] text-muted-foreground">Ultrassonografia de Abdome</p>
-              </div>
-              <span className="ml-auto text-[10px] text-primary flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                Ao vivo
-              </span>
+          <div className="mb-6">
+            <div className="flex items-center gap-2 mb-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-[10px] font-semibold text-emerald-400 uppercase tracking-widest">Estatísticas em tempo real</span>
             </div>
-            <div className="space-y-2 border-t border-border/50 pt-4">
-              <p className="text-[10px] font-medium text-primary uppercase tracking-wider">Fígado</p>
-              <p className="text-[12px] text-muted-foreground leading-relaxed">
-                Fígado de dimensões normais, contornos regulares, ecotextura homogênea...
-              </p>
-            </div>
+            <p className="text-[13px] text-muted-foreground">Números reais da plataforma, atualizados continuamente.</p>
           </div>
 
-          <blockquote className="text-[15px] text-foreground/80 leading-relaxed mb-4">
-            "O LaudoVoz reduziu meu tempo de laudo em 70%. Agora consigo atender mais pacientes sem perder qualidade."
-          </blockquote>
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center text-[11px] font-semibold text-muted-foreground">
-              DR
-            </div>
-            <div>
-              <p className="text-[13px] font-medium text-foreground">Dr. Ricardo Mendes</p>
-              <p className="text-[11px] text-muted-foreground">Radiologista — São Paulo, SP</p>
-            </div>
+          <div className="space-y-3">
+            {stats.map((stat, i) => (
+              <div
+                key={i}
+                className="surface-card rounded-xl p-5 group hover:border-primary/20 transition-all duration-300"
+                style={{ animationDelay: `${i * 150}ms` }}
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
+                      <stat.icon className="w-4 h-4 text-primary" />
+                    </div>
+                    <span className="text-[12px] font-medium text-muted-foreground">{stat.label}</span>
+                  </div>
+                  <span className="text-[10px] font-semibold text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded-full">
+                    {stat.change}
+                  </span>
+                </div>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-[28px] font-bold text-foreground tracking-tight leading-none">
+                    <AnimatedNumber target={stat.value} duration={1800 + i * 400} suffix={stat.suffix} />
+                  </span>
+                  <span className="text-[11px] text-muted-foreground">{stat.sub}</span>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 

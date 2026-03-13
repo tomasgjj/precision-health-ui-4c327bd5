@@ -13,7 +13,7 @@ import DashboardView from "@/components/app/DashboardView";
 type Tab = "dashboard" | "laudos" | "historico" | "mascaras" | "config";
 
 export default function AppDashboard() {
-  const [activeTab, setActiveTab] = useState<Tab>("dashboard");
+  const [activeTab, setActiveTab] = useState<Tab>("laudos");
   const [selectedExam, setSelectedExam] = useState("USG Abdome");
   const [reportGenerated, setReportGenerated] = useState(false);
   const [transcription, setTranscription] = useState("");

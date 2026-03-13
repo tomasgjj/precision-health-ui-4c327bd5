@@ -9,10 +9,10 @@ interface MobileHeaderProps {
 }
 
 const navItems: { id: Tab; icon: React.ElementType; label: string }[] = [
-  { id: "dashboard", icon: BarChart3, label: "Dashboard" },
   { id: "laudos", icon: FileText, label: "Laudos" },
   { id: "historico", icon: Clock, label: "Histórico" },
   { id: "mascaras", icon: LayoutTemplate, label: "Máscaras" },
+  { id: "dashboard", icon: BarChart3, label: "Dashboard" },
   { id: "config", icon: Settings, label: "Config" },
 ];
 

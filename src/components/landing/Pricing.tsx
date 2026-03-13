@@ -4,20 +4,20 @@ import { useState } from "react";
 
 const plans = [
   {
-    name: "Gratuito",
-    description: "Para conhecer o produto",
-    monthlyPrice: "R$0",
-    yearlyPrice: "R$0",
-    period: "",
+    name: "Basic",
+    description: "Para começar a usar",
+    monthlyPrice: "R$50",
+    yearlyPrice: "R$30",
+    period: "/mês",
     dot: "hsl(var(--muted-foreground))",
     features: [
-      "Domínio personalizado grátis",
-      "10 laudos por mês",
+      "Laudos limitados",
       "1 tipo de exame",
       "Ditado por voz + IA",
       "Histórico na nuvem",
+      "Exportação em PDF",
     ],
-    cta: "Começar grátis",
+    cta: "Começar com Basic",
     highlighted: false,
   },
   {
@@ -41,9 +41,9 @@ const plans = [
   {
     name: "Clínica",
     description: "Para clínicas e equipes",
-    monthlyPrice: "R$399",
-    yearlyPrice: "R$299",
-    period: "/mês",
+    monthlyPrice: null,
+    yearlyPrice: null,
+    period: "",
     dot: "hsl(142 76% 36%)",
     features: [
       "Tudo do plano Pro",
@@ -53,8 +53,9 @@ const plans = [
       "API de integração",
       "Setup personalizado",
     ],
-    cta: "Começar com Clínica",
+    cta: "Fale conosco",
     highlighted: false,
+    custom: true,
   },
 ];
 

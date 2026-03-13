@@ -134,25 +134,30 @@ const Pricing = () => {
               <p className="text-[12px] text-muted-foreground mb-5">{plan.description}</p>
 
               {/* Price */}
-              <div className="flex items-baseline gap-1 mb-1">
-                <span className="text-4xl font-semibold tracking-tight text-foreground">
-                  {yearly ? plan.yearlyPrice : plan.monthlyPrice}
-                </span>
-                {plan.period && (
-                  <span className="text-[13px] text-muted-foreground">{plan.period}</span>
-                )}
-              </div>
-              {yearly && plan.yearlyPrice !== "R$0" && (
-                <p className="text-[11px] text-muted-foreground mb-6">
-                  cobrado anualmente
-                </p>
+              {plan.custom ? (
+                <>
+                  <span className="text-2xl font-semibold tracking-tight text-foreground mb-1">
+                    Sob consulta
+                  </span>
+                  <p className="text-[11px] text-muted-foreground mb-6">
+                    preço personalizado para sua equipe
+                  </p>
+                </>
+              ) : (
+                <>
+                  <div className="flex items-baseline gap-1 mb-1">
+                    <span className="text-4xl font-semibold tracking-tight text-foreground">
+                      {yearly ? plan.yearlyPrice : plan.monthlyPrice}
+                    </span>
+                    {plan.period && (
+                      <span className="text-[13px] text-muted-foreground">{plan.period}</span>
+                    )}
+                  </div>
+                  <p className="text-[11px] text-muted-foreground mb-6">
+                    {yearly ? "cobrado anualmente" : "cobrado mensalmente"}
+                  </p>
+                </>
               )}
-              {!yearly && plan.monthlyPrice !== "R$0" && (
-                <p className="text-[11px] text-muted-foreground mb-6">
-                  por mês, cobrado mensalmente
-                </p>
-              )}
-              {plan.monthlyPrice === "R$0" && <div className="mb-6" />}
 
               {/* Features */}
               <ul className="space-y-2.5 mb-8 flex-1">

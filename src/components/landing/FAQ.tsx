@@ -21,7 +21,7 @@ const FAQ = () => {
         <ScrollReveal>
           <div className="flex items-center gap-3 mb-12">
             <div className="h-px flex-1 bg-border/50" />
-            <span className="text-[11px] font-medium text-muted-foreground tracking-widest uppercase">FAQ</span>
+            <span className="text-[11px] font-semibold text-muted-foreground tracking-widest uppercase">FAQ</span>
             <div className="h-px flex-1 bg-border/50" />
           </div>
         </ScrollReveal>
@@ -33,12 +33,18 @@ const FAQ = () => {
         </ScrollReveal>
 
         <ScrollReveal delay={0.2}>
-          <div className="border-t border-border/50">
+          <div className="space-y-2">
             {faqs.map((faq, i) => (
-              <div key={i} className="border-b border-border/50">
+              <div
+                key={i}
+                className={cn(
+                  "surface-glass rounded-xl overflow-hidden transition-all duration-300",
+                  open === i && "border-primary/20"
+                )}
+              >
                 <button
                   onClick={() => setOpen(open === i ? null : i)}
-                  className="w-full flex items-center justify-between py-4 text-left group"
+                  className="w-full flex items-center justify-between p-4 text-left group"
                 >
                   <span className="text-[14px] font-medium text-foreground pr-4">{faq.q}</span>
                   <ChevronRight
@@ -49,7 +55,7 @@ const FAQ = () => {
                   />
                 </button>
                 {open === i && (
-                  <div className="pb-4 animate-slide-in">
+                  <div className="px-4 pb-4 animate-slide-in">
                     <p className="text-[13px] text-muted-foreground leading-relaxed">{faq.a}</p>
                   </div>
                 )}

@@ -1,6 +1,5 @@
-import { Mic } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { ArrowRight } from "lucide-react";
 
 const navLinks = [
   { label: "Como funciona", href: "#como" },
@@ -13,14 +12,19 @@ const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border/40">
+    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border/30">
       <div className="bg-background/80 backdrop-blur-xl">
         <div className="container flex items-center justify-between h-14">
-          <a href="/" className="flex items-center gap-2 group">
-            <div className="w-6 h-6 rounded-md bg-primary flex items-center justify-center">
-              <Mic className="w-3 h-3 text-primary-foreground" />
+          <a href="/" className="flex items-center gap-2.5">
+            <div className="w-7 h-7 rounded-lg gradient-brand flex items-center justify-center">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="text-white">
+                <rect x="9" y="1.5" width="6" height="13" rx="3" fill="currentColor" />
+                <path d="M6 13c0 3 2.5 5.5 6 5.5s6-2.5 6-5.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                <line x1="12" y1="17.5" x2="12" y2="19.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                <line x1="9.5" y1="19.5" x2="14.5" y2="19.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
             </div>
-            <span className="font-semibold text-[14px] text-foreground tracking-tight">LaudoVoz</span>
+            <span className="font-bold text-[14px] text-foreground tracking-tight">LaudoVoz</span>
           </a>
 
           <div className="hidden md:flex items-center gap-0.5">
@@ -28,20 +32,21 @@ const Navbar = () => {
               <a
                 key={link.href}
                 href={link.href}
-                className="text-[13px] text-muted-foreground hover:text-foreground transition-colors px-3 py-1.5 rounded-md"
+                className="text-[13px] text-muted-foreground hover:text-foreground transition-colors px-3 py-1.5 rounded-lg"
               >
                 {link.label}
               </a>
             ))}
           </div>
 
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" className="text-[13px] text-muted-foreground hidden sm:inline-flex">
+          <div className="flex items-center gap-2.5">
+            <a href="/login" className="text-[13px] text-muted-foreground hover:text-foreground transition-colors hidden sm:inline-flex px-3 py-1.5">
               Entrar
-            </Button>
-            <Button size="sm" className="text-[13px] h-8 px-4 bg-primary text-primary-foreground hover:bg-primary/90">
+            </a>
+            <button className="h-8 px-4 rounded-lg text-[12px] font-semibold gradient-cyan text-white border-none cursor-pointer hover:shadow-md transition-all duration-200 flex items-center gap-1.5">
               Começar grátis
-            </Button>
+              <ArrowRight className="w-3 h-3" />
+            </button>
             <button
               className="md:hidden p-1.5 text-muted-foreground hover:text-foreground"
               onClick={() => setMobileOpen(!mobileOpen)}
@@ -59,14 +64,14 @@ const Navbar = () => {
       </div>
 
       {mobileOpen && (
-        <div className="md:hidden border-t border-border/40 bg-background/95 backdrop-blur-xl animate-slide-in">
+        <div className="md:hidden border-t border-border/30 bg-background/95 backdrop-blur-xl animate-slide-in">
           <div className="container py-4 flex flex-col gap-1">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
-                className="text-sm text-muted-foreground hover:text-foreground py-2.5 px-3 rounded-md transition-colors"
+                className="text-sm text-muted-foreground hover:text-foreground py-2.5 px-3 rounded-lg transition-colors"
               >
                 {link.label}
               </a>

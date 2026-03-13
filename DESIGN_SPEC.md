@@ -2,6 +2,25 @@
 
 > **Propósito**: Este documento descreve 1:1 o design e comportamento de todas as telas do LaudoVoz para que qualquer IA (Claude Code, Cursor, etc.) consiga replicar ou modificar o projeto sem reinterpretar a identidade visual.
 
+## 0. Screenshots de Referência (Estado Atual)
+
+Todas as capturas estão em `public/screenshots/`. Use como referência visual obrigatória:
+
+| # | Arquivo | Tela |
+|---|---------|------|
+| 01 | `01-landing-hero.png` | Landing page — Hero + Navbar |
+| 02 | `02-landing-footer.png` | Landing page — CTA + Footer |
+| 03 | `03-login.png` | Página de Login (split-screen) |
+| 04 | `04-2fa.png` | Verificação 2FA |
+| 05 | `05-app-laudos.png` | App — Aba Laudos (tela principal) |
+| 06 | `06-app-dashboard-top.png` | App — Dashboard (KPIs + gráficos) |
+| 07 | `07-app-dashboard-bottom.png` | App — Dashboard (heatmap + distribuição) |
+| 08 | `08-app-historico.png` | App — Histórico de laudos |
+| 09 | `09-app-mascaras.png` | App — Editor de Máscaras |
+| 10 | `10-app-configuracoes.png` | App — Configurações |
+
+> ⚠️ **REGRA**: Qualquer alteração visual DEVE manter consistência com estes screenshots. Não reinterpretar cores, espaçamentos ou layout.
+
 ---
 
 ## 1. Sistema de Design

@@ -40,6 +40,7 @@ export default function HeroDemo() {
   const [processStep, setProcessStep] = useState(0);
   const [processProgress, setProcessProgress] = useState(0);
   const [visibleSections, setVisibleSections] = useState(0);
+  const [maskHighlight, setMaskHighlight] = useState(-1);
   const phaseRef = useRef<Phase>("idle");
 
   // Keep ref in sync

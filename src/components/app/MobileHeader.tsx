@@ -1,5 +1,6 @@
-import { FileText, LayoutTemplate, Settings, MessageSquare } from "lucide-react";
+import { FileText, LayoutTemplate, Settings, MessageSquare, Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useState } from "react";
 
 type Tab = "laudos" | "mascaras" | "config" | "feedback";
 
@@ -17,15 +18,19 @@ const navItems: { id: Tab; icon: React.ElementType; label: string }[] = [
 
 export default function MobileHeader({ activeTab, onTabChange }: MobileHeaderProps) {
   return (
-    <header className="lg:hidden sticky top-0 z-40 flex items-center justify-between px-4 h-14 bg-card/95 backdrop-blur-xl border-b border-border">
-      <div className="flex items-center gap-2">
-        <div className="w-7 h-7 rounded-lg gradient-brand flex items-center justify-center">
-          <FileText className="w-4 h-4 text-primary-foreground" />
+    <>
+      {/* Top bar */}
+      <header className="lg:hidden sticky top-0 z-40 flex items-center justify-between px-4 h-12 bg-background/95 backdrop-blur-md border-b border-border">
+        <div className="flex items-center gap-2">
+          <div className="w-5 h-5 rounded gradient-brand flex items-center justify-center">
+            <FileText className="w-3 h-3 text-primary-foreground" />
+          </div>
+          <span className="font-semibold text-foreground text-[13px] tracking-tight">LaudoVoz</span>
         </div>
-        <span className="font-bold text-foreground text-sm tracking-tight">LaudoVoz</span>
-      </div>
+      </header>
 
-      <nav className="flex items-center gap-1">
+      {/* Bottom tab bar */}
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 flex items-center justify-around h-14 bg-background/95 backdrop-blur-md border-t border-border">
         {navItems.map((item) => {
           const active = activeTab === item.id;
           return (
@@ -33,18 +38,16 @@ export default function MobileHeader({ activeTab, onTabChange }: MobileHeaderPro
               key={item.id}
               onClick={() => onTabChange(item.id)}
               className={cn(
-                "p-2 rounded-lg transition-colors",
-                active
-                  ? "bg-brand-light/12 text-brand-light"
-                  : "text-muted-foreground hover:text-foreground"
+                "flex flex-col items-center gap-0.5 py-1 px-3 rounded-lg transition-colors",
+                active ? "text-primary" : "text-muted-foreground"
               )}
-              title={item.label}
             >
               <item.icon className="w-5 h-5" />
+              <span className="text-[10px] font-medium">{item.label}</span>
             </button>
           );
         })}
       </nav>
-    </header>
+    </>
   );
 }

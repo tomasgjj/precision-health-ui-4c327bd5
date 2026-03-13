@@ -1,7 +1,6 @@
 import { useState, useRef } from "react";
-import { LogOut, Sun, Moon, Shield, Trash2, Upload, Pen, AlertTriangle, X, Volume2, VolumeX, Sparkles } from "lucide-react";
+import { LogOut, Shield, Trash2, Upload, Pen, AlertTriangle, X, Volume2, VolumeX } from "lucide-react";
 import { isSoundEnabled, setSoundEnabled } from "@/lib/sounds";
-import { useTheme } from "@/hooks/use-theme";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import PlanBar from "./PlanBar";
@@ -11,8 +10,6 @@ interface SettingsModalProps {
 }
 
 export default function SettingsModal({ onClose }: SettingsModalProps) {
-  const { theme, setTheme } = useTheme();
-  const isDark = theme !== "light";
   const [drName, setDrName] = useState("");
   const [drCrm, setDrCrm] = useState("");
   const [signature, setSignature] = useState("");
@@ -191,42 +188,6 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
           </span>
         </button>
 
-        {/* Theme selector */}
-        <div className="mb-2.5">
-          <label className="text-[11px] text-muted-foreground font-semibold block mb-1.5">Tema</label>
-          <div className="flex items-center gap-px p-0.5 rounded-lg bg-secondary/50 border border-border">
-            <button
-              onClick={() => setTheme("midnight")}
-              className={cn(
-                "flex-1 flex items-center justify-center gap-1.5 py-2 rounded-md text-[11px] font-medium transition-colors duration-150",
-                theme === "midnight" ? "bg-card text-foreground" : "text-muted-foreground hover:text-foreground"
-              )}
-            >
-              <Moon size={13} />
-              Dark
-            </button>
-            <button
-              onClick={() => setTheme("ocean")}
-              className={cn(
-                "flex-1 flex items-center justify-center gap-1.5 py-2 rounded-md text-[11px] font-medium transition-colors duration-150",
-                theme === "ocean" ? "bg-card text-foreground" : "text-muted-foreground hover:text-foreground"
-              )}
-            >
-              <Sparkles size={13} />
-              Ocean
-            </button>
-            <button
-              onClick={() => setTheme("light")}
-              className={cn(
-                "flex-1 flex items-center justify-center gap-1.5 py-2 rounded-md text-[11px] font-medium transition-colors duration-150",
-                theme === "light" ? "bg-card text-foreground" : "text-muted-foreground hover:text-foreground"
-              )}
-            >
-              <Sun size={13} />
-              Light
-            </button>
-          </div>
-        </div>
 
         {/* Save */}
         <button

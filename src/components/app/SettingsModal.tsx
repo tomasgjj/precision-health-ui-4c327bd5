@@ -21,6 +21,13 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
   const [mfaEnrolling, setMfaEnrolling] = useState(false);
   const [mfaCode, setMfaCode] = useState("");
   const [soundOn, setSoundOn] = useState(isSoundEnabled());
+  const { theme, setTheme } = useTheme();
+
+  const themes: { id: Theme; label: string; icon: React.ElementType }[] = [
+    { id: "dark", label: "Midnight", icon: Moon },
+    { id: "ocean", label: "Ocean", icon: Waves },
+    { id: "light", label: "Claro", icon: Sun },
+  ];
 
   const toggleSound = () => {
     const next = !soundOn;

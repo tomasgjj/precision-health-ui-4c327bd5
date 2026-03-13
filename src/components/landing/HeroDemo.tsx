@@ -14,6 +14,13 @@ const LAUDO_SECTIONS = [
   { label: "Impressão", text: "— Aumento da ecogenicidade hepática, compatível com esteatose grau II.\n— Demais estruturas sem alterações significativas.", isImpression: true },
 ];
 
+const MASK_OPTIONS = [
+  { label: "US Abdome Total", match: true },
+  { label: "US Tireoide", match: false },
+  { label: "US Mamas", match: false },
+  { label: "US Vias Urinárias", match: false },
+];
+
 const PROCESS_STEPS = [
   "Transcrição do áudio",
   "Identificação dos achados",
@@ -21,9 +28,10 @@ const PROCESS_STEPS = [
 ];
 
 // Phase durations
-const RECORDING_DURATION = 4000; // 4s of typing
-const PROCESSING_DURATION = 2500; // 2.5s
-const RESULT_DISPLAY = 4000; // 4s showing result before looping
+const RECORDING_DURATION = 4000;
+const MASKS_DURATION = 2500;
+const PROCESSING_DURATION = 2500;
+const RESULT_DISPLAY = 4000;
 
 export default function HeroDemo() {
   const [phase, setPhase] = useState<Phase>("idle");

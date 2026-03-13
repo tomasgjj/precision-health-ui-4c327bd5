@@ -31,9 +31,6 @@ export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
           </svg>
         </div>
         <span className="font-semibold text-[14px] text-foreground tracking-tight">LaudoVoz</span>
-        <span className="ml-auto px-1.5 py-0.5 rounded text-[9px] font-semibold uppercase tracking-wider text-primary bg-primary/10">
-          Beta
-        </span>
       </div>
 
       {/* Search */}

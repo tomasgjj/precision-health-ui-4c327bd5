@@ -32,9 +32,6 @@ export default function MobileHeader({ activeTab, onTabChange }: MobileHeaderPro
           </div>
           <span className="font-semibold text-foreground text-[13px] tracking-tight">LaudoVoz</span>
         </div>
-        <span className="px-1.5 py-0.5 rounded text-[9px] font-semibold uppercase tracking-wider text-primary bg-primary/10">
-          Beta
-        </span>
       </header>
 
       {/* Bottom tab bar */}

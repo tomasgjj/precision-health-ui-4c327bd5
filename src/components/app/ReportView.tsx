@@ -49,9 +49,12 @@ export default function ReportView({ transcription, onNewReport }: ReportViewPro
 
   const handleSave = () => {
     setSaving(true);
+    // Haptic feedback on mobile
+    if (navigator.vibrate) navigator.vibrate(50);
     setTimeout(() => {
       setSaving(false);
       playSuccess();
+      if (navigator.vibrate) navigator.vibrate([30, 50, 30]);
       handleCopy();
       toast.success("Laudo salvo e copiado!");
     }, 800);

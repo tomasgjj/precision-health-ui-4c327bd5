@@ -70,8 +70,20 @@ export default function HeroDemo() {
       setTypedChars((c) => Math.min(c + charsPerTick, DICTATION_TEXT.length));
     }, 40);
     const timerId = setInterval(() => setTimer((t) => t + 1), 1000);
-    const nextPhase = setTimeout(() => setPhase("processing"), RECORDING_DURATION);
+    const nextPhase = setTimeout(() => setPhase("masks"), RECORDING_DURATION);
     return () => { clearInterval(typeId); clearInterval(timerId); clearTimeout(nextPhase); };
+  }, [phase]);
+
+  // Masks phase
+  useEffect(() => {
+    if (phase !== "masks") return;
+    setMaskHighlight(-1);
+    // Scan through masks then land on the match
+    const scanTimers = MASK_OPTIONS.map((_, i) =>
+      setTimeout(() => setMaskHighlight(i), 400 + i * 400)
+    );
+    const nextPhase = setTimeout(() => setPhase("processing"), MASKS_DURATION);
+    return () => { scanTimers.forEach(clearTimeout); clearTimeout(nextPhase); };
   }, [phase]);
 
   // Processing phase

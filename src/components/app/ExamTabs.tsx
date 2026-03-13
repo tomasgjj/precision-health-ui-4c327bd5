@@ -1,14 +1,14 @@
 import { cn } from "@/lib/utils";
 
 const exams = [
-  "USG Abdome",
-  "Tireoide",
-  "Mama",
-  "Pélvica",
-  "Obstétrica",
-  "Vias Urinárias",
-  "Partes Moles",
-  "Cervical",
+  { id: "USG Abdome", emoji: "🫁" },
+  { id: "Tireoide", emoji: "🦋" },
+  { id: "Mama", emoji: "🩺" },
+  { id: "Pélvica", emoji: "🔬" },
+  { id: "Obstétrica", emoji: "🤰" },
+  { id: "Vias Urinárias", emoji: "💧" },
+  { id: "Partes Moles", emoji: "🔍" },
+  { id: "Cervical", emoji: "📋" },
 ];
 
 interface ExamTabsProps {
@@ -18,23 +18,26 @@ interface ExamTabsProps {
 
 export default function ExamTabs({ selected, onSelect }: ExamTabsProps) {
   return (
-    <div className="w-full overflow-x-auto scrollbar-none">
-      <div className="flex gap-2 pb-1 min-w-max">
+    <div className="w-full">
+      <label className="text-[11px] font-medium text-muted-foreground uppercase tracking-widest mb-2 block">
+        Tipo de Exame
+      </label>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
         {exams.map((exam) => {
-          const active = selected === exam;
+          const active = selected === exam.id;
           return (
             <button
-              key={exam}
-              onClick={() => onSelect(exam)}
+              key={exam.id}
+              onClick={() => onSelect(exam.id)}
               className={cn(
-                "px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-all duration-150",
+                "flex items-center gap-2 px-3 py-2 rounded-lg text-[13px] font-medium transition-all duration-100 border",
                 active
-                  ? "surface-glass border-brand-light/40 text-brand-light shadow-sm"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted/30 border border-transparent"
+                  ? "bg-secondary border-primary/30 text-foreground shadow-sm"
+                  : "border-transparent text-muted-foreground hover:text-foreground hover:bg-secondary/50"
               )}
-              style={active ? { borderColor: "hsl(var(--color-brand-light) / 0.4)" } : undefined}
             >
-              {exam}
+              <span className="text-sm">{exam.emoji}</span>
+              <span className="truncate">{exam.id}</span>
             </button>
           );
         })}

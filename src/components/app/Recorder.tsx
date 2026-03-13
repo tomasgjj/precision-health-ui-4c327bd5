@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Mic, Square, Loader2, Sparkles } from "lucide-react";
+import { Mic, Square, Loader2, Sparkles, Keyboard } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 
@@ -13,6 +13,7 @@ export default function Recorder({ onGenerate }: RecorderProps) {
   const [state, setState] = useState<RecordState>("idle");
   const [seconds, setSeconds] = useState(0);
   const [transcription, setTranscription] = useState("");
+  const [mode, setMode] = useState<"voice" | "text">("voice");
   const timerRef = useRef<ReturnType<typeof setInterval>>();
 
   useEffect(() => {
@@ -37,7 +38,6 @@ export default function Recorder({ onGenerate }: RecorderProps) {
       setTranscription("");
     } else if (state === "recording") {
       setState("transcribing");
-      // Simulate transcription
       setTimeout(() => {
         setTranscription(
           "Fígado de dimensões normais, contornos regulares, ecotextura homogênea. Vesícula biliar normodistendida, paredes finas, sem cálculos. Vias biliares de calibre normal. Pâncreas de dimensões e ecotextura normais. Baço homogêneo, de dimensões normais. Rins tópicos, de dimensões e contornos preservados, sem sinais de dilatação pielocalicinal ou litíase."
@@ -50,53 +50,110 @@ export default function Recorder({ onGenerate }: RecorderProps) {
   const canGenerate = transcription.trim().length > 0;
 
   return (
-    <div className="flex flex-col items-center gap-6 animate-fade-in">
-      {/* Mic Button */}
-      <div className="flex flex-col items-center gap-3">
+    <div className="space-y-5 animate-fade-in">
+      {/* Mode toggle */}
+      <div className="flex items-center gap-1 p-0.5 rounded-lg bg-secondary/60 w-fit">
         <button
-          onClick={handleMicClick}
+          onClick={() => setMode("voice")}
           className={cn(
-            "w-20 h-20 rounded-2xl flex items-center justify-center transition-all duration-200",
-            state === "idle" &&
-              "gradient-brand text-primary-foreground shadow-[0_4px_24px_-4px_hsl(168_84%_40%/0.4)] hover:shadow-[0_4px_32px_-4px_hsl(168_84%_40%/0.5)] hover:scale-105",
-            state === "recording" &&
-              "bg-destructive text-destructive-foreground animate-pulse-brand",
-            state === "transcribing" &&
-              "bg-muted text-muted-foreground cursor-not-allowed"
+            "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[12px] font-medium transition-all",
+            mode === "voice" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
           )}
-          disabled={state === "transcribing"}
         >
-          {state === "idle" && <Mic className="w-8 h-8" />}
-          {state === "recording" && <Square className="w-7 h-7" />}
-          {state === "transcribing" && <Loader2 className="w-7 h-7 animate-spin" />}
+          <Mic className="w-3.5 h-3.5" />
+          Voz
         </button>
-
-        {/* Timer / Status */}
-        <span className="text-sm font-medium text-muted-foreground">
-          {state === "idle" && "Toque para gravar"}
-          {state === "recording" && formatTime(seconds)}
-          {state === "transcribing" && "Transcrevendo..."}
-        </span>
+        <button
+          onClick={() => setMode("text")}
+          className={cn(
+            "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[12px] font-medium transition-all",
+            mode === "text" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+          )}
+        >
+          <Keyboard className="w-3.5 h-3.5" />
+          Texto
+        </button>
       </div>
 
-      {/* Transcription */}
-      <div className="w-full max-w-2xl space-y-3">
+      {/* Voice mode */}
+      {mode === "voice" && (
+        <div className="flex flex-col items-center gap-5 py-6">
+          {/* Waveform / Mic area */}
+          <div className="relative">
+            {state === "recording" && (
+              <div className="absolute inset-0 -m-4 rounded-full bg-primary/10 animate-ping" />
+            )}
+            <button
+              onClick={handleMicClick}
+              className={cn(
+                "relative w-20 h-20 rounded-2xl flex items-center justify-center transition-all duration-200",
+                state === "idle" &&
+                  "bg-secondary border border-border text-foreground hover:bg-secondary/80 hover:border-primary/30",
+                state === "recording" &&
+                  "bg-destructive/10 border-2 border-destructive text-destructive",
+                state === "transcribing" &&
+                  "bg-secondary border border-border text-muted-foreground cursor-not-allowed"
+              )}
+              disabled={state === "transcribing"}
+            >
+              {state === "idle" && <Mic className="w-7 h-7" />}
+              {state === "recording" && <Square className="w-6 h-6 fill-current" />}
+              {state === "transcribing" && <Loader2 className="w-6 h-6 animate-spin" />}
+            </button>
+          </div>
+
+          {/* Status */}
+          <div className="text-center space-y-1">
+            {state === "recording" && (
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-destructive animate-pulse" />
+                <span className="text-sm font-mono text-foreground">{formatTime(seconds)}</span>
+              </div>
+            )}
+            <p className="text-[12px] text-muted-foreground">
+              {state === "idle" && "Clique para iniciar a gravação"}
+              {state === "recording" && "Gravando — clique para parar"}
+              {state === "transcribing" && "Processando transcrição..."}
+            </p>
+          </div>
+
+          {/* Waveform bars (decorative) */}
+          {state === "recording" && (
+            <div className="flex items-end gap-[3px] h-8">
+              {Array.from({ length: 24 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="w-[3px] bg-primary/60 rounded-full"
+                  style={{
+                    height: `${Math.random() * 100}%`,
+                    animation: `wave 0.5s ${i * 0.05}s ease-in-out infinite alternate`,
+                  }}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Transcription area */}
+      <div className="space-y-3">
         <Textarea
           value={transcription}
           onChange={(e) => setTranscription(e.target.value)}
-          placeholder="A transcrição aparecerá aqui, ou cole/edite o texto do laudo..."
-          className="min-h-[160px] bg-muted/30 border-border text-foreground placeholder:text-muted-foreground resize-none"
+          placeholder={mode === "text" ? "Digite ou cole a descrição do exame aqui..." : "A transcrição aparecerá aqui após a gravação..."}
+          className="min-h-[140px] bg-secondary/30 border-border text-foreground text-[13px] leading-relaxed placeholder:text-muted-foreground/60 resize-none focus:bg-secondary/50 transition-colors rounded-lg"
           rows={6}
         />
 
+        {/* Generate button */}
         <button
           onClick={() => canGenerate && onGenerate(transcription)}
           disabled={!canGenerate}
           className={cn(
-            "w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-all duration-150",
+            "w-full flex items-center justify-center gap-2 py-2.5 rounded-lg text-[13px] font-semibold transition-all duration-150",
             canGenerate
-              ? "gradient-brand text-primary-foreground hover:opacity-90 shadow-lg"
-              : "bg-muted text-muted-foreground cursor-not-allowed"
+              ? "bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm shadow-primary/20"
+              : "bg-secondary text-muted-foreground cursor-not-allowed"
           )}
         >
           <Sparkles className="w-4 h-4" />

@@ -191,14 +191,42 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
           </span>
         </button>
 
-        {/* Theme toggle */}
-        <button
-          onClick={() => setTheme(isDark ? "light" : "ocean")}
-          className="flex items-center gap-2 w-full px-3 py-2.5 rounded-lg text-xs font-medium border border-border bg-secondary/30 text-muted-foreground cursor-pointer mb-2.5 hover:bg-secondary hover:text-foreground transition-colors duration-150"
-        >
-          {isDark ? <Sun size={15} /> : <Moon size={15} />}
-          {isDark ? "Modo claro" : "Modo escuro"}
-        </button>
+        {/* Theme selector */}
+        <div className="mb-2.5">
+          <label className="text-[11px] text-muted-foreground font-semibold block mb-1.5">Tema</label>
+          <div className="flex items-center gap-px p-0.5 rounded-lg bg-secondary/50 border border-border">
+            <button
+              onClick={() => setTheme("midnight")}
+              className={cn(
+                "flex-1 flex items-center justify-center gap-1.5 py-2 rounded-md text-[11px] font-medium transition-colors duration-150",
+                theme === "midnight" ? "bg-card text-foreground" : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              <Moon size={13} />
+              Dark
+            </button>
+            <button
+              onClick={() => setTheme("ocean")}
+              className={cn(
+                "flex-1 flex items-center justify-center gap-1.5 py-2 rounded-md text-[11px] font-medium transition-colors duration-150",
+                theme === "ocean" ? "bg-card text-foreground" : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              <Sparkles size={13} />
+              Ocean
+            </button>
+            <button
+              onClick={() => setTheme("light")}
+              className={cn(
+                "flex-1 flex items-center justify-center gap-1.5 py-2 rounded-md text-[11px] font-medium transition-colors duration-150",
+                theme === "light" ? "bg-card text-foreground" : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              <Sun size={13} />
+              Light
+            </button>
+          </div>
+        </div>
 
         {/* Save */}
         <button

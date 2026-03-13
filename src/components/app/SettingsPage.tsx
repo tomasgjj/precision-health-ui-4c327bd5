@@ -1,9 +1,10 @@
 import { useState, useRef } from "react";
-import { LogOut, Shield, Trash2, Upload, Pen, AlertTriangle, Volume2, VolumeX, MessageSquare } from "lucide-react";
+import { LogOut, Shield, Trash2, Upload, Pen, AlertTriangle, Volume2, VolumeX, MessageSquare, Moon, Sun, Waves } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { isSoundEnabled, setSoundEnabled } from "@/lib/sounds";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { useTheme, type Theme } from "@/hooks/use-theme";
 import PlanBar from "./PlanBar";
 
 const feedbackTypes = [

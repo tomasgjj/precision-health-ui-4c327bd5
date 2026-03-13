@@ -25,6 +25,13 @@ export default function SettingsPage() {
   const [mfaEnrolling, setMfaEnrolling] = useState(false);
   const [mfaCode, setMfaCode] = useState("");
   const [soundOn, setSoundOn] = useState(isSoundEnabled());
+  const { theme, setTheme } = useTheme();
+
+  const themes: { id: Theme; label: string; icon: React.ElementType; desc: string }[] = [
+    { id: "dark", label: "Midnight", icon: Moon, desc: "Escuro padrão" },
+    { id: "ocean", label: "Ocean", icon: Waves, desc: "Azul profundo" },
+    { id: "light", label: "Claro", icon: Sun, desc: "Modo claro" },
+  ];
 
   // Feedback state
   const [fbType, setFbType] = useState("bug");

@@ -176,6 +176,21 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
           )}
         </div>
 
+        {/* Sound toggle */}
+        <button
+          onClick={toggleSound}
+          className="flex items-center gap-2 w-full px-3 py-2.5 rounded-lg text-xs font-medium border border-border bg-secondary/30 text-muted-foreground cursor-pointer mb-2 hover:bg-secondary hover:text-foreground transition-colors duration-150"
+        >
+          {soundOn ? <Volume2 size={15} /> : <VolumeX size={15} />}
+          {soundOn ? "Sons de feedback ativados" : "Sons de feedback desativados"}
+          <span className={cn(
+            "ml-auto px-1.5 py-0.5 rounded text-[10px] font-bold uppercase",
+            soundOn ? "bg-success/15 text-success" : "bg-muted text-muted-foreground"
+          )}>
+            {soundOn ? "On" : "Off"}
+          </span>
+        </button>
+
         {/* Theme toggle */}
         <button
           onClick={() => setTheme(isDark ? "light" : "ocean")}

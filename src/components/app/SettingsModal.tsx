@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
-import { LogOut, Sun, Moon, Shield, Trash2, Upload, Pen, AlertTriangle, X } from "lucide-react";
+import { LogOut, Sun, Moon, Shield, Trash2, Upload, Pen, AlertTriangle, X, Volume2, VolumeX } from "lucide-react";
+import { isSoundEnabled, setSoundEnabled } from "@/lib/sounds";
 import { useTheme } from "@/hooks/use-theme";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";

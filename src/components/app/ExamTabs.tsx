@@ -1,14 +1,14 @@
 import { cn } from "@/lib/utils";
 
 const exams = [
-  { id: "USG Abdome", emoji: "🫁" },
-  { id: "Tireoide", emoji: "🦋" },
-  { id: "Mama", emoji: "🩺" },
-  { id: "Pélvica", emoji: "🔬" },
-  { id: "Obstétrica", emoji: "🤰" },
-  { id: "Vias Urinárias", emoji: "💧" },
-  { id: "Partes Moles", emoji: "🔍" },
-  { id: "Cervical", emoji: "📋" },
+  "USG Abdome",
+  "Tireoide",
+  "Mama",
+  "Pélvica",
+  "Obstétrica",
+  "Vias Urinárias",
+  "Partes Moles",
+  "Cervical",
 ];
 
 interface ExamTabsProps {

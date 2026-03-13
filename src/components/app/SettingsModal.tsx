@@ -22,6 +22,13 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
   const [mfaEnabled, setMfaEnabled] = useState(false);
   const [mfaEnrolling, setMfaEnrolling] = useState(false);
   const [mfaCode, setMfaCode] = useState("");
+  const [soundOn, setSoundOn] = useState(isSoundEnabled());
+
+  const toggleSound = () => {
+    const next = !soundOn;
+    setSoundOn(next);
+    setSoundEnabled(next);
+  };
 
   const handleSigUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

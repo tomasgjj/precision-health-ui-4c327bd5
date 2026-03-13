@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Mic, FileText, Zap } from "lucide-react";
+import { ArrowRight, Mic, FileText } from "lucide-react";
 
 const Hero = () => (
   <section className="relative pt-14 overflow-hidden">

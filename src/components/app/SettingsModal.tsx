@@ -1,8 +1,9 @@
 import { useState, useRef } from "react";
-import { LogOut, Shield, Trash2, Upload, Pen, AlertTriangle, X, Volume2, VolumeX } from "lucide-react";
+import { LogOut, Shield, Trash2, Upload, Pen, AlertTriangle, X, Volume2, VolumeX, Moon, Sun, Waves } from "lucide-react";
 import { isSoundEnabled, setSoundEnabled } from "@/lib/sounds";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { useTheme, type Theme } from "@/hooks/use-theme";
 import PlanBar from "./PlanBar";
 
 interface SettingsModalProps {
@@ -20,6 +21,13 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
   const [mfaEnrolling, setMfaEnrolling] = useState(false);
   const [mfaCode, setMfaCode] = useState("");
   const [soundOn, setSoundOn] = useState(isSoundEnabled());
+  const { theme, setTheme } = useTheme();
+
+  const themes: { id: Theme; label: string; icon: React.ElementType }[] = [
+    { id: "dark", label: "Midnight", icon: Moon },
+    { id: "ocean", label: "Ocean", icon: Waves },
+    { id: "light", label: "Claro", icon: Sun },
+  ];
 
   const toggleSound = () => {
     const next = !soundOn;
@@ -188,6 +196,27 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
           </span>
         </button>
 
+        {/* Theme selector */}
+        <div className="rounded-lg bg-secondary/30 border border-border p-3 space-y-2 mb-2">
+          <label className="text-[11px] text-muted-foreground font-semibold block">Tema</label>
+          <div className="grid grid-cols-3 gap-1.5">
+            {themes.map((t) => (
+              <button
+                key={t.id}
+                onClick={() => setTheme(t.id)}
+                className={cn(
+                  "flex flex-col items-center gap-1 py-2 px-2 rounded-lg text-xs font-medium cursor-pointer border transition-colors",
+                  theme === t.id
+                    ? "bg-primary/10 border-primary/30 text-foreground"
+                    : "bg-secondary/30 text-muted-foreground border-transparent hover:bg-secondary hover:text-foreground"
+                )}
+              >
+                <t.icon size={15} />
+                <span className="text-[10px] font-semibold">{t.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
 
         {/* Save */}
         <button

@@ -1,98 +1,195 @@
 import { Check, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
 const plans = [
   {
     name: "Gratuito",
-    price: "R$0",
+    description: "Para conhecer o produto",
+    monthlyPrice: "R$0",
+    yearlyPrice: "R$0",
     period: "",
-    subtitle: "Para experimentar o produto",
-    features: ["10 laudos por mês", "1 tipo de exame", "Ditado por voz + IA", "Histórico na nuvem"],
+    dot: "hsl(var(--muted-foreground))",
+    features: [
+      "Domínio personalizado grátis",
+      "10 laudos por mês",
+      "1 tipo de exame",
+      "Ditado por voz + IA",
+      "Histórico na nuvem",
+    ],
     cta: "Começar grátis",
     highlighted: false,
   },
   {
-    name: "Pro Mensal",
-    price: "R$1",
-    period: "primeiro mês",
-    subtitle: "depois R$120/mês",
-    features: ["Laudos ilimitados", "Todos os tipos de exame", "Máscaras personalizadas", "Exportação em PDF", "Suporte prioritário"],
-    cta: "Começar por R$1",
+    name: "Pro",
+    description: "Para radiologistas ativos",
+    monthlyPrice: "R$120",
+    yearlyPrice: "R$80",
+    period: "/mês",
+    dot: "hsl(var(--primary))",
+    badge: "POPULAR",
+    features: [
+      "Laudos ilimitados",
+      "Todos os tipos de exame",
+      "Máscaras personalizadas",
+      "Exportação em PDF",
+      "Suporte prioritário",
+    ],
+    cta: "Começar com Pro",
     highlighted: true,
   },
   {
-    name: "Pro Anual",
-    price: "R$80",
+    name: "Clínica",
+    description: "Para clínicas e equipes",
+    monthlyPrice: "R$399",
+    yearlyPrice: "R$299",
     period: "/mês",
-    subtitle: "R$960/ano — economize 33%",
-    features: ["Tudo do plano mensal", "Laudos ilimitados", "Máscaras personalizadas", "Exportação em PDF", "Suporte prioritário"],
-    cta: "Assinar anual",
+    dot: "hsl(142 76% 36%)",
+    features: [
+      "Tudo do plano Pro",
+      "Múltiplos usuários",
+      "Painel administrativo",
+      "Suporte dedicado",
+      "API de integração",
+      "Setup personalizado",
+    ],
+    cta: "Começar com Clínica",
     highlighted: false,
   },
 ];
 
-const Pricing = () => (
-  <section id="precos" className="relative py-28 md:py-36 border-t border-border/50">
-    <div className="absolute inset-0 section-glow pointer-events-none" />
-    <div className="container relative z-10 max-w-[1020px] mx-auto px-6">
-      <div className="text-center max-w-[560px] mx-auto mb-16">
-        <p className="text-[12px] font-medium text-primary mb-3 tracking-widest uppercase">Preços</p>
-        <h2 className="text-section text-foreground">
-          Planos simples e transparentes
-        </h2>
-        <p className="text-muted-foreground mt-4 text-[15px]">
-          Comece grátis. Faça upgrade quando precisar.
-        </p>
-      </div>
+const Pricing = () => {
+  const [yearly, setYearly] = useState(true);
 
-      <div className="grid md:grid-cols-3 gap-4">
-        {plans.map((plan, i) => (
-          <div
-            key={i}
-            className={`relative rounded-xl p-7 flex flex-col ${
-              plan.highlighted
-                ? "surface-card border-primary/20 bg-primary/[0.03]"
-                : "surface-card"
+  return (
+    <section id="precos" className="relative py-28 md:py-36 border-t border-border/50">
+      <div className="absolute inset-0 section-glow pointer-events-none" />
+      <div className="container relative z-10 max-w-[1100px] mx-auto px-6">
+        {/* Header */}
+        <div className="text-center max-w-[560px] mx-auto mb-6">
+          <h2 className="text-section text-foreground">Pricing</h2>
+          <p className="text-muted-foreground mt-3 text-[15px]">
+            Comece grátis. Faça upgrade quando precisar.
+          </p>
+        </div>
+
+        {/* Toggle */}
+        <div className="flex items-center justify-center gap-3 mb-14">
+          <span
+            className={`text-[13px] cursor-pointer transition-colors ${
+              !yearly ? "text-foreground font-medium" : "text-muted-foreground"
+            }`}
+            onClick={() => setYearly(false)}
+          >
+            Mensal
+          </span>
+          <button
+            onClick={() => setYearly(!yearly)}
+            className={`relative w-10 h-[22px] rounded-full transition-colors duration-200 ${
+              yearly ? "bg-primary" : "bg-border"
             }`}
           >
-            {plan.highlighted && (
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                <span className="text-[11px] font-medium text-primary-foreground bg-primary px-3 py-1 rounded-full">
-                  Mais popular
-                </span>
-              </div>
-            )}
+            <span
+              className={`absolute top-[3px] left-[3px] w-4 h-4 rounded-full bg-foreground transition-transform duration-200 ${
+                yearly ? "translate-x-[18px]" : "translate-x-0"
+              }`}
+            />
+          </button>
+          <span
+            className={`text-[13px] cursor-pointer transition-colors ${
+              yearly ? "text-foreground font-medium" : "text-muted-foreground"
+            }`}
+            onClick={() => setYearly(true)}
+          >
+            Anual
+            <span className="ml-1.5 text-[11px] text-primary font-medium">-33%</span>
+          </span>
+        </div>
 
-            <div className="mb-7">
-              <h3 className="text-[14px] font-semibold text-foreground mb-4">{plan.name}</h3>
-              <div className="flex items-baseline gap-1">
-                <span className="text-4xl font-semibold tracking-tight text-foreground">{plan.price}</span>
-                {plan.period && <span className="text-[13px] text-muted-foreground">{plan.period}</span>}
-              </div>
-              <p className="text-[12px] text-muted-foreground mt-1.5">{plan.subtitle}</p>
-            </div>
-
-            <ul className="space-y-3 mb-8 flex-1">
-              {plan.features.map((f, j) => (
-                <li key={j} className="flex items-start gap-2.5 text-[13px] text-secondary-foreground">
-                  <Check className="w-4 h-4 text-success mt-0.5 flex-shrink-0" />
-                  {f}
-                </li>
-              ))}
-            </ul>
-
-            <Button
-              variant={plan.highlighted ? "hero" : "outline"}
-              className="w-full"
+        {/* Cards */}
+        <div className="grid md:grid-cols-3 gap-px bg-border rounded-2xl overflow-hidden">
+          {plans.map((plan, i) => (
+            <div
+              key={i}
+              className={`relative flex flex-col p-7 ${
+                plan.highlighted
+                  ? "bg-primary/[0.04]"
+                  : "bg-background"
+              }`}
             >
-              {plan.cta}
-              {plan.highlighted && <ArrowRight className="w-3.5 h-3.5" />}
-            </Button>
+              {/* Plan header */}
+              <div className="flex items-center gap-2 mb-1">
+                <span
+                  className="w-2.5 h-2.5 rounded-full"
+                  style={{ backgroundColor: plan.dot }}
+                />
+                <h3 className="text-[14px] font-semibold text-foreground">{plan.name}</h3>
+                {plan.badge && (
+                  <span className="text-[10px] font-semibold tracking-wider text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+                    {plan.badge}
+                  </span>
+                )}
+              </div>
+              <p className="text-[12px] text-muted-foreground mb-5">{plan.description}</p>
+
+              {/* Price */}
+              <div className="flex items-baseline gap-1 mb-1">
+                <span className="text-4xl font-semibold tracking-tight text-foreground">
+                  {yearly ? plan.yearlyPrice : plan.monthlyPrice}
+                </span>
+                {plan.period && (
+                  <span className="text-[13px] text-muted-foreground">{plan.period}</span>
+                )}
+              </div>
+              {yearly && plan.yearlyPrice !== "R$0" && (
+                <p className="text-[11px] text-muted-foreground mb-6">
+                  cobrado anualmente
+                </p>
+              )}
+              {!yearly && plan.monthlyPrice !== "R$0" && (
+                <p className="text-[11px] text-muted-foreground mb-6">
+                  por mês, cobrado mensalmente
+                </p>
+              )}
+              {plan.monthlyPrice === "R$0" && <div className="mb-6" />}
+
+              {/* Features */}
+              <ul className="space-y-2.5 mb-8 flex-1">
+                {plan.features.map((f, j) => (
+                  <li key={j} className="flex items-start gap-2.5 text-[13px] text-secondary-foreground">
+                    <Check className="w-3.5 h-3.5 text-muted-foreground mt-0.5 flex-shrink-0" />
+                    {f}
+                  </li>
+                ))}
+              </ul>
+
+              {/* CTA */}
+              <Button
+                variant={plan.highlighted ? "hero" : "outline"}
+                className="w-full"
+              >
+                {plan.cta}
+                {plan.highlighted && <ArrowRight className="w-3.5 h-3.5" />}
+              </Button>
+            </div>
+          ))}
+        </div>
+
+        {/* Enterprise bar */}
+        <div className="mt-4 rounded-xl surface-card p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <span className="text-[14px] font-semibold text-foreground">Enterprise</span>
+            <span className="text-[13px] text-muted-foreground">
+              Para hospitais e redes que precisam de limites customizados e suporte dedicado.
+            </span>
           </div>
-        ))}
+          <Button variant="outline" size="sm" className="whitespace-nowrap">
+            Fale conosco
+          </Button>
+        </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 export default Pricing;

@@ -12,16 +12,27 @@ import { useEffect } from "react";
 const Index = () => {
   useEffect(() => {
     const root = document.documentElement;
-    const prevClasses = [...root.classList];
+    const prevClasses = [...root.classList].filter((c) => c.startsWith("theme-"));
 
-    root.classList.remove("theme-light");
+    // Remove all theme classes, then force midnight
+    prevClasses.forEach((c) => root.classList.remove(c));
     root.classList.add("theme-midnight");
 
+    // Re-apply on every render in case ThemeProvider overrides
+    const observer = new MutationObserver(() => {
+      if (!root.classList.contains("theme-midnight")) {
+        root.classList.forEach((c) => {
+          if (c.startsWith("theme-") && c !== "theme-midnight") root.classList.remove(c);
+        });
+        root.classList.add("theme-midnight");
+      }
+    });
+    observer.observe(root, { attributes: true, attributeFilter: ["class"] });
+
     return () => {
+      observer.disconnect();
       root.classList.remove("theme-midnight");
-      prevClasses.forEach((c) => {
-        if (c.startsWith("theme-")) root.classList.add(c);
-      });
+      prevClasses.forEach((c) => root.classList.add(c));
     };
   }, []);
   return (

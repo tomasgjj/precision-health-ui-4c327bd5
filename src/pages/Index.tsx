@@ -7,26 +7,24 @@ import Security from "@/components/landing/Security";
 import FAQ from "@/components/landing/FAQ";
 import CTA from "@/components/landing/CTA";
 import Footer from "@/components/landing/Footer";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { useTheme, AppTheme } from "@/hooks/use-theme";
 
 const Index = () => {
-  // Force midnight theme on landing page
+  const { theme, setTheme } = useTheme();
+  const prevTheme = useRef<AppTheme>(theme);
+
   useEffect(() => {
-    const root = document.documentElement;
-    const prevClasses = [...root.classList];
-
-    root.classList.remove("theme-light");
-    root.classList.add("theme-midnight");
-
+    prevTheme.current = theme;
+    if (theme !== "midnight") {
+      setTheme("midnight");
+    }
     return () => {
-      root.classList.remove("theme-midnight");
-      // Restore previous
-      prevClasses.forEach((c) => {
-        if (c.startsWith("theme-")) root.classList.add(c);
-      });
+      if (prevTheme.current !== "midnight") {
+        setTheme(prevTheme.current);
+      }
     };
   }, []);
-
   return (
     <div className="min-h-screen bg-background">
       <Navbar />

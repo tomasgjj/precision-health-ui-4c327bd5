@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Mic, FileText, Zap } from "lucide-react";
+import { ArrowRight, Mic, FileText } from "lucide-react";
 
 const Hero = () => (
   <section className="relative pt-14 overflow-hidden">
@@ -9,13 +9,6 @@ const Hero = () => (
 
     <div className="container relative z-10 pt-28 pb-20 md:pt-40 md:pb-32">
       {/* Badge */}
-      <div className="animate-fade-up opacity-0 flex justify-center mb-8">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-border/60 bg-accent/30 text-[12px] text-muted-foreground">
-          <Zap className="w-3 h-3 text-primary" />
-          <span>Tecnologia de IA para laudos médicos</span>
-          <ArrowRight className="w-3 h-3" />
-        </div>
-      </div>
 
       {/* Headline — centered, massive, Linear-style */}
       <div className="text-center max-w-[820px] mx-auto">

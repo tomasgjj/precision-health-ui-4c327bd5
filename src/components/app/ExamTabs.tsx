@@ -1,14 +1,14 @@
 import { cn } from "@/lib/utils";
 
 const exams = [
-  { id: "USG Abdome", emoji: "🫁" },
-  { id: "Tireoide", emoji: "🦋" },
-  { id: "Mama", emoji: "🩺" },
-  { id: "Pélvica", emoji: "🔬" },
-  { id: "Obstétrica", emoji: "🤰" },
-  { id: "Vias Urinárias", emoji: "💧" },
-  { id: "Partes Moles", emoji: "🔍" },
-  { id: "Cervical", emoji: "📋" },
+  "USG Abdome",
+  "Tireoide",
+  "Mama",
+  "Pélvica",
+  "Obstétrica",
+  "Vias Urinárias",
+  "Partes Moles",
+  "Cervical",
 ];
 
 interface ExamTabsProps {
@@ -29,20 +29,19 @@ export default function ExamTabs({ selected, onSelect }: ExamTabsProps) {
       </div>
       <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none sm:grid sm:grid-cols-4 sm:gap-2 sm:overflow-visible">
         {exams.map((exam) => {
-          const active = selected === exam.id;
+          const active = selected === exam;
           return (
             <button
-              key={exam.id}
-              onClick={() => onSelect(exam.id)}
+              key={exam}
+              onClick={() => onSelect(exam)}
               className={cn(
-                "flex items-center gap-2 px-3 py-2.5 rounded-xl text-[12px] sm:text-[13px] font-medium transition-all duration-200 border whitespace-nowrap shrink-0",
+                "flex items-center px-3 py-2.5 rounded-xl text-[12px] sm:text-[13px] font-medium transition-all duration-200 border whitespace-nowrap shrink-0",
                 active
                   ? "bg-primary/10 border-primary/30 text-foreground shadow-sm glow-primary-sm"
                   : "border-border/50 text-muted-foreground hover:text-foreground hover:bg-secondary/40 hover:border-border"
               )}
             >
-              <span className="text-sm">{exam.emoji}</span>
-              <span className="truncate">{exam.id}</span>
+              <span className="truncate">{exam}</span>
             </button>
           );
         })}

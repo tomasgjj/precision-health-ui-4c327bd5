@@ -155,8 +155,149 @@ Todas as capturas estão em `public/screenshots/`. Use como referência visual o
 | `shimmer` | background-position -200%→200% |
 | `spin-slow` | rotate 0→360deg |
 | `pulse-ring` | scale 0.95→1.05, opacity 0.5→0.8 |
+### 1.6 Mapeamento de Classes — Lovable (atual) → laudovoz-v2
 
-### 1.6 ScrollReveal (landing page)
+> Use esta tabela para traduzir 1:1 as classes do projeto atual para o design system do laudovoz-v2.
+
+#### Backgrounds
+
+| Lovable (projeto atual) | laudovoz-v2 | Descrição |
+|-------------------------|-------------|-----------|
+| `bg-background` | `bg-bg-base` | Fundo principal da página |
+| `bg-card` | `bg-bg-card` | Fundo de cards |
+| `bg-popover` | `bg-bg-popover` | Fundo de popovers/dropdowns |
+| `bg-primary` | `bg-brand` | Fundo botão primário / destaque brand |
+| `bg-primary/90` | `bg-brand/90` | Brand com opacidade |
+| `bg-primary/85` | `bg-brand/85` | Brand hover |
+| `bg-primary/10` | `bg-brand/10` | Brand tint sutil |
+| `bg-secondary` | `bg-bg-secondary` | Fundo secundário (inputs, áreas neutras) |
+| `bg-secondary/30` | `bg-bg-secondary/30` | Secundário com opacidade (inputs) |
+| `bg-muted` | `bg-bg-muted` | Áreas desativadas / neutras |
+| `bg-accent` | `bg-accent` | Fundo accent (roxo/indigo) |
+| `bg-accent/15` | `bg-accent/15` | Accent tint sutil |
+| `bg-destructive` | `bg-danger` | Fundo ações destrutivas |
+| `bg-success` | `bg-success` | Fundo sucesso |
+| `bg-warning` | `bg-warning` | Fundo aviso |
+| `bg-input` | `bg-bg-input` | Fundo padrão de inputs |
+
+#### Texto
+
+| Lovable (projeto atual) | laudovoz-v2 | Descrição |
+|-------------------------|-------------|-----------|
+| `text-foreground` | `text-text-primary` | Texto principal |
+| `text-card-foreground` | `text-text-primary` | Texto dentro de cards |
+| `text-popover-foreground` | `text-text-primary` | Texto em popovers |
+| `text-primary` | `text-brand` | Texto cor brand (links, destaques) |
+| `text-primary-foreground` | `text-text-on-brand` | Texto sobre fundo brand (branco) |
+| `text-secondary-foreground` | `text-text-secondary` | Texto secundário (cinza médio) |
+| `text-muted-foreground` | `text-text-tertiary` | Texto terciário (cinza escuro) |
+| `text-muted-foreground/50` | `text-text-tertiary/50` | Placeholder de inputs |
+| `text-accent-foreground` | `text-text-on-accent` | Texto sobre fundo accent |
+| `text-destructive` | `text-danger` | Texto erro/destrutivo |
+| `text-destructive-foreground` | `text-text-on-danger` | Texto sobre fundo destrutivo |
+| `text-success` | `text-success` | Texto sucesso |
+| `text-warning` | `text-warning` | Texto aviso |
+
+#### Bordas
+
+| Lovable (projeto atual) | laudovoz-v2 | Descrição |
+|-------------------------|-------------|-----------|
+| `border-border` | `border-border-default` | Borda padrão de cards/containers |
+| `border-input` | `border-border-input` | Borda de inputs |
+| `border-primary` | `border-brand` | Borda brand (focus, active) |
+| `border-primary/40` | `border-brand/40` | Borda brand sutil |
+| `border-destructive` | `border-danger` | Borda erro |
+
+#### Ring (focus)
+
+| Lovable (projeto atual) | laudovoz-v2 | Descrição |
+|-------------------------|-------------|-----------|
+| `ring-ring` | `ring-brand` | Anel de foco padrão |
+| `ring-primary` | `ring-brand` | Anel brand |
+| `ring-primary/40` | `ring-brand/40` | Anel brand sutil |
+| `ring-offset-background` | `ring-offset-bg-base` | Offset do anel de foco |
+
+#### Sidebar
+
+| Lovable (projeto atual) | laudovoz-v2 | Descrição |
+|-------------------------|-------------|-----------|
+| `bg-sidebar` | `bg-sidebar-bg` | Fundo sidebar |
+| `text-sidebar-foreground` | `text-sidebar-text` | Texto sidebar |
+| `bg-sidebar-accent` | `bg-sidebar-hover` | Hover/active sidebar item |
+| `text-sidebar-accent-foreground` | `text-sidebar-text-active` | Texto item ativo sidebar |
+| `border-sidebar-border` | `border-sidebar-border` | Borda separadora sidebar |
+| `bg-sidebar-primary` | `bg-sidebar-brand` | Ícone/badge brand na sidebar |
+
+#### Utility Classes Customizadas
+
+| Lovable (projeto atual) | laudovoz-v2 | Descrição |
+|-------------------------|-------------|-----------|
+| `surface-card` | `bg-bg-card border border-border-default` | Card com borda |
+| `surface-glass` | `bg-bg-glass border border-border-subtle` | Card semi-transparente (landing) |
+| `surface-glass-strong` | `bg-bg-glass-strong border border-border-subtle` | Glass mais opaco |
+| `surface-card-hover` | `bg-bg-card border border-border-default hover:border-border-active` | Card com hover |
+| `input-glass` | `bg-bg-input border border-border-input focus:ring-brand/10` | Input estilizado |
+| `gradient-brand` | `bg-gradient-brand` | Gradiente primary → accent |
+| `gradient-cyan` | `bg-gradient-cyan` | Gradiente primary → blue |
+| `gradient-landing` | `bg-gradient-landing` | Gradiente blue → accent |
+| `text-gradient` | `text-gradient-hero` | Texto gradiente branco→cinza |
+| `text-gradient-brand` | `text-gradient-brand` | Texto gradiente primary→accent |
+| `text-gradient-blue` | `text-gradient-blue` | Texto gradiente blue→accent |
+| `hero-glow` | `bg-hero-glow` | Radial glow no hero |
+| `glow-primary` | `shadow-glow-brand` | Box-shadow glow brand |
+| `glow-primary-sm` | `shadow-glow-brand-sm` | Box-shadow glow brand pequeno |
+| `glow-recording` | `shadow-glow-recording` | Box-shadow glow vermelho (gravando) |
+| `animate-pulse-brand` | `animate-pulse-brand` | Pulsação brand |
+| `bg-dot-grid` | `bg-dot-grid` | Grid de dots (landing) |
+| `border-gradient` | `border-gradient` | Borda gradiente animada |
+
+#### Componentes shadcn/ui — Classes Comuns
+
+| Lovable (projeto atual) | laudovoz-v2 | Contexto |
+|-------------------------|-------------|----------|
+| `rounded-lg` | `rounded-lg` | Border-radius padrão (0.625rem) |
+| `rounded-md` | `rounded-md` | Border-radius médio |
+| `rounded-xl` | `rounded-xl` | Modals, botões grandes |
+| `shadow-sm` | `shadow-sm` | Sombra padrão de Card |
+| `h-9 px-4 py-2` | `h-9 px-4 py-2` | Button default size |
+| `h-10 px-6` | `h-10 px-6` | Button lg size |
+| `h-11 px-8` | `h-11 px-8` | Button xl size |
+| `text-[13px]` | `text-[13px]` | Tamanho base do app |
+| `text-[11px]` | `text-[11px]` | Labels pequenas |
+| `text-[10px]` | `text-[10px]` | Micro labels |
+
+#### CSS Variables — Mapeamento Direto
+
+| Lovable (projeto atual) | laudovoz-v2 | Valor (tema dark) |
+|-------------------------|-------------|-------------------|
+| `--background` | `--bg-base` | `0 0% 2%` |
+| `--foreground` | `--text-primary` | `0 0% 93%` |
+| `--card` | `--bg-card` | `0 0% 5%` |
+| `--card-foreground` | `--text-primary` | `0 0% 93%` |
+| `--primary` | `--brand` | `217 91% 60%` |
+| `--primary-foreground` | `--text-on-brand` | `0 0% 100%` |
+| `--secondary` | `--bg-secondary` | `0 0% 8%` |
+| `--secondary-foreground` | `--text-secondary` | `0 0% 60%` |
+| `--muted` | `--bg-muted` | `0 0% 7%` |
+| `--muted-foreground` | `--text-tertiary` | `0 0% 38%` |
+| `--accent` | `--accent` | `258 80% 62%` |
+| `--accent-foreground` | `--text-on-accent` | `0 0% 100%` |
+| `--destructive` | `--danger` | `0 62% 55%` |
+| `--border` | `--border-default` | `0 0% 10%` |
+| `--input` | `--bg-input` | `0 0% 7%` |
+| `--ring` | `--ring-brand` | `217 91% 60%` |
+| `--success` | `--success` | `142 50% 45%` |
+| `--warning` | `--warning` | `38 90% 55%` |
+| `--info` | `--info` | `200 60% 50%` |
+| `--bg-glass` | `--bg-glass` | `0 0% 8% / 0.5` |
+| `--border-subtle` | `--border-subtle` | `0 0% 12% / 0.4` |
+| `--border-active` | `--border-active` | `217 91% 60% / 0.4` |
+| `--sidebar-background` | `--sidebar-bg` | `0 0% 1.5%` |
+| `--sidebar-foreground` | `--sidebar-text` | `0 0% 38%` |
+| `--sidebar-primary` | `--sidebar-brand` | `217 91% 60%` |
+| `--sidebar-border` | `--sidebar-border` | `0 0% 9%` |
+
+### 1.7 ScrollReveal (landing page)
 ```tsx
 // Componente wrapper com framer-motion
 <motion.div

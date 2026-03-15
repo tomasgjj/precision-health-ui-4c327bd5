@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ArrowRight } from "lucide-react";
-import logoImg from "@/assets/logo.png";
+import Logo from "@/components/Logo";
 
 const navLinks = [
   { label: "Como funciona", href: "#como" },

@@ -1,6 +1,6 @@
 import { FileText, Clock, LayoutTemplate, Settings, BarChart3 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import logoImg from "@/assets/logo.png";
+import Logo from "@/components/Logo";
 
 type Tab = "dashboard" | "laudos" | "historico" | "mascaras" | "config";
 

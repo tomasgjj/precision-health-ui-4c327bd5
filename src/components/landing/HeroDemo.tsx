@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import {
   Mic, Square, Check, Copy, FileDown, FileText, Microscope,
   ChevronRight, ChevronDown, Plus, Camera, Image, Upload,
-  Pencil, RotateCcw
+  Pencil, RotateCcw, BarChart3, Clock, Target, TrendingUp
 } from "lucide-react";
 
 type Phase =
@@ -11,8 +11,9 @@ type Phase =
   | "mask-intro" | "mask-upload" | "mask-analyzing" | "mask-editor" | "mask-findings" | "mask-done"
   /* 2. Report generation */
   | "report-intro" | "recording" | "processing" | "result"
-  /* 3. Voice correction */
-  | "correction-intro" | "correction-recording" | "correction-applying" | "correction-done";
+  | "correction-intro" | "correction-recording" | "correction-applying" | "correction-done"
+  /* 4. Dashboard */
+  | "dash-intro" | "dash-stats";
 
 /* ── Mask data ── */
 const MASK_PHOTOS = ["template_p1.jpg", "template_p2.jpg", "template_p3.jpg"];
@@ -54,6 +55,22 @@ const CORRECTED_SECTIONS = [
   { label: "Impressão", text: "— Esteatose hepática grau II.\n— Cisto simples renal à direita (2,0 cm).", isImpression: true, changed: true },
 ];
 
+/* ── Dashboard data ── */
+const DASH_METRICS = [
+  { label: "Laudos hoje", value: "12", icon: FileText, trend: "+3 vs ontem" },
+  { label: "Tempo economizado", value: "47min", icon: Clock, trend: "vs digitação" },
+  { label: "Meta diária", value: "80%", icon: Target, trend: "12/15 laudos" },
+  { label: "Taxa de correção", value: "8%", icon: TrendingUp, trend: "↓2% vs semana" },
+];
+
+const DASH_HEATMAP = [
+  [0, 0, 1, 3, 5, 7, 8, 6, 4, 2, 1, 0],
+  [0, 1, 2, 4, 6, 8, 9, 7, 5, 3, 1, 0],
+  [0, 0, 1, 3, 5, 7, 7, 5, 3, 2, 1, 0],
+  [0, 1, 2, 5, 7, 9, 8, 6, 4, 2, 0, 0],
+  [0, 0, 1, 4, 6, 8, 9, 7, 5, 3, 1, 0],
+];
+
 /* ── Timing ── */
 const RECORDING_DURATION = 3500;
 const PROCESSING_DURATION = 2200;
@@ -83,6 +100,11 @@ export default function HeroDemo() {
   const [corrProgress, setCorrProgress] = useState(0);
   const [visibleCorrSections, setVisibleCorrSections] = useState(0);
 
+  // Dashboard state
+  const [visibleMetrics, setVisibleMetrics] = useState(0);
+  const [showHeatmap, setShowHeatmap] = useState(false);
+  const [dailyProgress, setDailyProgress] = useState(0);
+
   const resetAll = useCallback(() => {
     setUploadedPhotos(0);
     setAnalyzeStep(0);
@@ -100,6 +122,9 @@ export default function HeroDemo() {
     setCorrTimer(0);
     setCorrProgress(0);
     setVisibleCorrSections(0);
+    setVisibleMetrics(0);
+    setShowHeatmap(false);
+    setDailyProgress(0);
   }, []);
 
   const startDemo = useCallback(() => {
@@ -264,7 +289,7 @@ export default function HeroDemo() {
     return () => { clearInterval(progressId); clearTimeout(next); };
   }, [phase]);
 
-  // ── CORRECTION DONE → loop ──
+  // ── CORRECTION DONE → dashboard ──
   useEffect(() => {
     if (phase !== "correction-done") return;
     setVisibleCorrSections(0);
@@ -274,8 +299,40 @@ export default function HeroDemo() {
       setVisibleCorrSections(i);
       if (i >= CORRECTED_SECTIONS.length) clearInterval(revealId);
     }, 300);
-    const next = setTimeout(() => startDemo(), 3500);
+    const next = setTimeout(() => setPhase("dash-intro"), 3000 + CORRECTED_SECTIONS.length * 300);
     return () => { clearInterval(revealId); clearTimeout(next); };
+  }, [phase]);
+
+  // ── DASH INTRO ──
+  useEffect(() => {
+    if (phase !== "dash-intro") return;
+    const id = setTimeout(() => setPhase("dash-stats"), 2000);
+    return () => clearTimeout(id);
+  }, [phase]);
+
+  // ── DASH STATS → loop ──
+  useEffect(() => {
+    if (phase !== "dash-stats") return;
+    setVisibleMetrics(0);
+    setShowHeatmap(false);
+    setDailyProgress(0);
+    let i = 0;
+    const metricsId = setInterval(() => {
+      i++;
+      setVisibleMetrics(i);
+      if (i >= DASH_METRICS.length) clearInterval(metricsId);
+    }, 400);
+    const progressTimer = setTimeout(() => {
+      let p = 0;
+      const pid = setInterval(() => {
+        p += 2;
+        setDailyProgress(Math.min(p, 80));
+        if (p >= 80) clearInterval(pid);
+      }, 30);
+    }, 800);
+    const heatmapTimer = setTimeout(() => setShowHeatmap(true), 1800);
+    const next = setTimeout(() => startDemo(), 5500);
+    return () => { clearInterval(metricsId); clearTimeout(progressTimer); clearTimeout(heatmapTimer); clearTimeout(next); };
   }, [phase, startDemo]);
 
   const fmtTime = (s: number) =>
@@ -284,11 +341,13 @@ export default function HeroDemo() {
   const isMaskPhase = phase.startsWith("mask-");
   const isReportPhase = phase === "recording" || phase === "processing" || phase === "result" || phase === "report-intro";
   const isCorrectionPhase = phase.startsWith("correction-");
+  const isDashPhase = phase.startsWith("dash-");
 
   const getPhaseLabel = () => {
     if (isMaskPhase) return "Máscaras";
     if (isReportPhase) return "Laudo";
     if (isCorrectionPhase) return "Correção";
+    if (isDashPhase) return "Dashboard";
     return "";
   };
 
@@ -296,6 +355,7 @@ export default function HeroDemo() {
     if (isMaskPhase) return "Editor de Máscaras — USG Abdome Total";
     if (isReportPhase) return "Radiktor — USG Abdome Total";
     if (isCorrectionPhase) return "Correção por Voz — USG Abdome Total";
+    if (isDashPhase) return "Radiktor — Dashboard";
     return "Radiktor";
   };
 
@@ -316,7 +376,7 @@ export default function HeroDemo() {
         </span>
         {/* Phase pills */}
         <div className="ml-auto flex items-center gap-1.5 shrink-0">
-          {["Máscaras", "Laudo", "Correção"].map((label) => (
+          {["Máscaras", "Laudo", "Correção", "Dashboard"].map((label) => (
             <span
               key={label}
               className={`text-[9px] px-2 py-0.5 rounded-full font-medium transition-all duration-300 ${
@@ -751,6 +811,104 @@ export default function HeroDemo() {
                   <div className="text-[12px] text-foreground/70 leading-relaxed whitespace-pre-line">{section.text}</div>
                 </div>
               ))}
+            </div>
+          </div>
+        )}
+        {/* ═══ DASH INTRO ═══ */}
+        {phase === "dash-intro" && (
+          <div className="flex flex-col items-center justify-center h-[320px] gap-5 animate-fade-in">
+            <div className="w-16 h-16 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center animate-scale-in">
+              <BarChart3 className="w-7 h-7 text-primary/70" />
+            </div>
+            <div className="text-center animate-fade-in [animation-delay:300ms] opacity-0 [animation-fill-mode:forwards]">
+              <h3 className="text-[18px] font-bold text-foreground mb-1.5">4. Dashboard</h3>
+              <p className="text-[13px] text-muted-foreground max-w-[280px]">
+                Acompanhe sua produtividade, tempo economizado e metas diárias
+              </p>
+            </div>
+            <div className="flex gap-1.5 mt-1 animate-fade-in [animation-delay:600ms] opacity-0 [animation-fill-mode:forwards]">
+              <span className="w-1.5 h-1.5 rounded-full bg-primary/60 animate-pulse" />
+              <span className="w-1.5 h-1.5 rounded-full bg-primary/40 animate-pulse [animation-delay:200ms]" />
+              <span className="w-1.5 h-1.5 rounded-full bg-primary/20 animate-pulse [animation-delay:400ms]" />
+            </div>
+          </div>
+        )}
+
+        {/* ═══ DASH STATS ═══ */}
+        {phase === "dash-stats" && (
+          <div className="animate-fade-in p-5 h-[320px] overflow-hidden">
+            {/* Metrics grid */}
+            <div className="grid grid-cols-2 gap-2.5 mb-4">
+              {DASH_METRICS.map((m, i) => {
+                const Icon = m.icon;
+                return (
+                  <div
+                    key={m.label}
+                    className={`transition-all duration-500 ${i < visibleMetrics ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"} rounded-xl surface-glass p-3`}
+                  >
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <div className="w-6 h-6 rounded-lg bg-primary/10 flex items-center justify-center">
+                        <Icon className="w-3 h-3 text-primary" />
+                      </div>
+                      <span className="text-[10px] text-muted-foreground/60">{m.label}</span>
+                    </div>
+                    <div className="text-[18px] font-bold text-foreground leading-none">{m.value}</div>
+                    <div className="text-[9px] text-muted-foreground/50 mt-1">{m.trend}</div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Bottom row: progress circle + heatmap */}
+            <div className="flex gap-3">
+              {/* Daily progress */}
+              <div className={`flex-1 rounded-xl surface-glass p-3 flex items-center gap-3 transition-all duration-500 ${visibleMetrics >= 4 ? "opacity-100" : "opacity-0"}`}>
+                <div className="relative w-12 h-12 shrink-0">
+                  <svg className="w-12 h-12 -rotate-90" viewBox="0 0 48 48">
+                    <circle cx="24" cy="24" r="20" fill="none" stroke="hsl(var(--muted)/0.2)" strokeWidth="3" />
+                    <circle
+                      cx="24" cy="24" r="20" fill="none"
+                      stroke="hsl(var(--primary))"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeDasharray={`${2 * Math.PI * 20}`}
+                      strokeDashoffset={`${2 * Math.PI * 20 * (1 - dailyProgress / 100)}`}
+                      className="transition-all duration-200"
+                    />
+                  </svg>
+                  <span className="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-foreground">{dailyProgress}%</span>
+                </div>
+                <div>
+                  <div className="text-[11px] font-semibold text-foreground">Meta diária</div>
+                  <div className="text-[10px] text-muted-foreground/60">12 de 15 laudos</div>
+                </div>
+              </div>
+
+              {/* Heatmap */}
+              <div className={`flex-1 rounded-xl surface-glass p-3 transition-all duration-700 ${showHeatmap ? "opacity-100" : "opacity-0"}`}>
+                <div className="text-[10px] text-muted-foreground/60 mb-1.5">Horários de pico</div>
+                <div className="space-y-[2px]">
+                  {DASH_HEATMAP.map((row, ri) => (
+                    <div key={ri} className="flex gap-[2px]">
+                      {row.map((v, ci) => (
+                        <div
+                          key={ci}
+                          className="w-full h-2 rounded-[1px] transition-all duration-300"
+                          style={{
+                            backgroundColor: `hsl(var(--primary) / ${Math.max(v / 10, 0.05)})`,
+                            transitionDelay: `${(ri * 12 + ci) * 20}ms`,
+                          }}
+                        />
+                      ))}
+                    </div>
+                  ))}
+                </div>
+                <div className="flex justify-between mt-1">
+                  <span className="text-[8px] text-muted-foreground/40">6h</span>
+                  <span className="text-[8px] text-muted-foreground/40">12h</span>
+                  <span className="text-[8px] text-muted-foreground/40">18h</span>
+                </div>
+              </div>
             </div>
           </div>
         )}

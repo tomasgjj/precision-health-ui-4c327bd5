@@ -115,7 +115,7 @@ const Login = () => {
 
         {/* Footer */}
         <p className="relative z-10 text-[11px] text-muted-foreground">
-          © 2025 LaudoVoz. Todos os direitos reservados.
+          © 2025 Radiktor. Todos os direitos reservados.
         </p>
       </div>
 

@@ -289,7 +289,7 @@ export default function HeroDemo() {
     return () => { clearInterval(progressId); clearTimeout(next); };
   }, [phase]);
 
-  // ── CORRECTION DONE → loop ──
+  // ── CORRECTION DONE → dashboard ──
   useEffect(() => {
     if (phase !== "correction-done") return;
     setVisibleCorrSections(0);
@@ -299,8 +299,40 @@ export default function HeroDemo() {
       setVisibleCorrSections(i);
       if (i >= CORRECTED_SECTIONS.length) clearInterval(revealId);
     }, 300);
-    const next = setTimeout(() => startDemo(), 3500);
+    const next = setTimeout(() => setPhase("dash-intro"), 3000 + CORRECTED_SECTIONS.length * 300);
     return () => { clearInterval(revealId); clearTimeout(next); };
+  }, [phase]);
+
+  // ── DASH INTRO ──
+  useEffect(() => {
+    if (phase !== "dash-intro") return;
+    const id = setTimeout(() => setPhase("dash-stats"), 2000);
+    return () => clearTimeout(id);
+  }, [phase]);
+
+  // ── DASH STATS → loop ──
+  useEffect(() => {
+    if (phase !== "dash-stats") return;
+    setVisibleMetrics(0);
+    setShowHeatmap(false);
+    setDailyProgress(0);
+    let i = 0;
+    const metricsId = setInterval(() => {
+      i++;
+      setVisibleMetrics(i);
+      if (i >= DASH_METRICS.length) clearInterval(metricsId);
+    }, 400);
+    const progressTimer = setTimeout(() => {
+      let p = 0;
+      const pid = setInterval(() => {
+        p += 2;
+        setDailyProgress(Math.min(p, 80));
+        if (p >= 80) clearInterval(pid);
+      }, 30);
+    }, 800);
+    const heatmapTimer = setTimeout(() => setShowHeatmap(true), 1800);
+    const next = setTimeout(() => startDemo(), 5500);
+    return () => { clearInterval(metricsId); clearTimeout(progressTimer); clearTimeout(heatmapTimer); clearTimeout(next); };
   }, [phase, startDemo]);
 
   const fmtTime = (s: number) =>

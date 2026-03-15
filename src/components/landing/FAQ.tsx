@@ -4,12 +4,16 @@ import { cn } from "@/lib/utils";
 import ScrollReveal from "./ScrollReveal";
 
 const faqs = [
+  { q: "Como funciona o Radiktor?", a: "Você dita os achados do exame por voz, o Radiktor transcreve, identifica os achados e monta o laudo estruturado seguindo seus próprios templates. Depois é só revisar e exportar." },
   { q: "Preciso instalar algo?", a: "Não. O Radiktor funciona diretamente no navegador, sem precisar instalar nenhum aplicativo." },
   { q: "Meus dados estão seguros?", a: "Sim. Utilizamos criptografia HTTPS, estamos em conformidade com a LGPD e os dados de cada usuário são completamente isolados." },
-  { q: "Funciona com quais exames?", a: "Atualmente suportamos US de abdome total, tireoide, mamas, vias urinárias e muito mais. Você pode criar templates para qualquer tipo de exame." },
-  { q: "Posso usar no celular?", a: "Sim! O Radiktor é otimizado para toque. Funciona perfeitamente em smartphones e tablets." },
-  { q: "Como funciona o plano gratuito?", a: "O plano gratuito permite gerar até 10 laudos por mês com 1 tipo de exame incluso." },
+  { q: "Quais tipos de exame são suportados?", a: "Atualmente suportamos US de abdome total, tireoide, mamas, vias urinárias e muito mais. Você pode criar templates para qualquer tipo de exame." },
+  { q: "Funciona no celular?", a: "Sim! O Radiktor é otimizado para toque. Funciona perfeitamente em smartphones e tablets." },
+  { q: "Quanto custa?", a: "Temos planos a partir de R$50/mês no anual. O plano gratuito permite gerar até 15 laudos por mês com 2 modelos inclusos." },
   { q: "O laudo gerado é definitivo?", a: "Não. O Radiktor gera uma sugestão de laudo que o médico pode editar livremente. O profissional mantém total controle e responsabilidade." },
+  { q: "A IA pode sugerir diagnósticos ao meu laudo?", a: "Não. A IA do Radiktor apenas organiza e estrutura o laudo com base nos achados que você dita e nos seus próprios templates. Os diagnósticos são sempre do médico." },
+  { q: "A IA modifica por conta própria os meus achados?", a: "Não. A IA respeita fielmente o que você ditou. Ela apenas organiza a informação na estrutura do laudo, sem alterar o conteúdo clínico." },
+  { q: "Qual a função principal do Radiktor?", a: "Transformar a ditado de achados em um laudo radiológico estruturado, usando seus próprios templates e terminologia, economizando tempo e reduzindo digitação." },
 ];
 
 const FAQ = () => {

@@ -9,8 +9,15 @@ const plans = [
     monthlyPrice: "R$70",
     yearlyPrice: "R$50",
     period: "/mês",
-    features: ["Laudos limitados", "1 tipo de exame", "Ditado por voz + IA", "Histórico na nuvem", "Exportação em PDF"],
-    cta: "Começar com Basic",
+    features: [
+      "50 laudos/mês",
+      "5 modelos customizadas",
+      "Correção por voz",
+      "PDF com assinatura digital",
+      "Histórico de 90 dias",
+      "Suporte por email",
+    ],
+    cta: "Começar",
     highlighted: false,
   },
   {
@@ -20,8 +27,17 @@ const plans = [
     yearlyPrice: "R$80",
     period: "/mês",
     badge: "POPULAR",
-    features: ["Laudos ilimitados", "Todos os tipos de exame", "Máscaras personalizadas", "Exportação em PDF", "Suporte prioritário"],
-    cta: "Começar com Pro",
+    promo: "1º mês por R$1",
+    features: [
+      "300 laudos/mês",
+      "10 modelos customizadas",
+      "Correção por voz",
+      "PDF com assinatura digital",
+      "Histórico ilimitado",
+      "Suporte prioritário",
+      "Dashboard analytics",
+    ],
+    cta: "Assinar Pro",
     highlighted: true,
   },
   {
@@ -30,8 +46,16 @@ const plans = [
     monthlyPrice: "R$200",
     yearlyPrice: "R$150",
     period: "/mês",
-    features: ["Tudo do plano Pro", "Múltiplos usuários", "Painel administrativo", "Suporte dedicado", "API de integração", "Setup personalizado"],
-    cta: "Começar com Max",
+    features: [
+      "Laudos ilimitados",
+      "Modelos ilimitadas",
+      "Correção por voz",
+      "PDF com assinatura digital",
+      "Histórico ilimitado",
+      "Dashboard analytics completo",
+      "Suporte dedicado",
+    ],
+    cta: "Assinar Max",
     highlighted: false,
   },
 ];
@@ -53,7 +77,7 @@ const Pricing = () => {
 
         <ScrollReveal delay={0.1}>
           <div className="text-center max-w-[500px] mx-auto mb-6">
-            <h2 className="text-section text-foreground">Preços simples</h2>
+            <h2 className="text-section text-foreground">Planos para cada necessidade</h2>
             <p className="text-muted-foreground mt-3 text-[14px]">Comece grátis. Faça upgrade quando precisar.</p>
           </div>
 
@@ -97,7 +121,11 @@ const Pricing = () => {
                   <span className="text-3xl font-bold tracking-tight text-foreground">{yearly ? plan.yearlyPrice : plan.monthlyPrice}</span>
                   <span className="text-[13px] text-muted-foreground">{plan.period}</span>
                 </div>
-                <p className="text-[11px] text-muted-foreground mb-6">{yearly ? "cobrado anualmente" : "cobrado mensalmente"}</p>
+                {plan.promo ? (
+                  <p className="text-[11px] text-primary font-semibold mb-6">{plan.promo}</p>
+                ) : (
+                  <p className="text-[11px] text-muted-foreground mb-6">{yearly ? "cobrado anualmente" : "cobrado mensalmente"}</p>
+                )}
 
                 <ul className="space-y-2.5 mb-8 flex-1">
                   {plan.features.map((f, j) => (
@@ -122,6 +150,12 @@ const Pricing = () => {
               </div>
             ))}
           </div>
+        </ScrollReveal>
+
+        <ScrollReveal delay={0.3}>
+          <p className="text-center text-[12px] text-muted-foreground/50 mt-8">
+            Plano gratuito: 15 laudos/mês, 2 modelos, histórico de 5 dias — sem correção por voz ou assinatura no PDF
+          </p>
         </ScrollReveal>
       </div>
     </section>

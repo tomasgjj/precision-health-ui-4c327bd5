@@ -1,4 +1,4 @@
-import logoImg from "@/assets/logo.png";
+import Logo from "@/components/Logo";
 
 const footerLinks = [
   {

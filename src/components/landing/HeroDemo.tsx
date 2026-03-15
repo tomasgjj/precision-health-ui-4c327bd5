@@ -11,8 +11,9 @@ type Phase =
   | "mask-intro" | "mask-upload" | "mask-analyzing" | "mask-editor" | "mask-findings" | "mask-done"
   /* 2. Report generation */
   | "report-intro" | "recording" | "processing" | "result"
-  /* 3. Voice correction */
-  | "correction-intro" | "correction-recording" | "correction-applying" | "correction-done";
+  | "correction-intro" | "correction-recording" | "correction-applying" | "correction-done"
+  /* 4. Dashboard */
+  | "dash-intro" | "dash-stats";
 
 /* ── Mask data ── */
 const MASK_PHOTOS = ["template_p1.jpg", "template_p2.jpg", "template_p3.jpg"];

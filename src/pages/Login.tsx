@@ -70,7 +70,7 @@ const Login = () => {
 
         {/* Logo */}
         <div className="relative z-10 flex items-center gap-2.5">
-          <img src={logoImg} alt="Radiktor" className="w-8 h-8 rounded-lg" />
+          <Logo size={32} />
           <span className="font-semibold text-[16px] text-foreground tracking-[-0.01em]">Radiktor</span>
         </div>
 

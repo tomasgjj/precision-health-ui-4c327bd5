@@ -55,6 +55,22 @@ const CORRECTED_SECTIONS = [
   { label: "Impressão", text: "— Esteatose hepática grau II.\n— Cisto simples renal à direita (2,0 cm).", isImpression: true, changed: true },
 ];
 
+/* ── Dashboard data ── */
+const DASH_METRICS = [
+  { label: "Laudos hoje", value: "12", icon: FileText, trend: "+3 vs ontem" },
+  { label: "Tempo economizado", value: "47min", icon: Clock, trend: "vs digitação" },
+  { label: "Meta diária", value: "80%", icon: Target, trend: "12/15 laudos" },
+  { label: "Taxa de correção", value: "8%", icon: TrendingUp, trend: "↓2% vs semana" },
+];
+
+const DASH_HEATMAP = [
+  [0, 0, 1, 3, 5, 7, 8, 6, 4, 2, 1, 0],
+  [0, 1, 2, 4, 6, 8, 9, 7, 5, 3, 1, 0],
+  [0, 0, 1, 3, 5, 7, 7, 5, 3, 2, 1, 0],
+  [0, 1, 2, 5, 7, 9, 8, 6, 4, 2, 0, 0],
+  [0, 0, 1, 4, 6, 8, 9, 7, 5, 3, 1, 0],
+];
+
 /* ── Timing ── */
 const RECORDING_DURATION = 3500;
 const PROCESSING_DURATION = 2200;

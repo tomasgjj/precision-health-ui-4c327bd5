@@ -18,7 +18,7 @@ export function useTheme() {
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>(() => {
-    const saved = localStorage.getItem("laudovoz-theme");
+    const saved = localStorage.getItem("radiktor-theme");
     return (saved as Theme) || "dark";
   });
 

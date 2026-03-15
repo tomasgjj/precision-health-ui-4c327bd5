@@ -814,6 +814,104 @@ export default function HeroDemo() {
             </div>
           </div>
         )}
+        {/* ═══ DASH INTRO ═══ */}
+        {phase === "dash-intro" && (
+          <div className="flex flex-col items-center justify-center h-[320px] gap-5 animate-fade-in">
+            <div className="w-16 h-16 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center animate-scale-in">
+              <BarChart3 className="w-7 h-7 text-primary/70" />
+            </div>
+            <div className="text-center animate-fade-in [animation-delay:300ms] opacity-0 [animation-fill-mode:forwards]">
+              <h3 className="text-[18px] font-bold text-foreground mb-1.5">4. Dashboard</h3>
+              <p className="text-[13px] text-muted-foreground max-w-[280px]">
+                Acompanhe sua produtividade, tempo economizado e metas diárias
+              </p>
+            </div>
+            <div className="flex gap-1.5 mt-1 animate-fade-in [animation-delay:600ms] opacity-0 [animation-fill-mode:forwards]">
+              <span className="w-1.5 h-1.5 rounded-full bg-primary/60 animate-pulse" />
+              <span className="w-1.5 h-1.5 rounded-full bg-primary/40 animate-pulse [animation-delay:200ms]" />
+              <span className="w-1.5 h-1.5 rounded-full bg-primary/20 animate-pulse [animation-delay:400ms]" />
+            </div>
+          </div>
+        )}
+
+        {/* ═══ DASH STATS ═══ */}
+        {phase === "dash-stats" && (
+          <div className="animate-fade-in p-5 h-[320px] overflow-hidden">
+            {/* Metrics grid */}
+            <div className="grid grid-cols-2 gap-2.5 mb-4">
+              {DASH_METRICS.map((m, i) => {
+                const Icon = m.icon;
+                return (
+                  <div
+                    key={m.label}
+                    className={`transition-all duration-500 ${i < visibleMetrics ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"} rounded-xl surface-glass p-3`}
+                  >
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <div className="w-6 h-6 rounded-lg bg-primary/10 flex items-center justify-center">
+                        <Icon className="w-3 h-3 text-primary" />
+                      </div>
+                      <span className="text-[10px] text-muted-foreground/60">{m.label}</span>
+                    </div>
+                    <div className="text-[18px] font-bold text-foreground leading-none">{m.value}</div>
+                    <div className="text-[9px] text-muted-foreground/50 mt-1">{m.trend}</div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Bottom row: progress circle + heatmap */}
+            <div className="flex gap-3">
+              {/* Daily progress */}
+              <div className={`flex-1 rounded-xl surface-glass p-3 flex items-center gap-3 transition-all duration-500 ${visibleMetrics >= 4 ? "opacity-100" : "opacity-0"}`}>
+                <div className="relative w-12 h-12 shrink-0">
+                  <svg className="w-12 h-12 -rotate-90" viewBox="0 0 48 48">
+                    <circle cx="24" cy="24" r="20" fill="none" stroke="hsl(var(--muted)/0.2)" strokeWidth="3" />
+                    <circle
+                      cx="24" cy="24" r="20" fill="none"
+                      stroke="hsl(var(--primary))"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeDasharray={`${2 * Math.PI * 20}`}
+                      strokeDashoffset={`${2 * Math.PI * 20 * (1 - dailyProgress / 100)}`}
+                      className="transition-all duration-200"
+                    />
+                  </svg>
+                  <span className="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-foreground">{dailyProgress}%</span>
+                </div>
+                <div>
+                  <div className="text-[11px] font-semibold text-foreground">Meta diária</div>
+                  <div className="text-[10px] text-muted-foreground/60">12 de 15 laudos</div>
+                </div>
+              </div>
+
+              {/* Heatmap */}
+              <div className={`flex-1 rounded-xl surface-glass p-3 transition-all duration-700 ${showHeatmap ? "opacity-100" : "opacity-0"}`}>
+                <div className="text-[10px] text-muted-foreground/60 mb-1.5">Horários de pico</div>
+                <div className="space-y-[2px]">
+                  {DASH_HEATMAP.map((row, ri) => (
+                    <div key={ri} className="flex gap-[2px]">
+                      {row.map((v, ci) => (
+                        <div
+                          key={ci}
+                          className="w-full h-2 rounded-[1px] transition-all duration-300"
+                          style={{
+                            backgroundColor: `hsl(var(--primary) / ${Math.max(v / 10, 0.05)})`,
+                            transitionDelay: `${(ri * 12 + ci) * 20}ms`,
+                          }}
+                        />
+                      ))}
+                    </div>
+                  ))}
+                </div>
+                <div className="flex justify-between mt-1">
+                  <span className="text-[8px] text-muted-foreground/40">6h</span>
+                  <span className="text-[8px] text-muted-foreground/40">12h</span>
+                  <span className="text-[8px] text-muted-foreground/40">18h</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

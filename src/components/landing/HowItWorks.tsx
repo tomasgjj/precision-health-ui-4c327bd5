@@ -1,4 +1,4 @@
-import { Mic, Brain, CheckCircle, FileText, Camera, Sparkles } from "lucide-react";
+import { Mic, Brain, CheckCircle, FileText, Camera } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
 
 const steps = [
@@ -32,11 +32,6 @@ const maskFeatures = [
     icon: Camera,
     title: "Importação por foto",
     desc: "Tire foto de um modelo em papel e a IA cria a máscara automaticamente.",
-  },
-  {
-    icon: Sparkles,
-    title: "Placeholders inteligentes",
-    desc: "Use {loc}, {med} para localização e medidas preenchidas pela IA durante a geração.",
   },
 ];
 

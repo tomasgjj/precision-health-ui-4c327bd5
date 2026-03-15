@@ -33,11 +33,6 @@ const maskFeatures = [
     title: "Importação por foto",
     desc: "Tire foto de um modelo em papel e a IA cria a máscara automaticamente.",
   },
-  {
-    icon: Sparkles,
-    title: "Placeholders inteligentes",
-    desc: "Use {loc}, {med} para localização e medidas preenchidas pela IA durante a geração.",
-  },
 ];
 
 const HowItWorks = () => (

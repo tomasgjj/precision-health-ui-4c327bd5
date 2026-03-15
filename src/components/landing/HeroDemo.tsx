@@ -177,7 +177,7 @@ export default function HeroDemo() {
   const fmtTime = (s: number) =>
     `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
 
-  const isMaskPhase = phase.startsWith("mask");
+  const isMaskPhase = phase === "mask-intro" || phase.startsWith("mask-");
 
   return (
     <div

@@ -1,6 +1,6 @@
 import { FileText, Clock, LayoutTemplate, Settings, BarChart3 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import logoImg from "@/assets/logo.png";
+import Logo from "@/components/Logo";
 
 type Tab = "dashboard" | "laudos" | "historico" | "mascaras" | "config";
 
@@ -23,7 +23,7 @@ export default function MobileHeader({ activeTab, onTabChange }: MobileHeaderPro
       {/* Top bar */}
       <header className="lg:hidden sticky top-0 z-40 flex items-center justify-between px-4 h-11 bg-background border-b border-border">
         <div className="flex items-center gap-2">
-          <img src={logoImg} alt="Radiktor" className="w-5 h-5 rounded" />
+          <Logo size={20} />
           <span className="font-semibold text-foreground text-[13px] tracking-tight">Radiktor</span>
         </div>
       </header>

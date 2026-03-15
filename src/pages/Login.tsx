@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { ArrowRight, Eye, EyeOff, FileText, Clock, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import logoImg from "@/assets/logo.png";
+import Logo from "@/components/Logo";
 
 /* Animated counter that ticks up from 0 to target */
 const AnimatedNumber = ({ target, duration = 2000, suffix = "" }: { target: number; duration?: number; suffix?: string }) => {
@@ -70,7 +70,7 @@ const Login = () => {
 
         {/* Logo */}
         <div className="relative z-10 flex items-center gap-2.5">
-          <img src={logoImg} alt="Radiktor" className="w-8 h-8 rounded-lg" />
+          <Logo size={32} />
           <span className="font-semibold text-[16px] text-foreground tracking-[-0.01em]">Radiktor</span>
         </div>
 
@@ -124,7 +124,7 @@ const Login = () => {
         <div className="w-full max-w-[380px]">
           {/* Mobile logo */}
           <div className="lg:hidden flex items-center gap-2.5 mb-10">
-            <img src={logoImg} alt="Radiktor" className="w-8 h-8 rounded-lg" />
+            <Logo size={32} />
             <span className="font-semibold text-[16px] text-foreground tracking-[-0.01em]">Radiktor</span>
           </div>
 

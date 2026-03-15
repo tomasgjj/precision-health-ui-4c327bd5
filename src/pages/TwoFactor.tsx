@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { Shield, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import logoImg from "@/assets/logo.png";
+import Logo from "@/components/Logo";
 
 const TwoFactor = () => {
   const [code, setCode] = useState(["", "", "", "", "", ""]);

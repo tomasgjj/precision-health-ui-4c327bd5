@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import {
   Mic, Square, Check, Copy, FileDown, FileText, Microscope,
   ChevronRight, ChevronDown, Plus, Camera, Image, Upload,
-  Pencil, RotateCcw
+  Pencil, RotateCcw, BarChart3, Clock, Target, TrendingUp
 } from "lucide-react";
 
 type Phase =

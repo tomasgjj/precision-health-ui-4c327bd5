@@ -132,63 +132,63 @@
   }
 
   [data-theme="light"] {
-    --color-brand: 33 78% 48%;
-    --color-brand-light: 38 90% 52%;
-    --color-accent: 33 65% 45%;
-    --color-accent-light: 38 60% 52%;
-    --color-blue: 33 78% 48%;
-    --color-green: 142 60% 42%;
-    --color-purple: 33 55% 40%;
+    --color-brand: 20 65% 48%;
+    --color-brand-light: 24 70% 55%;
+    --color-accent: 20 55% 44%;
+    --color-accent-light: 24 60% 50%;
+    --color-blue: 20 65% 48%;
+    --color-green: 152 50% 38%;
+    --color-purple: 20 40% 40%;
 
-    --background: 30 10% 97%;
-    --foreground: 0 0% 10%;
+    --background: 35 20% 96%;
+    --foreground: 25 15% 12%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 10%;
+    --card: 35 18% 99%;
+    --card-foreground: 25 15% 12%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 10%;
+    --popover: 35 18% 99%;
+    --popover-foreground: 25 15% 12%;
 
-    --primary: 33 78% 48%;
+    --primary: 20 65% 48%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 30 8% 93%;
-    --secondary-foreground: 0 0% 40%;
+    --secondary: 30 15% 91%;
+    --secondary-foreground: 25 10% 40%;
 
-    --muted: 30 8% 94%;
-    --muted-foreground: 0 0% 45%;
+    --muted: 30 12% 93%;
+    --muted-foreground: 25 8% 48%;
 
-    --accent: 33 65% 45%;
+    --accent: 20 55% 44%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 30 8% 87%;
-    --input: 30 8% 93%;
-    --ring: 33 78% 48%;
+    --border: 30 12% 86%;
+    --input: 30 15% 91%;
+    --ring: 20 65% 48%;
 
-    --sidebar-background: 30 8% 96%;
-    --sidebar-foreground: 0 0% 45%;
-    --sidebar-primary: 33 78% 48%;
+    --sidebar-background: 35 18% 95%;
+    --sidebar-foreground: 25 8% 48%;
+    --sidebar-primary: 20 65% 48%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 30 8% 93%;
-    --sidebar-accent-foreground: 0 0% 40%;
-    --sidebar-border: 30 8% 89%;
-    --sidebar-ring: 33 78% 48%;
+    --sidebar-accent: 30 15% 91%;
+    --sidebar-accent-foreground: 25 10% 40%;
+    --sidebar-border: 30 12% 88%;
+    --sidebar-ring: 20 65% 48%;
 
-    --success: 142 50% 40%;
+    --success: 152 45% 38%;
     --success-foreground: 0 0% 100%;
-    --info: 200 60% 45%;
+    --info: 200 50% 45%;
     --info-foreground: 0 0% 100%;
-    --warning: 38 90% 50%;
+    --warning: 38 80% 50%;
     --warning-foreground: 0 0% 0%;
 
-    --bg-glass: 0 0% 100% / 0.7;
-    --bg-glass-hover: 30 5% 96% / 0.8;
-    --bg-input-glass: 30 5% 97% / 0.9;
-    --border-subtle: 30 8% 84% / 0.5;
-    --border-active: 33 78% 48% / 0.4;
+    --bg-glass: 35 18% 99% / 0.7;
+    --bg-glass-hover: 30 12% 95% / 0.8;
+    --bg-input-glass: 35 15% 97% / 0.9;
+    --border-subtle: 30 12% 82% / 0.5;
+    --border-active: 20 65% 48% / 0.4;
   }
 
   * {

@@ -140,23 +140,23 @@
     --color-green: 152 50% 38%;
     --color-purple: 20 40% 40%;
 
-    --background: 35 20% 96%;
-    --foreground: 25 15% 12%;
+    --background: 33 30% 94%;
+    --foreground: 25 20% 10%;
 
-    --card: 35 18% 99%;
-    --card-foreground: 25 15% 12%;
+    --card: 33 25% 98%;
+    --card-foreground: 25 20% 10%;
 
-    --popover: 35 18% 99%;
-    --popover-foreground: 25 15% 12%;
+    --popover: 33 25% 98%;
+    --popover-foreground: 25 20% 10%;
 
     --primary: 20 65% 48%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 30 15% 91%;
-    --secondary-foreground: 25 10% 40%;
+    --secondary: 30 20% 88%;
+    --secondary-foreground: 25 15% 38%;
 
-    --muted: 30 12% 93%;
-    --muted-foreground: 25 8% 48%;
+    --muted: 30 18% 90%;
+    --muted-foreground: 25 12% 45%;
 
     --accent: 20 55% 44%;
     --accent-foreground: 0 0% 100%;
@@ -164,17 +164,17 @@
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 30 12% 86%;
-    --input: 30 15% 91%;
+    --border: 30 18% 82%;
+    --input: 30 20% 88%;
     --ring: 20 65% 48%;
 
-    --sidebar-background: 35 18% 95%;
-    --sidebar-foreground: 25 8% 48%;
+    --sidebar-background: 33 25% 92%;
+    --sidebar-foreground: 25 12% 45%;
     --sidebar-primary: 20 65% 48%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 30 15% 91%;
-    --sidebar-accent-foreground: 25 10% 40%;
-    --sidebar-border: 30 12% 88%;
+    --sidebar-accent: 30 20% 88%;
+    --sidebar-accent-foreground: 25 15% 38%;
+    --sidebar-border: 30 18% 84%;
     --sidebar-ring: 20 65% 48%;
 
     --success: 152 45% 38%;
@@ -184,10 +184,10 @@
     --warning: 38 80% 50%;
     --warning-foreground: 0 0% 0%;
 
-    --bg-glass: 35 18% 99% / 0.7;
-    --bg-glass-hover: 30 12% 95% / 0.8;
-    --bg-input-glass: 35 15% 97% / 0.9;
-    --border-subtle: 30 12% 82% / 0.5;
+    --bg-glass: 33 25% 97% / 0.7;
+    --bg-glass-hover: 30 18% 92% / 0.8;
+    --bg-input-glass: 33 22% 95% / 0.9;
+    --border-subtle: 30 18% 78% / 0.5;
     --border-active: 20 65% 48% / 0.4;
   }
 

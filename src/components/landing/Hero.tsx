@@ -20,7 +20,7 @@ const Hero = () => (
         <h1 className="animate-fade-up opacity-0 [animation-delay:100ms] text-hero text-foreground">
           Laudos radiológicos completos{" "}
           <br className="hidden sm:block" />
-          <span className="text-gradient-blue">em poucos segundos</span>
+          <span className="text-gradient-blue">completos em segundos</span>
         </h1>
 
         <p className="animate-fade-up opacity-0 [animation-delay:200ms] mt-6 text-[15px] md:text-[17px] text-muted-foreground max-w-[500px] mx-auto leading-relaxed">

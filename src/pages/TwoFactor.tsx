@@ -48,8 +48,8 @@ const TwoFactor = () => {
       <div className="w-full max-w-[400px] relative z-10">
         {/* Logo */}
         <div className="flex items-center justify-center gap-2.5 mb-10">
-          <img src={logoImg} alt="LaudoVoz" className="w-8 h-8 rounded-lg" />
-          <span className="font-semibold text-[16px] text-foreground tracking-[-0.01em]">LaudoVoz</span>
+          <img src={logoImg} alt="Radiktor" className="w-8 h-8 rounded-lg" />
+          <span className="font-semibold text-[16px] text-foreground tracking-[-0.01em]">Radiktor</span>
         </div>
 
         {/* Card */}

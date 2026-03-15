@@ -1,6 +1,6 @@
 // Lightweight UI sound effects using Web Audio API — no external files needed
 
-const SOUND_KEY = "laudovoz-sounds-enabled";
+const SOUND_KEY = "radiktor-sounds-enabled";
 
 export function isSoundEnabled(): boolean {
   return localStorage.getItem(SOUND_KEY) !== "false";

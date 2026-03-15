@@ -4,12 +4,12 @@ import { cn } from "@/lib/utils";
 import ScrollReveal from "./ScrollReveal";
 
 const faqs = [
-  { q: "Preciso instalar algo?", a: "Não. O LaudoVoz funciona diretamente no navegador, sem precisar instalar nenhum aplicativo." },
+  { q: "Preciso instalar algo?", a: "Não. O Radiktor funciona diretamente no navegador, sem precisar instalar nenhum aplicativo." },
   { q: "Meus dados estão seguros?", a: "Sim. Utilizamos criptografia HTTPS, estamos em conformidade com a LGPD e os dados de cada usuário são completamente isolados." },
   { q: "Funciona com quais exames?", a: "Atualmente suportamos US de abdome total, tireoide, mamas, vias urinárias e muito mais. Você pode criar templates para qualquer tipo de exame." },
-  { q: "Posso usar no celular?", a: "Sim! O LaudoVoz é otimizado para toque. Funciona perfeitamente em smartphones e tablets." },
+  { q: "Posso usar no celular?", a: "Sim! O Radiktor é otimizado para toque. Funciona perfeitamente em smartphones e tablets." },
   { q: "Como funciona o plano gratuito?", a: "O plano gratuito permite gerar até 10 laudos por mês com 1 tipo de exame incluso." },
-  { q: "O laudo gerado é definitivo?", a: "Não. O LaudoVoz gera uma sugestão de laudo que o médico pode editar livremente. O profissional mantém total controle e responsabilidade." },
+  { q: "O laudo gerado é definitivo?", a: "Não. O Radiktor gera uma sugestão de laudo que o médico pode editar livremente. O profissional mantém total controle e responsabilidade." },
 ];
 
 const FAQ = () => {

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ArrowRight } from "lucide-react";
+import logoImg from "@/assets/logo.png";
 
 const navLinks = [
   { label: "Como funciona", href: "#como" },
@@ -16,14 +17,7 @@ const Navbar = () => {
       <div className="bg-background/80 backdrop-blur-xl">
         <div className="container flex items-center justify-between h-14">
           <a href="/" className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg gradient-brand flex items-center justify-center">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="text-white">
-                <rect x="9" y="1.5" width="6" height="13" rx="3" fill="currentColor" />
-                <path d="M6 13c0 3 2.5 5.5 6 5.5s6-2.5 6-5.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                <line x1="12" y1="17.5" x2="12" y2="19.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                <line x1="9.5" y1="19.5" x2="14.5" y2="19.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-              </svg>
-            </div>
+            <img src={logoImg} alt="LaudoVoz" className="w-7 h-7 rounded-lg" />
             <span className="font-bold text-[14px] text-foreground tracking-tight">LaudoVoz</span>
           </a>
 
@@ -43,7 +37,7 @@ const Navbar = () => {
             <a href="/login" className="text-[13px] text-muted-foreground hover:text-foreground transition-colors hidden sm:inline-flex px-3 py-1.5">
               Entrar
             </a>
-            <button className="h-8 px-4 rounded-lg text-[12px] font-semibold gradient-cyan text-white border-none cursor-pointer hover:shadow-md transition-all duration-200 flex items-center gap-1.5">
+            <button className="h-8 px-4 rounded-lg text-[12px] font-semibold bg-primary text-primary-foreground border-none cursor-pointer hover:shadow-md transition-all duration-200 flex items-center gap-1.5">
               Começar grátis
               <ArrowRight className="w-3 h-3" />
             </button>

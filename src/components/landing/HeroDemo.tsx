@@ -122,6 +122,9 @@ export default function HeroDemo() {
     setCorrTimer(0);
     setCorrProgress(0);
     setVisibleCorrSections(0);
+    setVisibleMetrics(0);
+    setShowHeatmap(false);
+    setDailyProgress(0);
   }, []);
 
   const startDemo = useCallback(() => {

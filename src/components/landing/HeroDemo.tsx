@@ -109,7 +109,7 @@ export default function HeroDemo() {
       setVisibleLaudoSections(i);
       if (i >= LAUDO_SECTIONS.length) clearInterval(revealId);
     }, 350);
-    const next = setTimeout(() => setPhase("mask-sections"), RESULT_DISPLAY + LAUDO_SECTIONS.length * 350);
+    const next = setTimeout(() => setPhase("mask-intro"), RESULT_DISPLAY + LAUDO_SECTIONS.length * 350);
     return () => { clearInterval(revealId); clearTimeout(next); };
   }, [phase]);
 

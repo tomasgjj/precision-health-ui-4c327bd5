@@ -4,7 +4,7 @@ import { Mic, Square, Check, Copy, FileDown, FileText, Microscope, ChevronRight,
 type Phase =
   | "idle"
   | "recording" | "processing" | "result"
-  | "mask-sections" | "mask-findings" | "mask-import" | "mask-done";
+  | "mask-intro" | "mask-sections" | "mask-findings" | "mask-import" | "mask-done";
 
 /* ── Report data ── */
 const DICTATION_TEXT =
@@ -109,8 +109,15 @@ export default function HeroDemo() {
       setVisibleLaudoSections(i);
       if (i >= LAUDO_SECTIONS.length) clearInterval(revealId);
     }, 350);
-    const next = setTimeout(() => setPhase("mask-sections"), RESULT_DISPLAY + LAUDO_SECTIONS.length * 350);
+    const next = setTimeout(() => setPhase("mask-intro"), RESULT_DISPLAY + LAUDO_SECTIONS.length * 350);
     return () => { clearInterval(revealId); clearTimeout(next); };
+  }, [phase]);
+
+  // ── Mask intro splash ──
+  useEffect(() => {
+    if (phase !== "mask-intro") return;
+    const id = setTimeout(() => setPhase("mask-sections"), 2000);
+    return () => clearTimeout(id);
   }, [phase]);
 
   // ── Mask: add sections ──
@@ -170,7 +177,7 @@ export default function HeroDemo() {
   const fmtTime = (s: number) =>
     `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
 
-  const isMaskPhase = phase.startsWith("mask");
+  const isMaskPhase = phase === "mask-intro" || phase.startsWith("mask-");
 
   return (
     <div
@@ -210,7 +217,27 @@ export default function HeroDemo() {
           </div>
         )}
 
-        {/* ═══ RECORDING ═══ */}
+        {/* ═══ MASK INTRO ═══ */}
+        {phase === "mask-intro" && (
+          <div className="flex flex-col items-center justify-center h-[320px] gap-5 animate-fade-in">
+            <div className="w-16 h-16 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center animate-scale-in">
+              <FileText className="w-7 h-7 text-primary/70" />
+            </div>
+            <div className="text-center animate-fade-in [animation-delay:300ms] opacity-0 [animation-fill-mode:forwards]">
+              <h3 className="text-[18px] font-bold text-foreground mb-1.5">Máscaras</h3>
+              <p className="text-[13px] text-muted-foreground max-w-[280px]">
+                Crie templates personalizados para cada tipo de exame
+              </p>
+            </div>
+            <div className="flex gap-1.5 mt-1 animate-fade-in [animation-delay:600ms] opacity-0 [animation-fill-mode:forwards]">
+              <span className="w-1.5 h-1.5 rounded-full bg-primary/60 animate-pulse" />
+              <span className="w-1.5 h-1.5 rounded-full bg-primary/40 animate-pulse [animation-delay:200ms]" />
+              <span className="w-1.5 h-1.5 rounded-full bg-primary/20 animate-pulse [animation-delay:400ms]" />
+            </div>
+          </div>
+        )}
+
+
         {phase === "recording" && (
           <div className="animate-fade-in space-y-4 p-6">
             <div className="flex items-center gap-3">

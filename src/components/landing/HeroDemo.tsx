@@ -376,7 +376,7 @@ export default function HeroDemo() {
         </span>
         {/* Phase pills */}
         <div className="ml-auto flex items-center gap-1.5 shrink-0">
-          {["Máscaras", "Laudo", "Correção"].map((label) => (
+          {["Máscaras", "Laudo", "Correção", "Dashboard"].map((label) => (
             <span
               key={label}
               className={`text-[9px] px-2 py-0.5 rounded-full font-medium transition-all duration-300 ${

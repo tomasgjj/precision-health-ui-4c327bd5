@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { Shield, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Logo from "@/components/Logo";
+import logoImg from "@/assets/logo.png";
 
 const TwoFactor = () => {
   const [code, setCode] = useState(["", "", "", "", "", ""]);
@@ -48,7 +48,7 @@ const TwoFactor = () => {
       <div className="w-full max-w-[400px] relative z-10">
         {/* Logo */}
         <div className="flex items-center justify-center gap-2.5 mb-10">
-          <Logo size={32} />
+          <img src={logoImg} alt="Radiktor" className="w-8 h-8 rounded-lg" />
           <span className="font-semibold text-[16px] text-foreground tracking-[-0.01em]">Radiktor</span>
         </div>
 

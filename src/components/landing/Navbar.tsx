@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ArrowRight } from "lucide-react";
-import Logo from "@/components/Logo";
+import logoImg from "@/assets/logo.png";
 
 const navLinks = [
   { label: "Como funciona", href: "#como" },
@@ -17,7 +17,7 @@ const Navbar = () => {
       <div className="bg-background/80 backdrop-blur-xl">
         <div className="container flex items-center justify-between h-14">
           <a href="/" className="flex items-center gap-2.5">
-            <Logo size={28} />
+            <img src={logoImg} alt="Radiktor" className="w-7 h-7 rounded-lg" />
             <span className="font-bold text-[14px] text-foreground tracking-tight">Radiktor</span>
           </a>
 

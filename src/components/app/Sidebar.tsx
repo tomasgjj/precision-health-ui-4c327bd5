@@ -1,6 +1,6 @@
 import { FileText, Clock, LayoutTemplate, Settings, LogOut, Search, BarChart3 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import Logo from "@/components/Logo";
+import logoImg from "@/assets/logo.png";
 
 type Tab = "dashboard" | "laudos" | "historico" | "mascaras" | "config";
 
@@ -22,7 +22,7 @@ export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
     <aside className="hidden lg:flex flex-col w-[220px] shrink-0 h-screen sticky top-0 bg-sidebar border-r border-border select-none">
       {/* Logo */}
       <div className="flex items-center gap-2.5 px-4 h-[52px] border-b border-border">
-        <Logo size={24} />
+        <img src={logoImg} alt="Radiktor" className="w-6 h-6 rounded-md" />
         <span className="font-semibold text-[14px] text-foreground tracking-tight">Radiktor</span>
       </div>
 

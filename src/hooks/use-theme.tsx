@@ -24,7 +24,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   const setTheme = (t: Theme) => {
     setThemeState(t);
-    localStorage.setItem("laudovoz-theme", t);
+    localStorage.setItem("radiktor-theme", t);
   };
 
   useEffect(() => {

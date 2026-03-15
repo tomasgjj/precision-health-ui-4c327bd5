@@ -124,8 +124,8 @@ const Login = () => {
         <div className="w-full max-w-[380px]">
           {/* Mobile logo */}
           <div className="lg:hidden flex items-center gap-2.5 mb-10">
-            <img src={logoImg} alt="LaudoVoz" className="w-8 h-8 rounded-lg" />
-            <span className="font-semibold text-[16px] text-foreground tracking-[-0.01em]">LaudoVoz</span>
+            <img src={logoImg} alt="Radiktor" className="w-8 h-8 rounded-lg" />
+            <span className="font-semibold text-[16px] text-foreground tracking-[-0.01em]">Radiktor</span>
           </div>
 
           {/* Header */}

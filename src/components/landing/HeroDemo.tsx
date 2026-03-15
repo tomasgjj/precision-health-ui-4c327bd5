@@ -99,7 +99,7 @@ export default function HeroDemo() {
           <div className="w-2.5 h-2.5 rounded-full bg-success/40" />
         </div>
         <span className="text-[11px] text-muted-foreground/50 ml-2 font-medium">
-          LaudoVoz — US Abdome Total
+          Radiktor — US Abdome Total
         </span>
       </div>
 

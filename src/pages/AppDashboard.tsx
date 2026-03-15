@@ -38,7 +38,7 @@ export default function AppDashboard() {
         {/* Desktop header */}
         <div className="hidden lg:flex items-center h-[52px] px-6 border-b border-border">
           <nav className="flex items-center gap-1.5 text-[12px] text-muted-foreground">
-            <span>LaudoVoz</span>
+            <span>Radiktor</span>
             <span className="text-muted-foreground/40">/</span>
             <span className="text-foreground font-medium">
               {activeTab === "dashboard" && "Dashboard"}

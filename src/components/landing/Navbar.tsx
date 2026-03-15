@@ -17,8 +17,8 @@ const Navbar = () => {
       <div className="bg-background/80 backdrop-blur-xl">
         <div className="container flex items-center justify-between h-14">
           <a href="/" className="flex items-center gap-2.5">
-            <img src={logoImg} alt="LaudoVoz" className="w-7 h-7 rounded-lg" />
-            <span className="font-bold text-[14px] text-foreground tracking-tight">LaudoVoz</span>
+            <img src={logoImg} alt="Radiktor" className="w-7 h-7 rounded-lg" />
+            <span className="font-bold text-[14px] text-foreground tracking-tight">Radiktor</span>
           </a>
 
           <div className="hidden md:flex items-center gap-0.5">

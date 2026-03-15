@@ -24,7 +24,7 @@ const Hero = () => (
         </h1>
 
         <p className="animate-fade-up opacity-0 [animation-delay:200ms] mt-6 text-[15px] md:text-[17px] text-muted-foreground max-w-[500px] mx-auto leading-relaxed">
-          Dite os achados por voz. O LaudoVoz transcreve, estrutura e entrega o laudo completo — pronto para revisar e assinar.
+          Dite os achados por voz. O Radiktor transcreve, estrutura e entrega o laudo completo — pronto para revisar e assinar.
         </p>
 
         <div className="animate-fade-up opacity-0 [animation-delay:300ms] flex items-center justify-center gap-3 mt-10">

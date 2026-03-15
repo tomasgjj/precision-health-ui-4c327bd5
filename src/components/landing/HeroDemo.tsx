@@ -113,6 +113,13 @@ export default function HeroDemo() {
     return () => { clearInterval(revealId); clearTimeout(next); };
   }, [phase]);
 
+  // ── Mask intro splash ──
+  useEffect(() => {
+    if (phase !== "mask-intro") return;
+    const id = setTimeout(() => setPhase("mask-sections"), 2000);
+    return () => clearTimeout(id);
+  }, [phase]);
+
   // ── Mask: add sections ──
   useEffect(() => {
     if (phase !== "mask-sections") return;

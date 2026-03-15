@@ -347,19 +347,31 @@ export default function HeroDemo() {
         {/* ═══ MASK INTRO ═══ */}
         {phase === "mask-intro" && (
           <div className="flex flex-col items-center justify-center h-[320px] gap-5 animate-fade-in">
-            <div className="w-16 h-16 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center animate-scale-in">
-              <FileText className="w-7 h-7 text-primary/70" />
+            {/* Camera icon with glow ring */}
+            <div className="relative">
+              <div className="absolute inset-0 rounded-2xl bg-primary/20 blur-xl animate-pulse" />
+              <div className="relative w-20 h-20 rounded-2xl bg-primary/10 border-2 border-primary/30 flex items-center justify-center animate-scale-in">
+                <Camera className="w-9 h-9 text-primary" />
+              </div>
             </div>
             <div className="text-center animate-fade-in [animation-delay:300ms] opacity-0 [animation-fill-mode:forwards]">
-              <h3 className="text-[18px] font-bold text-foreground mb-1.5">1. Criação de Máscara</h3>
-              <p className="text-[13px] text-muted-foreground max-w-[280px]">
-                Envie fotos do seu template e a IA cria a máscara automaticamente
+              <h3 className="text-[18px] font-bold text-foreground mb-1.5">1. Fotografe seu Template</h3>
+              <p className="text-[13px] text-muted-foreground max-w-[300px]">
+                Tire fotos do seu modelo impresso — a IA extrai seções e achados automaticamente
               </p>
             </div>
-            <div className="flex gap-1.5 mt-1 animate-fade-in [animation-delay:600ms] opacity-0 [animation-fill-mode:forwards]">
-              <span className="w-1.5 h-1.5 rounded-full bg-primary/60 animate-pulse" />
-              <span className="w-1.5 h-1.5 rounded-full bg-primary/40 animate-pulse [animation-delay:200ms]" />
-              <span className="w-1.5 h-1.5 rounded-full bg-primary/20 animate-pulse [animation-delay:400ms]" />
+            <div className="flex items-center gap-4 mt-1 animate-fade-in [animation-delay:600ms] opacity-0 [animation-fill-mode:forwards]">
+              <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground/60">
+                <Camera className="w-3.5 h-3.5" /> Câmera
+              </div>
+              <div className="w-px h-3 bg-border/40" />
+              <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground/60">
+                <Upload className="w-3.5 h-3.5" /> Arquivo
+              </div>
+              <div className="w-px h-3 bg-border/40" />
+              <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground/60">
+                <span className="font-mono text-[10px]">Ctrl+V</span>
+              </div>
             </div>
           </div>
         )}
@@ -367,24 +379,32 @@ export default function HeroDemo() {
         {/* ═══ MASK UPLOAD ═══ */}
         {phase === "mask-upload" && (
           <div className="flex flex-col items-center justify-center h-[320px] gap-5 animate-fade-in px-6">
-            <div className="text-center mb-2">
-              <div className="text-[14px] font-semibold text-foreground mb-1">Importar por foto</div>
-              <div className="text-[12px] text-muted-foreground">Até 10 fotos do template</div>
+            <div className="text-center mb-1">
+              <div className="flex items-center justify-center gap-2 mb-1">
+                <Camera className="w-4 h-4 text-primary" />
+                <div className="text-[14px] font-semibold text-foreground">Importando fotos</div>
+              </div>
+              <div className="text-[12px] text-muted-foreground">Até 10 fotos do template · JPEG comprimido</div>
             </div>
             <div className="flex items-center gap-3">
               {MASK_PHOTOS.map((_, i) => (
                 <div
                   key={i}
-                  className={`w-20 h-24 rounded-lg border-2 border-dashed flex items-center justify-center transition-all duration-500 ${
+                  className={`relative w-20 h-24 rounded-lg border-2 border-dashed flex items-center justify-center transition-all duration-500 ${
                     i < uploadedPhotos
-                      ? "border-primary/40 bg-primary/5"
+                      ? "border-primary/50 bg-primary/5 shadow-[0_0_15px_-3px_hsl(var(--primary)/0.3)]"
                       : "border-border/30 bg-muted/10"
                   }`}
                 >
                   {i < uploadedPhotos ? (
                     <div className="flex flex-col items-center gap-1 animate-scale-in">
-                      <Image className="w-5 h-5 text-primary/60" />
-                      <span className="text-[9px] text-muted-foreground">Página {i + 1}</span>
+                      <div className="w-8 h-8 rounded-md bg-primary/10 flex items-center justify-center">
+                        <Image className="w-4 h-4 text-primary/70" />
+                      </div>
+                      <span className="text-[9px] text-primary/60 font-medium">Pág. {i + 1}</span>
+                      <div className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-primary flex items-center justify-center">
+                        <Check className="w-2.5 h-2.5 text-primary-foreground" />
+                      </div>
                     </div>
                   ) : (
                     <Upload className="w-4 h-4 text-muted-foreground/30" />
@@ -393,9 +413,12 @@ export default function HeroDemo() {
               ))}
             </div>
             {uploadedPhotos >= MASK_PHOTOS.length && (
-              <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/10 text-primary text-[12px] font-medium animate-fade-in">
-                <Camera className="w-3.5 h-3.5" />
-                Analisar com IA
+              <div className="relative animate-fade-in">
+                <div className="absolute inset-0 rounded-lg bg-primary/20 blur-md" />
+                <div className="relative flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary text-primary-foreground text-[12px] font-semibold">
+                  <Camera className="w-4 h-4" />
+                  Analisar com IA
+                </div>
               </div>
             )}
           </div>

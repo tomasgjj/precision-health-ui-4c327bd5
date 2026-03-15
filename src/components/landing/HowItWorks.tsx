@@ -7,18 +7,21 @@ const steps = [
     num: "1",
     title: "Dite os achados",
     desc: "Fale naturalmente em português. O sistema transcreve com precisão termos radiológicos e estrutura médica.",
+    color: "primary",
   },
   {
     icon: Brain,
     num: "2",
     title: "Nós organizamos o laudo",
     desc: "Os achados são identificados, classificados e estruturados automaticamente em formato profissional.",
+    color: "accent",
   },
   {
     icon: CheckCircle,
     num: "3",
     title: "Revise e exporte",
     desc: "Edite qualquer seção, adicione observações e exporte como PDF com cabeçalho personalizado.",
+    color: "primary",
   },
 ];
 
@@ -52,6 +55,7 @@ const HowItWorks = () => (
               key={i}
               className="relative surface-glass rounded-xl p-6 group hover:border-primary/30 transition-all duration-300"
             >
+              {/* Step number */}
               <div className="flex items-center gap-3 mb-5">
                 <div className="w-8 h-8 rounded-full bg-primary/10 border border-primary/25 flex items-center justify-center text-[11px] font-bold text-primary shrink-0">
                   {step.num}

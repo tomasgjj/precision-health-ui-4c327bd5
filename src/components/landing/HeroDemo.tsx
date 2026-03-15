@@ -341,11 +341,13 @@ export default function HeroDemo() {
   const isMaskPhase = phase.startsWith("mask-");
   const isReportPhase = phase === "recording" || phase === "processing" || phase === "result" || phase === "report-intro";
   const isCorrectionPhase = phase.startsWith("correction-");
+  const isDashPhase = phase.startsWith("dash-");
 
   const getPhaseLabel = () => {
     if (isMaskPhase) return "Máscaras";
     if (isReportPhase) return "Laudo";
     if (isCorrectionPhase) return "Correção";
+    if (isDashPhase) return "Dashboard";
     return "";
   };
 
@@ -353,6 +355,7 @@ export default function HeroDemo() {
     if (isMaskPhase) return "Editor de Máscaras — USG Abdome Total";
     if (isReportPhase) return "Radiktor — USG Abdome Total";
     if (isCorrectionPhase) return "Correção por Voz — USG Abdome Total";
+    if (isDashPhase) return "Radiktor — Dashboard";
     return "Radiktor";
   };
 

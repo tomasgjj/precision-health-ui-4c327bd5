@@ -43,7 +43,7 @@ const HowItWorks = () => (
             Do ditado ao laudo<br />em três passos
           </h2>
           <p className="text-muted-foreground mt-4 text-[14px] leading-relaxed">
-            Workflow simples e direto. Foque no exame, o LaudoVoz cuida do resto.
+            Workflow simples e direto. Foque no exame, o Radiktor cuida do resto.
           </p>
         </div>
       </ScrollReveal>

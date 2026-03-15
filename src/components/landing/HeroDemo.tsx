@@ -4,7 +4,7 @@ import { Mic, Square, Check, Copy, FileDown, FileText, Microscope, ChevronRight,
 type Phase =
   | "idle"
   | "recording" | "processing" | "result"
-  | "mask-sections" | "mask-findings" | "mask-import" | "mask-done";
+  | "mask-intro" | "mask-sections" | "mask-findings" | "mask-import" | "mask-done";
 
 /* ── Report data ── */
 const DICTATION_TEXT =

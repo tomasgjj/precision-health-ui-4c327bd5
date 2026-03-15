@@ -100,6 +100,11 @@ export default function HeroDemo() {
   const [corrProgress, setCorrProgress] = useState(0);
   const [visibleCorrSections, setVisibleCorrSections] = useState(0);
 
+  // Dashboard state
+  const [visibleMetrics, setVisibleMetrics] = useState(0);
+  const [showHeatmap, setShowHeatmap] = useState(false);
+  const [dailyProgress, setDailyProgress] = useState(0);
+
   const resetAll = useCallback(() => {
     setUploadedPhotos(0);
     setAnalyzeStep(0);

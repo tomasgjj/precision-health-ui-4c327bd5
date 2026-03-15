@@ -1,4 +1,4 @@
-import { Mic, Brain, CheckCircle, FileText, Camera, Sparkles } from "lucide-react";
+import { Mic, Brain, CheckCircle, FileText, Camera } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
 
 const steps = [

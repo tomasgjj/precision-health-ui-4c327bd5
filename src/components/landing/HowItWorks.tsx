@@ -1,4 +1,4 @@
-import { Mic, Brain, CheckCircle, FileText, Camera } from "lucide-react";
+import { Mic, Brain, CheckCircle } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
 
 const steps = [
@@ -19,19 +19,6 @@ const steps = [
     num: "3",
     title: "Revise e exporte",
     desc: "Edite qualquer seção, adicione observações e exporte como PDF com cabeçalho personalizado.",
-  },
-];
-
-const maskFeatures = [
-  {
-    icon: FileText,
-    title: "Seções + achados",
-    desc: "Defina órgãos com texto normal padrão e achados com placeholders de medidas e localização.",
-  },
-  {
-    icon: Camera,
-    title: "Importação por foto",
-    desc: "Tire foto de um modelo em papel e a IA cria a máscara automaticamente.",
   },
 ];
 
@@ -75,36 +62,6 @@ const HowItWorks = () => (
               <p className="text-[13px] text-muted-foreground leading-relaxed">{step.desc}</p>
             </div>
           ))}
-        </div>
-      </ScrollReveal>
-
-      {/* Masks explanation */}
-      <ScrollReveal delay={0.3}>
-        <div className="mt-20">
-          <div className="text-center max-w-[520px] mx-auto mb-10">
-            <h3 className="text-[22px] md:text-[26px] font-bold text-foreground tracking-tight">
-              Seus laudos, seus templates
-            </h3>
-            <p className="text-muted-foreground mt-3 text-[14px] leading-relaxed">
-              Crie máscaras personalizadas com seções, achados e impressões.
-              Importe de fotos com IA ou monte manualmente.
-            </p>
-          </div>
-
-          <div className="grid sm:grid-cols-3 gap-4">
-            {maskFeatures.map((item) => (
-              <div
-                key={item.title}
-                className="surface-glass rounded-xl p-6 text-center group hover:border-primary/30 transition-all duration-300"
-              >
-                <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/25 flex items-center justify-center mx-auto mb-3">
-                  <item.icon className="w-4 h-4 text-primary/70" />
-                </div>
-                <h4 className="text-[14px] font-semibold text-foreground mb-1.5">{item.title}</h4>
-                <p className="text-[12px] text-muted-foreground leading-relaxed">{item.desc}</p>
-              </div>
-            ))}
-          </div>
         </div>
       </ScrollReveal>
     </div>

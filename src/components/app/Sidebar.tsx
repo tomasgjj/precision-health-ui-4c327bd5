@@ -1,5 +1,6 @@
 import { FileText, Clock, LayoutTemplate, Settings, LogOut, Search, BarChart3 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import logoImg from "@/assets/logo.png";
 
 type Tab = "dashboard" | "laudos" | "historico" | "mascaras" | "config";
 
@@ -17,19 +18,11 @@ const navItems: { id: Tab; label: string; icon: React.ElementType }[] = [
 ];
 
 export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
-
   return (
     <aside className="hidden lg:flex flex-col w-[220px] shrink-0 h-screen sticky top-0 bg-sidebar border-r border-border select-none">
       {/* Logo */}
       <div className="flex items-center gap-2.5 px-4 h-[52px] border-b border-border">
-        <div className="w-6 h-6 rounded-md bg-primary flex items-center justify-center">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" className="text-primary-foreground">
-            <rect x="9" y="1.5" width="6" height="13" rx="3" fill="currentColor" />
-            <path d="M6 13c0 3 2.5 5.5 6 5.5s6-2.5 6-5.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-            <line x1="12" y1="17.5" x2="12" y2="19.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-            <line x1="9.5" y1="19.5" x2="14.5" y2="19.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-          </svg>
-        </div>
+        <img src={logoImg} alt="LaudoVoz" className="w-6 h-6 rounded-md" />
         <span className="font-semibold text-[14px] text-foreground tracking-tight">LaudoVoz</span>
       </div>
 
@@ -72,7 +65,6 @@ export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
           );
         })}
       </nav>
-
 
       {/* User */}
       <div className="px-3 py-2.5 border-t border-border">

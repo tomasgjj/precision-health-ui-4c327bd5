@@ -1,5 +1,6 @@
 import { FileText, Clock, LayoutTemplate, Settings, BarChart3 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import logoImg from "@/assets/logo.png";
 
 type Tab = "dashboard" | "laudos" | "historico" | "mascaras" | "config";
 
@@ -22,14 +23,7 @@ export default function MobileHeader({ activeTab, onTabChange }: MobileHeaderPro
       {/* Top bar */}
       <header className="lg:hidden sticky top-0 z-40 flex items-center justify-between px-4 h-11 bg-background border-b border-border">
         <div className="flex items-center gap-2">
-          <div className="w-5 h-5 rounded bg-primary flex items-center justify-center">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" className="text-primary-foreground">
-              <rect x="9" y="1.5" width="6" height="13" rx="3" fill="currentColor" />
-              <path d="M6 13c0 3 2.5 5.5 6 5.5s6-2.5 6-5.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-              <line x1="12" y1="17.5" x2="12" y2="19.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-              <line x1="9.5" y1="19.5" x2="14.5" y2="19.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-            </svg>
-          </div>
+          <img src={logoImg} alt="LaudoVoz" className="w-5 h-5 rounded" />
           <span className="font-semibold text-foreground text-[13px] tracking-tight">LaudoVoz</span>
         </div>
       </header>

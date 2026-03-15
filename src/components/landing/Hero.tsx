@@ -1,4 +1,4 @@
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import HeroDemo from "./HeroDemo";
 
 const Hero = () => (
@@ -11,14 +11,12 @@ const Hero = () => (
         backgroundSize: "60px 60px",
       }}
     />
-    {/* Multi-color glow */}
+    {/* Amber glow */}
     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[600px] pointer-events-none" style={{ background: "radial-gradient(ellipse 50% 50% at 50% 0%, hsl(var(--primary) / 0.1) 0%, transparent 70%)" }} />
     <div className="absolute top-20 left-1/3 w-[400px] h-[400px] pointer-events-none" style={{ background: "radial-gradient(circle, hsl(var(--accent) / 0.06) 0%, transparent 70%)" }} />
 
     <div className="container relative z-10 pt-28 pb-16 md:pt-40 md:pb-24">
       <div className="text-center max-w-[800px] mx-auto">
-        {/* Pill badge */}
-
         <h1 className="animate-fade-up opacity-0 [animation-delay:100ms] text-hero text-foreground">
           Laudos médicos{" "}
           <br className="hidden sm:block" />
@@ -30,7 +28,7 @@ const Hero = () => (
         </p>
 
         <div className="animate-fade-up opacity-0 [animation-delay:300ms] flex items-center justify-center gap-3 mt-10">
-          <button className="h-11 px-7 rounded-xl text-[13px] font-semibold gradient-cyan text-white border-none cursor-pointer hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200 flex items-center gap-2">
+          <button className="h-11 px-7 rounded-xl text-[13px] font-semibold bg-primary text-primary-foreground border-none cursor-pointer hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200 flex items-center gap-2">
             Começar grátis
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
@@ -38,7 +36,6 @@ const Hero = () => (
             Ver como funciona
           </button>
         </div>
-
       </div>
     </div>
 

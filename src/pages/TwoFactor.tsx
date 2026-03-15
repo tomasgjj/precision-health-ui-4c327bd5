@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { Shield, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Mic } from "lucide-react";
+import logoImg from "@/assets/logo.png";
 
 const TwoFactor = () => {
   const [code, setCode] = useState(["", "", "", "", "", ""]);
@@ -48,9 +48,7 @@ const TwoFactor = () => {
       <div className="w-full max-w-[400px] relative z-10">
         {/* Logo */}
         <div className="flex items-center justify-center gap-2.5 mb-10">
-          <div className="w-8 h-8 rounded-lg bg-primary/90 flex items-center justify-center">
-            <Mic className="w-4 h-4 text-primary-foreground" />
-          </div>
+          <img src={logoImg} alt="LaudoVoz" className="w-8 h-8 rounded-lg" />
           <span className="font-semibold text-[16px] text-foreground tracking-[-0.01em]">LaudoVoz</span>
         </div>
 

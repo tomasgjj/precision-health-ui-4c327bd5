@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { Mic, ArrowRight, Eye, EyeOff, FileText, Clock, Target } from "lucide-react";
+import { ArrowRight, Eye, EyeOff, FileText, Clock, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import logoImg from "@/assets/logo.png";
 
 /* Animated counter that ticks up from 0 to target */
 const AnimatedNumber = ({ target, duration = 2000, suffix = "" }: { target: number; duration?: number; suffix?: string }) => {
@@ -10,7 +11,6 @@ const AnimatedNumber = ({ target, duration = 2000, suffix = "" }: { target: numb
     const start = performance.now();
     const tick = (now: number) => {
       const progress = Math.min((now - start) / duration, 1);
-      // ease-out cubic
       const eased = 1 - Math.pow(1 - progress, 3);
       setValue(Math.round(eased * target));
       if (progress < 1) requestAnimationFrame(tick);
@@ -70,9 +70,7 @@ const Login = () => {
 
         {/* Logo */}
         <div className="relative z-10 flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-primary/90 flex items-center justify-center">
-            <Mic className="w-4 h-4 text-primary-foreground" />
-          </div>
+          <img src={logoImg} alt="LaudoVoz" className="w-8 h-8 rounded-lg" />
           <span className="font-semibold text-[16px] text-foreground tracking-[-0.01em]">LaudoVoz</span>
         </div>
 
@@ -80,8 +78,8 @@ const Login = () => {
         <div className="relative z-10 max-w-md">
           <div className="mb-6">
             <div className="flex items-center gap-2 mb-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-[10px] font-semibold text-emerald-400 uppercase tracking-widest">Estatísticas em tempo real</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+              <span className="text-[10px] font-semibold text-primary uppercase tracking-widest">Estatísticas em tempo real</span>
             </div>
             <p className="text-[13px] text-muted-foreground">Números reais da plataforma, atualizados continuamente.</p>
           </div>
@@ -100,7 +98,7 @@ const Login = () => {
                     </div>
                     <span className="text-[12px] font-medium text-muted-foreground">{stat.label}</span>
                   </div>
-                  <span className="text-[10px] font-semibold text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded-full">
+                  <span className="text-[10px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
                     {stat.change}
                   </span>
                 </div>
@@ -126,9 +124,7 @@ const Login = () => {
         <div className="w-full max-w-[380px]">
           {/* Mobile logo */}
           <div className="lg:hidden flex items-center gap-2.5 mb-10">
-            <div className="w-8 h-8 rounded-lg bg-primary/90 flex items-center justify-center">
-              <Mic className="w-4 h-4 text-primary-foreground" />
-            </div>
+            <img src={logoImg} alt="LaudoVoz" className="w-8 h-8 rounded-lg" />
             <span className="font-semibold text-[16px] text-foreground tracking-[-0.01em]">LaudoVoz</span>
           </div>
 

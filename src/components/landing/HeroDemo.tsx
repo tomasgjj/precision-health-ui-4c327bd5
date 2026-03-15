@@ -1,26 +1,24 @@
 import { useState, useEffect, useCallback } from "react";
-import { Mic, Square, Check, Copy, FileDown, FileText, Microscope, ChevronRight, ChevronDown, Plus, Camera } from "lucide-react";
+import {
+  Mic, Square, Check, Copy, FileDown, FileText, Microscope,
+  ChevronRight, ChevronDown, Plus, Camera, Image, Upload,
+  Pencil, RotateCcw
+} from "lucide-react";
 
 type Phase =
   | "idle"
-  | "recording" | "processing" | "result"
-  | "mask-intro" | "mask-sections" | "mask-findings" | "mask-import" | "mask-done";
-
-/* ── Report data ── */
-const DICTATION_TEXT =
-  "Fígado de dimensões ligeiramente aumentadas, bordas rombas, ecotextura sólida com aumento difuso da ecogenicidade e atenuação posterior. Vesícula biliar normodistendida, paredes finas, sem cálculos.";
-
-const LAUDO_SECTIONS = [
-  { label: "Fígado", text: "Fígado de topografia normal, dimensões ligeiramente aumentadas, bordas rombas, com ecotextura sólida, apresentando aumento difuso da ecogenicidade." },
-  { label: "Vesícula biliar", text: "Vesícula biliar normodistendida, paredes conservadas, sem imagem ecogênica no seu interior." },
-  { label: "Vias biliares", text: "Hepatocolédoco de calibre preservado. Ausência de dilatação das vias biliares." },
-  { label: "Pâncreas", text: "Dimensões e contornos normais, parênquima homogêneo e ecogenicidade conservada." },
-  { label: "Impressão", text: "— Aumento da ecogenicidade hepática, compatível com esteatose grau II.\n— Demais estruturas sem alterações significativas.", isImpression: true },
-];
-
-const PROCESS_STEPS = ["Transcrição do áudio", "Identificação dos achados", "Montagem do laudo"];
+  /* 1. Mask creation */
+  | "mask-intro" | "mask-upload" | "mask-analyzing" | "mask-editor" | "mask-findings" | "mask-done"
+  /* 2. Report generation */
+  | "report-intro" | "recording" | "processing" | "result"
+  /* 3. Voice correction */
+  | "correction-intro" | "correction-recording" | "correction-applying" | "correction-done";
 
 /* ── Mask data ── */
+const MASK_PHOTOS = ["template_p1.jpg", "template_p2.jpg", "template_p3.jpg"];
+
+const ANALYZE_STEPS = ["Lendo imagens enviadas", "Extraindo seções e achados", "Montando máscara completa"];
+
 const MASK_SECTIONS = [
   { label: "Fígado", text: "Dimensões normais, contornos regulares, ecotextura homogênea." },
   { label: "Vesícula Biliar", text: "Normodistendida, paredes finas, sem cálculos." },
@@ -29,20 +27,48 @@ const MASK_SECTIONS = [
 ];
 
 const MASK_FINDINGS = [
-  { label: "Esteatose Grau I", organ: "Fígado" },
-  { label: "Colelitíase", organ: "Vesícula Biliar" },
-  { label: "Hemangioma", organ: "Fígado" },
+  { label: "Esteatose Grau I", organ: "Fígado", body: "Aumento difuso da ecogenicidade...", impression: "Esteatose hepática grau I", ap: false },
+  { label: "Colelitíase", organ: "Vesícula Biliar", body: "Imagem ecogênica com sombra acústica posterior...", impression: "Colelitíase", ap: false },
+  { label: "Hemangioma", organ: "Fígado", body: "Nódulo hiperecogênico de {med}cm...", impression: "Hemangioma hepático", ap: true },
 ];
 
-const IMPORT_STEPS = ["Lendo imagem", "Extraindo seções e achados", "Montando máscara"];
+/* ── Report data ── */
+const DICTATION_TEXT =
+  "Fígado de dimensões ligeiramente aumentadas, bordas rombas, ecotextura com aumento difuso da ecogenicidade. Vesícula biliar normodistendida, paredes finas, sem cálculos.";
+
+const LAUDO_SECTIONS = [
+  { label: "Fígado", text: "Fígado de topografia normal, dimensões ligeiramente aumentadas, bordas rombas, com aumento difuso da ecogenicidade." },
+  { label: "Vesícula biliar", text: "Vesícula biliar normodistendida, paredes conservadas, sem imagem ecogênica." },
+  { label: "Vias biliares", text: "Hepatocolédoco de calibre preservado." },
+  { label: "Impressão", text: "— Esteatose hepática grau II.\n— Demais estruturas sem alterações.", isImpression: true },
+];
+
+const PROCESS_STEPS = ["Transcrição do áudio", "Identificação dos achados", "Montagem do laudo"];
+
+/* ── Correction data ── */
+const CORRECTION_TEXT = "Na verdade o fígado mede 15 centímetros, e adiciona cisto simples de 2cm no rim direito.";
+
+const CORRECTED_SECTIONS = [
+  { label: "Fígado", text: "Fígado de topografia normal, dimensões aumentadas (15,0 cm), bordas rombas, com aumento difuso da ecogenicidade.", changed: true },
+  { label: "Rins", text: "Rins tópicos, com cisto simples de 2,0 cm no rim direito.", changed: true },
+  { label: "Impressão", text: "— Esteatose hepática grau II.\n— Cisto simples renal à direita (2,0 cm).", isImpression: true, changed: true },
+];
 
 /* ── Timing ── */
-const RECORDING_DURATION = 4000;
-const PROCESSING_DURATION = 2500;
-const RESULT_DISPLAY = 3500;
+const RECORDING_DURATION = 3500;
+const PROCESSING_DURATION = 2200;
 
 export default function HeroDemo() {
   const [phase, setPhase] = useState<Phase>("idle");
+
+  // Mask state
+  const [uploadedPhotos, setUploadedPhotos] = useState(0);
+  const [analyzeStep, setAnalyzeStep] = useState(0);
+  const [analyzeProgress, setAnalyzeProgress] = useState(0);
+  const [visibleSections, setVisibleSections] = useState(0);
+  const [visibleFindings, setVisibleFindings] = useState(0);
+  const [expandedSection, setExpandedSection] = useState<number | null>(null);
+  const [expandedFinding, setExpandedFinding] = useState<number | null>(null);
 
   // Report state
   const [typedChars, setTypedChars] = useState(0);
@@ -51,81 +77,83 @@ export default function HeroDemo() {
   const [processProgress, setProcessProgress] = useState(0);
   const [visibleLaudoSections, setVisibleLaudoSections] = useState(0);
 
-  // Mask state
-  const [visibleSections, setVisibleSections] = useState(0);
-  const [visibleFindings, setVisibleFindings] = useState(0);
-  const [expandedSection, setExpandedSection] = useState<number | null>(null);
-  const [importProgress, setImportProgress] = useState(0);
-  const [importStep, setImportStep] = useState(0);
+  // Correction state
+  const [corrTypedChars, setCorrTypedChars] = useState(0);
+  const [corrTimer, setCorrTimer] = useState(0);
+  const [corrProgress, setCorrProgress] = useState(0);
+  const [visibleCorrSections, setVisibleCorrSections] = useState(0);
 
-  const startDemo = useCallback(() => {
+  const resetAll = useCallback(() => {
+    setUploadedPhotos(0);
+    setAnalyzeStep(0);
+    setAnalyzeProgress(0);
+    setVisibleSections(0);
+    setVisibleFindings(0);
+    setExpandedSection(null);
+    setExpandedFinding(null);
     setTypedChars(0);
     setTimer(0);
     setProcessStep(0);
     setProcessProgress(0);
     setVisibleLaudoSections(0);
-    setVisibleSections(0);
-    setVisibleFindings(0);
-    setExpandedSection(null);
-    setImportProgress(0);
-    setImportStep(0);
-    setPhase("recording");
+    setCorrTypedChars(0);
+    setCorrTimer(0);
+    setCorrProgress(0);
+    setVisibleCorrSections(0);
   }, []);
+
+  const startDemo = useCallback(() => {
+    resetAll();
+    setPhase("mask-intro");
+  }, [resetAll]);
 
   const handleMouseEnter = () => {
     if (phase === "idle") startDemo();
   };
 
-  // ── Recording phase ──
-  useEffect(() => {
-    if (phase !== "recording") return;
-    const charsPerTick = Math.ceil(DICTATION_TEXT.length / (RECORDING_DURATION / 40));
-    const typeId = setInterval(() => setTypedChars(c => Math.min(c + charsPerTick, DICTATION_TEXT.length)), 40);
-    const timerId = setInterval(() => setTimer(t => t + 1), 1000);
-    const nextPhase = setTimeout(() => setPhase("processing"), RECORDING_DURATION);
-    return () => { clearInterval(typeId); clearInterval(timerId); clearTimeout(nextPhase); };
-  }, [phase]);
-
-  // ── Processing phase ──
-  useEffect(() => {
-    if (phase !== "processing") return;
-    setProcessProgress(0);
-    setProcessStep(0);
-    const progressId = setInterval(() => setProcessProgress(p => Math.min(p + 2, 100)), PROCESSING_DURATION / 50);
-    const s1 = setTimeout(() => setProcessStep(1), 200);
-    const s2 = setTimeout(() => setProcessStep(2), PROCESSING_DURATION * 0.4);
-    const s3 = setTimeout(() => setProcessStep(3), PROCESSING_DURATION * 0.75);
-    const nextPhase = setTimeout(() => setPhase("result"), PROCESSING_DURATION);
-    return () => { clearInterval(progressId); clearTimeout(s1); clearTimeout(s2); clearTimeout(s3); clearTimeout(nextPhase); };
-  }, [phase]);
-
-  // ── Result phase → transition to masks ──
-  useEffect(() => {
-    if (phase !== "result") return;
-    setVisibleLaudoSections(0);
-    let i = 0;
-    const revealId = setInterval(() => {
-      i++;
-      setVisibleLaudoSections(i);
-      if (i >= LAUDO_SECTIONS.length) clearInterval(revealId);
-    }, 350);
-    const next = setTimeout(() => setPhase("mask-intro"), RESULT_DISPLAY + LAUDO_SECTIONS.length * 350);
-    return () => { clearInterval(revealId); clearTimeout(next); };
-  }, [phase]);
-
-  // ── Mask intro splash ──
+  // ── MASK INTRO ──
   useEffect(() => {
     if (phase !== "mask-intro") return;
-    const id = setTimeout(() => setPhase("mask-sections"), 2000);
+    const id = setTimeout(() => setPhase("mask-upload"), 2000);
     return () => clearTimeout(id);
   }, [phase]);
 
-  // ── Mask: add sections ──
+  // ── MASK UPLOAD (photos appearing) ──
   useEffect(() => {
-    if (phase !== "mask-sections") return;
+    if (phase !== "mask-upload") return;
+    setUploadedPhotos(0);
+    let i = 0;
+    const id = setInterval(() => {
+      i++;
+      setUploadedPhotos(i);
+      if (i >= MASK_PHOTOS.length) {
+        clearInterval(id);
+        setTimeout(() => setPhase("mask-analyzing"), 600);
+      }
+    }, 500);
+    return () => clearInterval(id);
+  }, [phase]);
+
+  // ── MASK ANALYZING ──
+  useEffect(() => {
+    if (phase !== "mask-analyzing") return;
+    setAnalyzeProgress(0);
+    setAnalyzeStep(0);
+    const progressId = setInterval(() => setAnalyzeProgress(p => Math.min(p + 2, 100)), 60);
+    const s1 = setTimeout(() => setAnalyzeStep(1), 300);
+    const s2 = setTimeout(() => setAnalyzeStep(2), 1200);
+    const s3 = setTimeout(() => setAnalyzeStep(3), 2200);
+    const next = setTimeout(() => setPhase("mask-editor"), 3000);
+    return () => { clearInterval(progressId); clearTimeout(s1); clearTimeout(s2); clearTimeout(s3); clearTimeout(next); };
+  }, [phase]);
+
+  // ── MASK EDITOR (sections) ──
+  useEffect(() => {
+    if (phase !== "mask-editor") return;
     setVisibleSections(0);
     setVisibleFindings(0);
     setExpandedSection(null);
+    setExpandedFinding(null);
     let i = 0;
     const id = setInterval(() => {
       i++;
@@ -135,49 +163,141 @@ export default function HeroDemo() {
         clearInterval(id);
         setTimeout(() => { setExpandedSection(null); setPhase("mask-findings"); }, 800);
       }
-    }, 700);
+    }, 600);
     return () => clearInterval(id);
   }, [phase]);
 
-  // ── Mask: add findings ──
+  // ── MASK FINDINGS ──
   useEffect(() => {
     if (phase !== "mask-findings") return;
     let i = 0;
     const id = setInterval(() => {
       i++;
       setVisibleFindings(i);
+      if (i === 2) setExpandedFinding(0);
       if (i >= MASK_FINDINGS.length) {
         clearInterval(id);
-        setTimeout(() => setPhase("mask-import"), 800);
+        setTimeout(() => { setExpandedFinding(null); setPhase("mask-done"); }, 800);
       }
-    }, 800);
+    }, 700);
     return () => clearInterval(id);
   }, [phase]);
 
-  // ── Mask: import photo ──
+  // ── MASK DONE → report ──
   useEffect(() => {
-    if (phase !== "mask-import") return;
-    setImportProgress(0);
-    setImportStep(0);
-    const progressId = setInterval(() => setImportProgress(p => Math.min(p + 3, 100)), 80);
-    const s1 = setTimeout(() => setImportStep(1), 400);
-    const s2 = setTimeout(() => setImportStep(2), 1400);
-    const s3 = setTimeout(() => setImportStep(3), 2400);
-    const next = setTimeout(() => setPhase("mask-done"), 3200);
+    if (phase !== "mask-done") return;
+    const id = setTimeout(() => setPhase("report-intro"), 2000);
+    return () => clearTimeout(id);
+  }, [phase]);
+
+  // ── REPORT INTRO ──
+  useEffect(() => {
+    if (phase !== "report-intro") return;
+    const id = setTimeout(() => setPhase("recording"), 2000);
+    return () => clearTimeout(id);
+  }, [phase]);
+
+  // ── RECORDING ──
+  useEffect(() => {
+    if (phase !== "recording") return;
+    setTypedChars(0);
+    setTimer(0);
+    const charsPerTick = Math.ceil(DICTATION_TEXT.length / (RECORDING_DURATION / 40));
+    const typeId = setInterval(() => setTypedChars(c => Math.min(c + charsPerTick, DICTATION_TEXT.length)), 40);
+    const timerId = setInterval(() => setTimer(t => t + 1), 1000);
+    const next = setTimeout(() => setPhase("processing"), RECORDING_DURATION);
+    return () => { clearInterval(typeId); clearInterval(timerId); clearTimeout(next); };
+  }, [phase]);
+
+  // ── PROCESSING ──
+  useEffect(() => {
+    if (phase !== "processing") return;
+    setProcessProgress(0);
+    setProcessStep(0);
+    const progressId = setInterval(() => setProcessProgress(p => Math.min(p + 2, 100)), PROCESSING_DURATION / 50);
+    const s1 = setTimeout(() => setProcessStep(1), 200);
+    const s2 = setTimeout(() => setProcessStep(2), PROCESSING_DURATION * 0.4);
+    const s3 = setTimeout(() => setProcessStep(3), PROCESSING_DURATION * 0.75);
+    const next = setTimeout(() => setPhase("result"), PROCESSING_DURATION);
     return () => { clearInterval(progressId); clearTimeout(s1); clearTimeout(s2); clearTimeout(s3); clearTimeout(next); };
   }, [phase]);
 
-  // ── Mask done → loop ──
+  // ── RESULT → correction ──
   useEffect(() => {
-    if (phase !== "mask-done") return;
-    const id = setTimeout(() => startDemo(), 2500);
+    if (phase !== "result") return;
+    setVisibleLaudoSections(0);
+    let i = 0;
+    const revealId = setInterval(() => {
+      i++;
+      setVisibleLaudoSections(i);
+      if (i >= LAUDO_SECTIONS.length) clearInterval(revealId);
+    }, 300);
+    const next = setTimeout(() => setPhase("correction-intro"), 3000 + LAUDO_SECTIONS.length * 300);
+    return () => { clearInterval(revealId); clearTimeout(next); };
+  }, [phase]);
+
+  // ── CORRECTION INTRO ──
+  useEffect(() => {
+    if (phase !== "correction-intro") return;
+    const id = setTimeout(() => setPhase("correction-recording"), 2000);
     return () => clearTimeout(id);
+  }, [phase]);
+
+  // ── CORRECTION RECORDING ──
+  useEffect(() => {
+    if (phase !== "correction-recording") return;
+    setCorrTypedChars(0);
+    setCorrTimer(0);
+    const charsPerTick = Math.ceil(CORRECTION_TEXT.length / (2500 / 40));
+    const typeId = setInterval(() => setCorrTypedChars(c => Math.min(c + charsPerTick, CORRECTION_TEXT.length)), 40);
+    const timerId = setInterval(() => setCorrTimer(t => t + 1), 1000);
+    const next = setTimeout(() => setPhase("correction-applying"), 2500);
+    return () => { clearInterval(typeId); clearInterval(timerId); clearTimeout(next); };
+  }, [phase]);
+
+  // ── CORRECTION APPLYING ──
+  useEffect(() => {
+    if (phase !== "correction-applying") return;
+    setCorrProgress(0);
+    const progressId = setInterval(() => setCorrProgress(p => Math.min(p + 3, 100)), 50);
+    const next = setTimeout(() => setPhase("correction-done"), 2000);
+    return () => { clearInterval(progressId); clearTimeout(next); };
+  }, [phase]);
+
+  // ── CORRECTION DONE → loop ──
+  useEffect(() => {
+    if (phase !== "correction-done") return;
+    setVisibleCorrSections(0);
+    let i = 0;
+    const revealId = setInterval(() => {
+      i++;
+      setVisibleCorrSections(i);
+      if (i >= CORRECTED_SECTIONS.length) clearInterval(revealId);
+    }, 300);
+    const next = setTimeout(() => startDemo(), 3500);
+    return () => { clearInterval(revealId); clearTimeout(next); };
   }, [phase, startDemo]);
 
   const fmtTime = (s: number) =>
     `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
 
-  const isMaskPhase = phase === "mask-intro" || phase.startsWith("mask-");
+  const isMaskPhase = phase.startsWith("mask-");
+  const isReportPhase = phase === "recording" || phase === "processing" || phase === "result" || phase === "report-intro";
+  const isCorrectionPhase = phase.startsWith("correction-");
+
+  const getPhaseLabel = () => {
+    if (isMaskPhase) return "Máscaras";
+    if (isReportPhase) return "Laudo";
+    if (isCorrectionPhase) return "Correção";
+    return "";
+  };
+
+  const getTitleBar = () => {
+    if (isMaskPhase) return "Editor de Máscaras — USG Abdome Total";
+    if (isReportPhase) return "Radiktor — USG Abdome Total";
+    if (isCorrectionPhase) return "Correção por Voz — USG Abdome Total";
+    return "Radiktor";
+  };
 
   return (
     <div
@@ -191,22 +311,29 @@ export default function HeroDemo() {
           <div className="w-2.5 h-2.5 rounded-full bg-warning/40" />
           <div className="w-2.5 h-2.5 rounded-full bg-success/40" />
         </div>
-        <span className="text-[11px] text-muted-foreground/50 ml-2 font-medium">
-          {isMaskPhase ? "Editor de Máscaras — USG Abdome Total" : "Radiktor — US Abdome Total"}
+        <span className="text-[11px] text-muted-foreground/50 ml-2 font-medium truncate">
+          {getTitleBar()}
         </span>
-        {/* Phase indicator pills */}
-        <div className="ml-auto flex items-center gap-1.5">
-          <span className={`text-[9px] px-2 py-0.5 rounded-full font-medium transition-all duration-300 ${!isMaskPhase && phase !== "idle" ? "bg-primary/15 text-primary" : "bg-muted/30 text-muted-foreground/40"}`}>
-            Laudo
-          </span>
-          <span className={`text-[9px] px-2 py-0.5 rounded-full font-medium transition-all duration-300 ${isMaskPhase ? "bg-primary/15 text-primary" : "bg-muted/30 text-muted-foreground/40"}`}>
-            Máscara
-          </span>
+        {/* Phase pills */}
+        <div className="ml-auto flex items-center gap-1.5 shrink-0">
+          {["Máscaras", "Laudo", "Correção"].map((label) => (
+            <span
+              key={label}
+              className={`text-[9px] px-2 py-0.5 rounded-full font-medium transition-all duration-300 ${
+                getPhaseLabel() === label
+                  ? "bg-primary/15 text-primary"
+                  : "bg-muted/30 text-muted-foreground/40"
+              }`}
+            >
+              {label}
+            </span>
+          ))}
         </div>
       </div>
 
       {/* Demo body */}
       <div className="min-h-[320px] relative overflow-hidden">
+
         {/* ═══ IDLE ═══ */}
         {phase === "idle" && (
           <div className="flex flex-col items-center justify-center h-[320px] gap-4 animate-fade-in">
@@ -224,9 +351,9 @@ export default function HeroDemo() {
               <FileText className="w-7 h-7 text-primary/70" />
             </div>
             <div className="text-center animate-fade-in [animation-delay:300ms] opacity-0 [animation-fill-mode:forwards]">
-              <h3 className="text-[18px] font-bold text-foreground mb-1.5">Máscaras</h3>
+              <h3 className="text-[18px] font-bold text-foreground mb-1.5">1. Criação de Máscara</h3>
               <p className="text-[13px] text-muted-foreground max-w-[280px]">
-                Crie templates personalizados para cada tipo de exame
+                Envie fotos do seu template e a IA cria a máscara automaticamente
               </p>
             </div>
             <div className="flex gap-1.5 mt-1 animate-fade-in [animation-delay:600ms] opacity-0 [animation-fill-mode:forwards]">
@@ -237,7 +364,190 @@ export default function HeroDemo() {
           </div>
         )}
 
+        {/* ═══ MASK UPLOAD ═══ */}
+        {phase === "mask-upload" && (
+          <div className="flex flex-col items-center justify-center h-[320px] gap-5 animate-fade-in px-6">
+            <div className="text-center mb-2">
+              <div className="text-[14px] font-semibold text-foreground mb-1">Importar por foto</div>
+              <div className="text-[12px] text-muted-foreground">Até 10 fotos do template</div>
+            </div>
+            <div className="flex items-center gap-3">
+              {MASK_PHOTOS.map((_, i) => (
+                <div
+                  key={i}
+                  className={`w-20 h-24 rounded-lg border-2 border-dashed flex items-center justify-center transition-all duration-500 ${
+                    i < uploadedPhotos
+                      ? "border-primary/40 bg-primary/5"
+                      : "border-border/30 bg-muted/10"
+                  }`}
+                >
+                  {i < uploadedPhotos ? (
+                    <div className="flex flex-col items-center gap-1 animate-scale-in">
+                      <Image className="w-5 h-5 text-primary/60" />
+                      <span className="text-[9px] text-muted-foreground">Página {i + 1}</span>
+                    </div>
+                  ) : (
+                    <Upload className="w-4 h-4 text-muted-foreground/30" />
+                  )}
+                </div>
+              ))}
+            </div>
+            {uploadedPhotos >= MASK_PHOTOS.length && (
+              <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/10 text-primary text-[12px] font-medium animate-fade-in">
+                <Camera className="w-3.5 h-3.5" />
+                Analisar com IA
+              </div>
+            )}
+          </div>
+        )}
 
+        {/* ═══ MASK ANALYZING ═══ */}
+        {phase === "mask-analyzing" && (
+          <div className="flex flex-col items-center justify-center h-[320px] gap-5 animate-fade-in px-6">
+            <div className="w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center">
+              <Camera className="w-5 h-5 text-primary/70" />
+            </div>
+            <div className="text-center">
+              <div className="text-[14px] font-semibold text-foreground mb-1">Analisando com IA</div>
+              <div className="text-[12px] text-muted-foreground">Lendo {MASK_PHOTOS.length} páginas do template</div>
+            </div>
+            <div className="w-full max-w-[260px] h-1.5 bg-muted/30 rounded-full overflow-hidden">
+              <div className="h-full rounded-full bg-primary transition-all duration-100" style={{ width: `${analyzeProgress}%` }} />
+            </div>
+            <div className="space-y-2">
+              {ANALYZE_STEPS.map((step, i) => (
+                <div key={step} className={`flex items-center gap-2.5 text-[12px] transition-all duration-300 ${i < analyzeStep ? "text-foreground" : "text-muted-foreground/40"}`}>
+                  <span className={`w-4 h-4 rounded-full flex items-center justify-center ${i < analyzeStep ? "bg-primary/15" : "border border-border/30"}`}>
+                    {i < analyzeStep ? <Check className="w-2.5 h-2.5 text-primary" /> : ""}
+                  </span>
+                  {step}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ═══ MASK EDITOR (sections + findings split view) ═══ */}
+        {(phase === "mask-editor" || phase === "mask-findings" || phase === "mask-done") && (
+          <div className="animate-fade-in flex flex-col sm:flex-row h-[320px]">
+            {/* Left: Sections */}
+            <div className="flex-1 border-r border-border/30 flex flex-col">
+              <div className="flex items-center justify-between px-4 py-2.5 border-b border-border/30">
+                <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground flex items-center gap-1.5">
+                  <FileText size={12} /> Seções
+                </span>
+                <span className="text-[10px] text-muted-foreground/50">{visibleSections}/{MASK_SECTIONS.length}</span>
+              </div>
+              <div className="flex-1 overflow-y-auto p-3 space-y-1.5">
+                {MASK_SECTIONS.map((sec, i) => (
+                  <div
+                    key={sec.label}
+                    className={`transition-all duration-500 ${i < visibleSections ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"}`}
+                  >
+                    <div className="rounded-lg border border-border/50 overflow-hidden bg-card/40">
+                      <div className="flex items-center gap-2 px-3 py-2">
+                        {expandedSection === i
+                          ? <ChevronDown size={12} className="text-muted-foreground/50" />
+                          : <ChevronRight size={12} className="text-muted-foreground/50" />}
+                        <span className="text-[12px] font-medium text-foreground/80">{sec.label}</span>
+                      </div>
+                      {expandedSection === i && (
+                        <div className="border-t border-border/30 px-3 py-2">
+                          <div className="text-[10px] text-muted-foreground/50 uppercase tracking-wider mb-1">Texto normal</div>
+                          <p className="text-[11px] text-foreground/60 leading-relaxed">{sec.text}</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+                {phase === "mask-editor" && visibleSections < MASK_SECTIONS.length && (
+                  <div className="flex items-center justify-center gap-1 py-2 text-primary/50 animate-pulse">
+                    <Plus size={12} />
+                    <span className="text-[11px]">Adicionando seção...</span>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Right: Findings */}
+            <div className="flex-1 flex flex-col">
+              <div className="flex items-center justify-between px-4 py-2.5 border-b border-border/30">
+                <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground flex items-center gap-1.5">
+                  <Microscope size={12} /> Achados
+                </span>
+                <span className="text-[10px] text-muted-foreground/50">{visibleFindings}/{MASK_FINDINGS.length}</span>
+              </div>
+              <div className="flex-1 overflow-y-auto p-3 space-y-1.5">
+                {MASK_FINDINGS.map((f, i) => (
+                  <div
+                    key={f.label}
+                    className={`transition-all duration-500 ${i < visibleFindings ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"}`}
+                  >
+                    <div className="rounded-lg border border-border/50 bg-card/40 overflow-hidden">
+                      <div className="flex items-center gap-2 px-3 py-2">
+                        {expandedFinding === i
+                          ? <ChevronDown size={12} className="text-muted-foreground/50" />
+                          : <ChevronRight size={12} className="text-muted-foreground/50" />}
+                        <div className="min-w-0 flex-1">
+                          <div className="text-[12px] font-medium text-foreground/80 truncate">{f.label}</div>
+                          <div className="text-[10px] text-primary/50">{f.organ} · {f.ap ? "adiciona" : "substitui"}</div>
+                        </div>
+                      </div>
+                      {expandedFinding === i && (
+                        <div className="border-t border-border/30 px-3 py-2 space-y-1.5">
+                          <div>
+                            <div className="text-[9px] text-muted-foreground/50 uppercase tracking-wider mb-0.5">Corpo</div>
+                            <p className="text-[10px] text-foreground/60">{f.body}</p>
+                          </div>
+                          <div>
+                            <div className="text-[9px] text-muted-foreground/50 uppercase tracking-wider mb-0.5">Impressão</div>
+                            <p className="text-[10px] text-primary/60">{f.impression}</p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+                {phase === "mask-findings" && visibleFindings < MASK_FINDINGS.length && (
+                  <div className="flex items-center justify-center gap-1 py-2 text-primary/50 animate-pulse">
+                    <Plus size={12} />
+                    <span className="text-[11px]">Adicionando achado...</span>
+                  </div>
+                )}
+                {phase === "mask-done" && (
+                  <div className="mt-3 flex items-center gap-2 justify-center animate-fade-in">
+                    <div className="w-5 h-5 rounded-full bg-primary/15 flex items-center justify-center">
+                      <Check className="w-3 h-3 text-primary" />
+                    </div>
+                    <span className="text-[11px] font-semibold text-primary">Máscara completa!</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ═══ REPORT INTRO ═══ */}
+        {phase === "report-intro" && (
+          <div className="flex flex-col items-center justify-center h-[320px] gap-5 animate-fade-in">
+            <div className="w-16 h-16 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center animate-scale-in">
+              <Mic className="w-7 h-7 text-primary/70" />
+            </div>
+            <div className="text-center animate-fade-in [animation-delay:300ms] opacity-0 [animation-fill-mode:forwards]">
+              <h3 className="text-[18px] font-bold text-foreground mb-1.5">2. Geração do Laudo</h3>
+              <p className="text-[13px] text-muted-foreground max-w-[280px]">
+                Grave o que está vendo e a IA monta o laudo estruturado
+              </p>
+            </div>
+            <div className="flex gap-1.5 mt-1 animate-fade-in [animation-delay:600ms] opacity-0 [animation-fill-mode:forwards]">
+              <span className="w-1.5 h-1.5 rounded-full bg-primary/60 animate-pulse" />
+              <span className="w-1.5 h-1.5 rounded-full bg-primary/40 animate-pulse [animation-delay:200ms]" />
+              <span className="w-1.5 h-1.5 rounded-full bg-primary/20 animate-pulse [animation-delay:400ms]" />
+            </div>
+          </div>
+        )}
+
+        {/* ═══ RECORDING ═══ */}
         {phase === "recording" && (
           <div className="animate-fade-in space-y-4 p-6">
             <div className="flex items-center gap-3">
@@ -328,112 +638,94 @@ export default function HeroDemo() {
           </div>
         )}
 
-        {/* ═══ MASK: SECTIONS + FINDINGS ═══ */}
-        {(phase === "mask-sections" || phase === "mask-findings" || phase === "mask-done") && (
-          <div className="animate-fade-in flex flex-col sm:flex-row h-[320px]">
-            {/* Left: Sections */}
-            <div className="flex-1 border-r border-border/30 flex flex-col">
-              <div className="flex items-center justify-between px-4 py-2.5 border-b border-border/30">
-                <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground flex items-center gap-1.5">
-                  <FileText size={12} /> Seções
-                </span>
-                <span className="text-[10px] text-muted-foreground/50">{visibleSections}/{MASK_SECTIONS.length}</span>
-              </div>
-              <div className="flex-1 overflow-y-auto p-3 space-y-1.5">
-                {MASK_SECTIONS.map((sec, i) => (
-                  <div
-                    key={sec.label}
-                    className={`transition-all duration-500 ${i < visibleSections ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"}`}
-                  >
-                    <div className="rounded-lg border border-border/50 overflow-hidden bg-card/40">
-                      <div className="flex items-center gap-2 px-3 py-2">
-                        {expandedSection === i
-                          ? <ChevronDown size={12} className="text-muted-foreground/50" />
-                          : <ChevronRight size={12} className="text-muted-foreground/50" />}
-                        <span className="text-[12px] font-medium text-foreground/80">{sec.label}</span>
-                      </div>
-                      {expandedSection === i && (
-                        <div className="border-t border-border/30 px-3 py-2">
-                          <div className="text-[10px] text-muted-foreground/50 uppercase tracking-wider mb-1">Texto normal</div>
-                          <p className="text-[11px] text-foreground/60 leading-relaxed">{sec.text}</p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))}
-                {phase === "mask-sections" && visibleSections < MASK_SECTIONS.length && (
-                  <div className="flex items-center justify-center gap-1 py-2 text-primary/50 animate-pulse">
-                    <Plus size={12} />
-                    <span className="text-[11px]">Adicionando seção...</span>
-                  </div>
-                )}
-              </div>
+        {/* ═══ CORRECTION INTRO ═══ */}
+        {phase === "correction-intro" && (
+          <div className="flex flex-col items-center justify-center h-[320px] gap-5 animate-fade-in">
+            <div className="w-16 h-16 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center animate-scale-in">
+              <Pencil className="w-7 h-7 text-primary/70" />
             </div>
-
-            {/* Right: Findings */}
-            <div className="flex-1 flex flex-col">
-              <div className="flex items-center justify-between px-4 py-2.5 border-b border-border/30">
-                <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground flex items-center gap-1.5">
-                  <Microscope size={12} /> Achados
-                </span>
-                <span className="text-[10px] text-muted-foreground/50">{visibleFindings}/{MASK_FINDINGS.length}</span>
-              </div>
-              <div className="flex-1 overflow-y-auto p-3 space-y-1.5">
-                {MASK_FINDINGS.map((f, i) => (
-                  <div
-                    key={f.label}
-                    className={`transition-all duration-500 ${i < visibleFindings ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"}`}
-                  >
-                    <div className="rounded-lg border border-border/50 bg-card/40 px-3 py-2">
-                      <div className="flex items-center gap-2">
-                        <ChevronRight size={12} className="text-muted-foreground/50" />
-                        <div className="min-w-0">
-                          <div className="text-[12px] font-medium text-foreground/80 truncate">{f.label}</div>
-                          <div className="text-[10px] text-primary/50">{f.organ}</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-                {phase === "mask-findings" && visibleFindings < MASK_FINDINGS.length && (
-                  <div className="flex items-center justify-center gap-1 py-2 text-primary/50 animate-pulse">
-                    <Plus size={12} />
-                    <span className="text-[11px]">Adicionando achado...</span>
-                  </div>
-                )}
-                {phase === "mask-done" && (
-                  <div className="mt-3 flex items-center gap-2 justify-center animate-fade-in">
-                    <div className="w-5 h-5 rounded-full bg-primary/15 flex items-center justify-center">
-                      <Check className="w-3 h-3 text-primary" />
-                    </div>
-                    <span className="text-[11px] font-semibold text-primary">Máscara completa!</span>
-                  </div>
-                )}
-              </div>
+            <div className="text-center animate-fade-in [animation-delay:300ms] opacity-0 [animation-fill-mode:forwards]">
+              <h3 className="text-[18px] font-bold text-foreground mb-1.5">3. Correção por Voz</h3>
+              <p className="text-[13px] text-muted-foreground max-w-[280px]">
+                Grave a correção e o laudo é atualizado automaticamente
+              </p>
+            </div>
+            <div className="flex gap-1.5 mt-1 animate-fade-in [animation-delay:600ms] opacity-0 [animation-fill-mode:forwards]">
+              <span className="w-1.5 h-1.5 rounded-full bg-primary/60 animate-pulse" />
+              <span className="w-1.5 h-1.5 rounded-full bg-primary/40 animate-pulse [animation-delay:200ms]" />
+              <span className="w-1.5 h-1.5 rounded-full bg-primary/20 animate-pulse [animation-delay:400ms]" />
             </div>
           </div>
         )}
 
-        {/* ═══ MASK: IMPORT PHOTO ═══ */}
-        {phase === "mask-import" && (
-          <div className="flex flex-col items-center justify-center h-[320px] gap-5 animate-fade-in px-6">
-            <div className="w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center">
-              <Camera className="w-5 h-5 text-primary/70" />
+        {/* ═══ CORRECTION RECORDING ═══ */}
+        {phase === "correction-recording" && (
+          <div className="animate-fade-in space-y-4 p-6">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-xl bg-warning/10 flex items-center justify-center">
+                <RotateCcw className="w-3.5 h-3.5 text-warning" />
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-1.5 h-1.5 rounded-full bg-warning animate-pulse" />
+                <span className="text-[13px] font-semibold text-foreground">Corrigindo</span>
+                <span className="text-[12px] font-mono text-muted-foreground ml-1">{fmtTime(corrTimer)}</span>
+              </div>
             </div>
+            <div className="flex items-center justify-center gap-[2px] h-6">
+              {Array.from({ length: 28 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="w-[2px] rounded-full bg-warning/40"
+                  style={{
+                    height: `${8 + Math.sin(Date.now() / 200 + i) * 8}px`,
+                    animation: `wave 0.8s ease-in-out ${i * 0.04}s infinite alternate`,
+                  }}
+                />
+              ))}
+            </div>
+            <div className="surface-glass rounded-xl p-4">
+              <div className="text-[10px] text-muted-foreground/50 uppercase tracking-widest font-semibold mb-2">Correção</div>
+              <p className="text-[13px] text-foreground/80 leading-relaxed">
+                {CORRECTION_TEXT.slice(0, corrTypedChars)}
+                <span className="inline-block w-[2px] h-[13px] bg-warning ml-0.5 animate-pulse" />
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* ═══ CORRECTION APPLYING ═══ */}
+        {phase === "correction-applying" && (
+          <div className="flex flex-col items-center justify-center h-[320px] gap-5 animate-fade-in">
             <div className="text-center">
-              <div className="text-[14px] font-semibold text-foreground mb-1">Importando por foto</div>
-              <div className="text-[12px] text-muted-foreground">IA lendo template e criando máscara</div>
+              <div className="text-[14px] font-semibold text-foreground mb-1">Aplicando correção</div>
+              <div className="text-[12px] text-muted-foreground">Atualizando laudo com as alterações</div>
             </div>
             <div className="w-full max-w-[260px] h-1.5 bg-muted/30 rounded-full overflow-hidden">
-              <div className="h-full rounded-full bg-primary transition-all duration-100" style={{ width: `${importProgress}%` }} />
+              <div className="h-full rounded-full bg-warning transition-all duration-100" style={{ width: `${corrProgress}%` }} />
             </div>
-            <div className="space-y-2">
-              {IMPORT_STEPS.map((step, i) => (
-                <div key={step} className={`flex items-center gap-2.5 text-[12px] transition-all duration-300 ${i < importStep ? "text-foreground" : "text-muted-foreground/40"}`}>
-                  <span className={`w-4 h-4 rounded-full flex items-center justify-center ${i < importStep ? "bg-primary/15" : "border border-border/30"}`}>
-                    {i < importStep ? <Check className="w-2.5 h-2.5 text-primary" /> : ""}
-                  </span>
-                  {step}
+          </div>
+        )}
+
+        {/* ═══ CORRECTION DONE ═══ */}
+        {phase === "correction-done" && (
+          <div className="animate-fade-in space-y-2 p-6">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-5 h-5 rounded-full bg-primary/15 flex items-center justify-center">
+                <Check className="w-3 h-3 text-primary" />
+              </div>
+              <span className="text-[12px] font-semibold text-primary">Laudo corrigido</span>
+            </div>
+            <div className="space-y-1.5 max-h-[240px] overflow-y-auto scrollbar-none">
+              {CORRECTED_SECTIONS.map((section, i) => (
+                <div
+                  key={section.label}
+                  className={`transition-all duration-500 ${i < visibleCorrSections ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"} rounded-xl p-3 ${section.isImpression ? "surface-glass border-primary/20 bg-primary/[0.03]" : "surface-glass"} ${section.changed ? "ring-1 ring-warning/30" : ""}`}
+                >
+                  <div className="flex items-center gap-1.5 mb-1">
+                    <span className={`text-[10px] font-semibold uppercase tracking-wider ${section.isImpression ? "text-primary/70" : "text-muted-foreground/50"}`}>{section.label}</span>
+                    {section.changed && <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-warning/15 text-warning font-medium">alterado</span>}
+                  </div>
+                  <div className="text-[12px] text-foreground/70 leading-relaxed whitespace-pre-line">{section.text}</div>
                 </div>
               ))}
             </div>

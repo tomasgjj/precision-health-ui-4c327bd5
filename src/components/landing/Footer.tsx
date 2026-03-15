@@ -34,7 +34,7 @@ const Footer = () => (
         {/* Brand */}
         <div className="col-span-2 md:col-span-1">
           <a href="/" className="flex items-center gap-2.5 mb-4">
-            <img src={logoImg} alt="Radiktor" className="w-7 h-7 rounded-lg" />
+            <Logo size={28} />
             <span className="font-bold text-[14px] text-foreground tracking-tight">Radiktor</span>
           </a>
           <p className="text-[12px] text-muted-foreground leading-relaxed max-w-[200px]">

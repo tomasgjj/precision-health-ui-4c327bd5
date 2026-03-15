@@ -22,7 +22,7 @@ export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
     <aside className="hidden lg:flex flex-col w-[220px] shrink-0 h-screen sticky top-0 bg-sidebar border-r border-border select-none">
       {/* Logo */}
       <div className="flex items-center gap-2.5 px-4 h-[52px] border-b border-border">
-        <img src={logoImg} alt="Radiktor" className="w-6 h-6 rounded-md" />
+        <Logo size={24} />
         <span className="font-semibold text-[14px] text-foreground tracking-tight">Radiktor</span>
       </div>
 
